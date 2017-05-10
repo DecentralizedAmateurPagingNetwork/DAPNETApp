@@ -86,7 +86,7 @@ public class PostCallActivity extends AppCompatActivity {
                 Log.e(TAG, "Error reading JSON Object, have you logged in?");
             }
 
-        if (msg.length() != 0 && msg.length() < 80 && callSignNames.getText().toString().length() != 0)
+        if (msg.length() != 0 && msg.length() <= 80 && callSignNames.getText().toString().length() != 0)
             sendCallMethod(msg, csnl, tgnl, emergencyBool, returnString[0], returnString[1], returnString[2]);
         else if (msg.length() == 0)
             genericSnackbar("Error: Message empty!");
