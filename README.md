@@ -1,6 +1,7 @@
 # DAPNETApp
 The official DAPNET Android App.
-
+Available on Google Play:
+[![Google Play](https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png)](https://play.google.com/store/apps/details?id=de.hampager.dapnetmobile&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1) 
 ## Usage
 This App enables you to send and view calls via the DAPNET.
 It provides an easy alternative to the [DAPNET webinterface](https://github.com/DecentralizedAmateurPagingNetwork/Web).
