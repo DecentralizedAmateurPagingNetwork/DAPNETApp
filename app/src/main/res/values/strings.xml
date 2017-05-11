@@ -36,7 +36,8 @@
     <string name="transmittergroupnames">TransmitterGroupNames</string>
     <string name="emergency">Emergency?</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="github_dh3wr"><a href="https://github.com/dh3wr">DH3WR</a></string>
+    <string name="github_ihfschwarz"><a href="https://github.com/IHFSchwarz">IHFSchwarz</a></string>
     <string name="hello_welcome_fragment">Welcome!</string>
     <string name="github">DAPNET on GitHub</string>
     <string name="www_hampager_de">www.hampager.de</string>
@@ -48,4 +49,5 @@
     <string name="msg_placeceholder">MSG Placeceholder</string>
     <string name="http_hampager_de_8080">http://hampager.de:8080</string>
     <string name="in_order_to_use_this_service_please_login">In order to use this service, please login.</string>
+    <string name="and">" and "</string>
 </resources>

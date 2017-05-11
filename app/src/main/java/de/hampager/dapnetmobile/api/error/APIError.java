@@ -1,4 +1,4 @@
-package de.hampager.dapnetapp.api.error;
+package de.hampager.dapnetmobile.api.error;
 
 public class APIError {
     private int statusCode;

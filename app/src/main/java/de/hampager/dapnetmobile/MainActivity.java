@@ -1,5 +1,6 @@
-package de.hampager.dapnetapp;
+package de.hampager.dapnetmobile;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -20,13 +22,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import de.hampager.dapnetapp.fragments.CallFragment;
+import de.hampager.dapnetmobile.fragments.CallFragment;
+import de.hampager.dapnetmobile.fragments.WelcomeFragment;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    //private final String TAG = "MainActivity";
-    //TODO: Replace with check wether user is logged in
     boolean loggedIn = false;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +42,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(MainActivity.this, PostCallActivity.class);
-                //TODO: Add extra?
-                //myIntent.putExtra("key", value);
                 MainActivity.this.startActivity(myIntent);
 
             }
@@ -50,13 +50,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        //drawer.setDrawerListener(toggle);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        //TODO: Add welcome fragment properly
+        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.container);
+        if (currentFragment == null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+            ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn));
+            ft.commit();
+        }
+
     }
 
     @Override
@@ -75,15 +81,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         Menu nv = navigationView.getMenu();
         MenuItem mloginstatus = nv.findItem(R.id.nav_loginstatus);
-        //TODO: Replace with check if user is logged in
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
         if (loggedIn) {
             mloginstatus.setTitle(R.string.nav_logout);
-            Log.i("Mainactivity", "User is logged in!");
+            Log.i(TAG, "User is logged in!");
         } else {
             mloginstatus.setTitle(R.string.nav_login);
-            Log.i("Mainactivity", "User is not logged in!");
+            Log.i(TAG, "User is not logged in!");
         }
         return true;
     }
@@ -124,12 +129,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_calls) {
             //Insert Call Fragment with 1 Coloumn
             //ft.replace(R.id.container, HamnetCallFragment.newInstance(1));
-            ft.replace(R.id.container, CallFragment.newInstance());
+            if (loggedIn) {
+                ft.replace(R.id.container, CallFragment.newInstance());
+            } else {
+                Snackbar.make(findViewById(R.id.container), "Error. Are you logged in?", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            }
         } else if (id == R.id.nav_githublink) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork"));
             startActivity(browserIntent);
         }
-        //TODO: Add More Options
         else if (id == R.id.nav_loginstatus) {
             if (loggedIn) {
                 SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);

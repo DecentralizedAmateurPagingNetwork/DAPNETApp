@@ -1,4 +1,4 @@
-package de.hampager.dapnetapp;
+package de.hampager.dapnetmobile;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -22,9 +22,9 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.hampager.dapnetapp.api.HamPagerService;
-import de.hampager.dapnetapp.api.ServiceGenerator;
-import de.hampager.dapnetapp.api.UserResource;
+import de.hampager.dapnetmobile.api.HamPagerService;
+import de.hampager.dapnetmobile.api.ServiceGenerator;
+import de.hampager.dapnetmobile.api.UserResource;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,7 +33,7 @@ import retrofit2.Response;
  * A login screen that offers login via username/password.
  */
 
-public class LoginActivity extends AppCompatActivity{
+public class LoginActivity extends AppCompatActivity {
     private static final String jsonData = "saveData";
     private final String TAG = "LoginActivity";
 
@@ -77,9 +77,9 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
                 //TextInputLayout til =(TextInputLayout)findViewById(R.id.servertextinput);
-                if (mServerView.getVisibility() == View.VISIBLE){
+                if (mServerView.getVisibility() == View.VISIBLE) {
                     mServerView.setVisibility(View.GONE);
-                }else {
+                } else {
                     mServerView.setVisibility(View.VISIBLE);
                 }
             }
@@ -88,8 +88,9 @@ public class LoginActivity extends AppCompatActivity{
         mProgressView = findViewById(R.id.login_progress);
 
     }
+
     public UserResource getUser(final String user, final String password, final String server) {
-        UserResource returnValue=null;
+        UserResource returnValue = null;
         ServiceGenerator.changeApiBaseUrl(server);
         HamPagerService service = ServiceGenerator.createService(HamPagerService.class, user, password);
 
@@ -99,18 +100,18 @@ public class LoginActivity extends AppCompatActivity{
             public void onResponse(Call<UserResource> UserResource, Response<UserResource> response) {
                 if (response.isSuccessful()) {
                     UserResource returnValue = response.body();
-                    saveData(server,user,password);
+                    saveData(server, user, password);
                     saveAdmin(returnValue.admin());
                     showProgress(false);
                     Log.i(TAG, "Login was successful!");
-                    Snackbar.make(findViewById(R.id.loginactivityid), "Success! Welcome "+user, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(findViewById(R.id.loginactivityid), "Success! Welcome " + user, Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
                     //TODO: Add extra?
                     //myIntent.putExtra("key", value); //Optional parameters
                     LoginActivity.this.startActivity(myIntent);
                     finish();
                 } else {
-                    Log.e(TAG,"Error: "+response.code());
+                    Log.e(TAG, "Error: " + response.code());
                     //TODO: User APIError
                     //APIError error = ErrorUtils.parseError(response);
                     //Log.e(TAG, error.message());
@@ -176,17 +177,16 @@ public class LoginActivity extends AppCompatActivity{
             showProgress(true);
             Log.i(TAG, "Logging in...");
             saveData(server, user, password);
-            UserResource userres = getUser(user, password,server);
+            //UserResource userres = getUser(user, password,server);
         }
     }
 
+    //TODO: Replace this with your own logic
     private boolean isEmailValid(String user) {
-        //TODO: Replace this with your own logic
         return true;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return true;
     }
 
@@ -219,16 +219,16 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     //TODO: Add error messages
-    //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
     public void saveAdmin(boolean admin) {
-        SharedPreferences sharedPref = getSharedPreferences("sharedPref",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean("isLoggedIn",true);
+        editor.putBoolean("isLoggedIn", true);
         editor.putBoolean("admin", admin);
         editor.apply();
     }
+
     public void saveData(String server, String user, String pass) {
-        SharedPreferences sharedPref = getSharedPreferences("sharedPref",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         JSONObject jobj = new JSONObject();
         try {
@@ -245,7 +245,7 @@ public class LoginActivity extends AppCompatActivity{
 
     public JSONObject loadJSONData() {
         Log.i(TAG, "Loading JSON data");
-        SharedPreferences sharedPref = getSharedPreferences("sharedPref",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         String strJson = sharedPref.getString(jsonData, "0");//second parameter is necessary ie.,Value to return if this preference does not exist.
         JSONObject jobj = null;
         try {
@@ -253,7 +253,6 @@ public class LoginActivity extends AppCompatActivity{
         } catch (JSONException e) {
             Log.e(TAG, "Error reading JSON Object");
         }
-        //Snackbar.make(view, server+","+user+","+pass, Snackbar.LENGTH_LONG).setAction("Action", null).show();
         return jobj;
     }
 

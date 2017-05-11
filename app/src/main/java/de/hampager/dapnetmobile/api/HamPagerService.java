@@ -1,4 +1,4 @@
-package de.hampager.dapnetapp.api;
+package de.hampager.dapnetmobile.api;
 
 import java.util.ArrayList;
 

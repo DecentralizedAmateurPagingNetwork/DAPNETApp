@@ -1,4 +1,4 @@
-package de.hampager.dapnetapp.api;
+package de.hampager.dapnetmobile.api;
 
 import android.text.TextUtils;
 
@@ -20,10 +20,10 @@ public class ServiceGenerator {
     // No need to instantiate this class.
     private ServiceGenerator() {
     }
-
+    /*
     public static <S> S createService(Class<S> serviceClass) {
         return createService(serviceClass, null, null);
-    }
+    }*/
 
     public static <S> S createService(Class<S> serviceClass, String username, String password) {
         if (!TextUtils.isEmpty(username)

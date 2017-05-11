@@ -1,4 +1,4 @@
-package de.hampager.dapnetapp.adapters;
+package de.hampager.dapnetmobile.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import de.hampager.dapnetapp.R;
-import de.hampager.dapnetapp.api.HamnetCall;
+import de.hampager.dapnetmobile.R;
+import de.hampager.dapnetmobile.api.HamnetCall;
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     private ArrayList<HamnetCall> mValues;

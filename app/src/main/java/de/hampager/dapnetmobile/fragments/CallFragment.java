@@ -1,4 +1,4 @@
-package de.hampager.dapnetapp.fragments;
+package de.hampager.dapnetmobile.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,11 +16,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import de.hampager.dapnetapp.R;
-import de.hampager.dapnetapp.adapters.DataAdapter;
-import de.hampager.dapnetapp.api.HamPagerService;
-import de.hampager.dapnetapp.api.HamnetCall;
-import de.hampager.dapnetapp.api.ServiceGenerator;
+import de.hampager.dapnetmobile.R;
+import de.hampager.dapnetmobile.adapters.DataAdapter;
+import de.hampager.dapnetmobile.api.HamPagerService;
+import de.hampager.dapnetmobile.api.HamnetCall;
+import de.hampager.dapnetmobile.api.ServiceGenerator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -92,7 +92,7 @@ public class CallFragment extends Fragment {
                     recyclerView.setAdapter(adapter);
                 } else {
                     //APIError error = ErrorUtils.parseError(response);
-                    Log.e(TAG, "Errorcode: " + response.code());
+                    Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
                     Snackbar.make(recyclerView, "Error! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     if (response.code() == 401) {

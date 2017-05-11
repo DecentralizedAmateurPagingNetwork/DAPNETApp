@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.hampager.dapnetapp.WelcomeFragment">
+    tools:context="de.hampager.dapnetmobile.fragments.WelcomeFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,8 +23,50 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/welcome"
-            android:layout_centerHorizontal="true"
-            android:text="@string/in_order_to_use_this_service_please_login" />
+            android:layout_centerHorizontal="false"
+            android:layout_centerInParent="false"
+            android:layout_centerVertical="false"
+            android:text="@string/in_order_to_use_this_service_please_login"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/infoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/welcome"
+            android:layout_centerHorizontal="false"
+            android:text="This is the official DAPNET app created by"
+            android:textAlignment="center" />
+
+        <TextView
+            android:id="@+id/linkView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/github_dh3wr"
+            android:layout_alignBaseline="@+id/textViewAnd"
+            android:layout_alignBottom="@+id/textViewAnd"
+            android:layout_toLeftOf="@+id/textViewAnd"
+            android:layout_toStartOf="@+id/textViewAnd" />
+
+        <TextView
+            android:id="@+id/textViewAnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/and"
+            android:layout_below="@+id/infoTextView"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/linkView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/github_ihfschwarz"
+            android:layout_alignBaseline="@+id/textViewAnd"
+            android:layout_alignBottom="@+id/textViewAnd"
+            android:layout_toRightOf="@+id/textViewAnd"
+            android:layout_toEndOf="@+id/textViewAnd" />
 
     </RelativeLayout>
 
