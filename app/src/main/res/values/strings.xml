@@ -48,7 +48,7 @@
     <string name="plchldr">PLCHLDR</string>
     <string name="all">All</string>
     <string name="msg_placeceholder">MSG Placeceholder</string>
-    <string name="http_hampager_de_8080">http://hampager.de:8080</string>
+    <string name="http_hampager_de_8080">http://www.hampager.de:8080</string>
     <string name="in_order_to_use_this_service_please_login">In order to use this service, please login.</string>
     <string name="and">" and "</string>
 </resources>
