@@ -59,17 +59,11 @@ public class CallFragment extends Fragment {
         String server,user,password;
         server=user=password="example";
         try {
-            Log.i(TAG,"trying to get JSONObject");
             jObj = new JSONObject(strJson);
-            Log.i(TAG,"trying to get server");
             server = jObj.getString("server");
-            Log.i(TAG,"trying to get user");
             user = jObj.getString("user");
-            Log.i(TAG,"trying to get pass");
             password = jObj.getString("pass");
-            Log.i(TAG,"trying to get admin");
             admin =  sharedPref.getBoolean("admin",true);
-            Log.i(TAG,"jObj.getBoolean admin"+jObj.getBoolean("admin"));
         } catch (org.json.JSONException e) {
             Log.e(TAG, "Error reading JSON Object");
         }

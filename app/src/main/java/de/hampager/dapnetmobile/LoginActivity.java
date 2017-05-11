@@ -221,7 +221,6 @@ public class LoginActivity extends AppCompatActivity {
 
     //TODO: Add error messages
     public void saveAdmin(boolean admin) {
-        Log.i(TAG,"saveAdmin: admin: "+admin);
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("isLoggedIn", true);
