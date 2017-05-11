@@ -26,4 +26,9 @@ public interface HamPagerService {
     @GET("users/{name}")
     Call<UserResource> getUserResource(@Path("name") String username);
     //Served via ServiceGenerator
+    @GET("core/api_version")
+    Call<CoreApiVersion> getApiVersion();
+
+    @GET("core/core_version")
+    Call<CoreVersion> getCoreVersion();
 }

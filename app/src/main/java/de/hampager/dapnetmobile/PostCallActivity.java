@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -33,7 +34,7 @@ import retrofit2.Response;
 public class PostCallActivity extends AppCompatActivity {
     private static final String TAG = "PostCallActivity";
     private static final String jsonData = "saveData";
-    private EditText message;
+    private TextInputEditText message;
     private EditText callSignNames;
     private EditText transmitterGroupNames;
     private Boolean emergencyBool = false;
@@ -42,11 +43,11 @@ public class PostCallActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_call);
-        message = (EditText) findViewById(R.id.post_call_text);
+        message = (TextInputEditText) findViewById(R.id.post_call_text);
         callSignNames = (EditText) findViewById(R.id.post_call_callSignNames);
         transmitterGroupNames = (EditText) findViewById(R.id.post_call_transmitterGroupNames);
         Switch emergency = (Switch) findViewById(R.id.post_call_emergencyswitch);
-
+        message.requestFocus();
         emergency.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {

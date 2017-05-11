@@ -89,8 +89,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
 
-        TextView mNavHeadDAPNET=(TextView)findViewById(R.id.navheaddapnet);
-        mNavHeadDAPNET.setText("DAPNET v" +BuildConfig.VERSION_NAME);
+        TextView mNavHeadVersions=(TextView)findViewById(R.id.navheadversions);
+        mNavHeadVersions.setText("App v" +BuildConfig.VERSION_NAME);
+        //Implement core and api version as soon as https://github.com/DecentralizedAmateurPagingNetwork/Core/issues/93 is fixed
+        //mNavHeadVersions.setText("App v" +BuildConfig.VERSION_NAME+", Core v"+"1.1.3.3, "+"API v"+"1.1.3");
         if (loggedIn) {
             mloginstatus.setTitle(R.string.nav_logout);
             Log.i(TAG, "User is logged in!");
