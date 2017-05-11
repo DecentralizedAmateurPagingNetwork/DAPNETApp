@@ -177,7 +177,7 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(true);
             Log.i(TAG, "Logging in...");
             saveData(server, user, password);
-            //UserResource userres = getUser(user, password,server);
+            getUser(user, password,server);
         }
     }
 

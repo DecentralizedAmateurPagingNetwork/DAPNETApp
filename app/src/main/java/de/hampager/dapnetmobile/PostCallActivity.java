@@ -11,10 +11,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -44,6 +46,7 @@ public class PostCallActivity extends AppCompatActivity {
         callSignNames = (EditText) findViewById(R.id.post_call_callSignNames);
         transmitterGroupNames = (EditText) findViewById(R.id.post_call_transmitterGroupNames);
         Switch emergency = (Switch) findViewById(R.id.post_call_emergencyswitch);
+
         emergency.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -51,9 +54,10 @@ public class PostCallActivity extends AppCompatActivity {
             }
         });
         //TODO: On return pressed on keyboard->Send
-        transmitterGroupNames.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+        transmitterGroupNames.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     sendCall();
                     return true;
                 }
@@ -111,6 +115,7 @@ public class PostCallActivity extends AppCompatActivity {
                     //HamnetCall returnValue = response.body();
 
                     genericSnackbar("Successfully sent message");
+                    finish();
                 } else {
                     //APIError error = ErrorUtils.parseError(response);
                     Log.e(TAG, "Post Call Error: " + response.code());

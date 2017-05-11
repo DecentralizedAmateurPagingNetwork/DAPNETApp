@@ -21,8 +21,11 @@
             android:layout_alignParentTop="true"
             android:ems="10"
             android:hint="@string/message"
-            android:inputType="textPersonName"
-            android:maxLines="1" />
+            android:inputType="textMultiLine"
+            android:maxLines="3"
+            android:minLines="2"
+            android:scrollbars="vertical"
+            android:selectAllOnFocus="false" />
     </android.support.design.widget.TextInputLayout>
 
 
@@ -44,7 +47,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/post_call_callSignNames"
-        android:hint="@string/transmittergroupnames" />
+        android:hint="@string/transmittergroupnames"
+        android:maxLines="1" />
 
     <Switch
         android:id="@+id/post_call_emergencyswitch"

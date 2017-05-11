@@ -41,8 +41,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(MainActivity.this, PostCallActivity.class);
-                MainActivity.this.startActivity(myIntent);
+                if (loggedIn) {
+                    Intent myIntent = new Intent(MainActivity.this, PostCallActivity.class);
+                    MainActivity.this.startActivity(myIntent);
+                } else {
+                    Snackbar.make(findViewById(R.id.container), "Error. Are you logged in?", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
 
             }
         });
