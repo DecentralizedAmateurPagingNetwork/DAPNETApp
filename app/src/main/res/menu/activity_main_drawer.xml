@@ -8,22 +8,28 @@
             android:icon="@drawable/ic_textsms"
             android:title="@string/calls" />
     </group>
-
-    <item android:title="@string/miscellaneous">
+    <item android:title="User">
         <menu
-            android:id="@+id/nav_misc_menu">
-            <item
-                android:id="@+id/nav_displayuser"
-                android:title="@string/please_login"
-                android:visible="false" />
+            android:id="@+id/nav_user_menu">
             <item
                 android:id="@+id/nav_loginstatus"
                 android:icon="@android:drawable/ic_lock_power_off"
                 android:title="@string/login" />
+        </menu>
+    </item>
+    <item android:title="@string/miscellaneous">
+        <menu
+            android:id="@+id/nav_misc_menu">
             <item
                 android:id="@+id/nav_githublink"
                 android:icon="@mipmap/ic_githubmark"
                 android:title="@string/github"
+                android:autoLink="web"
+                android:linksClickable="true"/>
+            <item
+                android:id="@+id/nav_feedbacklink"
+                android:icon="@mipmap/ic_feedback_black"
+                android:title="@string/feedback_and_more"
                 android:autoLink="web"
                 android:linksClickable="true"/>
         </menu>

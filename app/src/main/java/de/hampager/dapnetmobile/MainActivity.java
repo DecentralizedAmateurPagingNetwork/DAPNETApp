@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,10 +22,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import de.hampager.dapnetmobile.fragments.CallFragment;
 import de.hampager.dapnetmobile.fragments.WelcomeFragment;
-
+import de.hampager.dapnetmobile.BuildConfig;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     boolean loggedIn = false;
@@ -56,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         Fragment currentFragment = getFragmentManager().findFragmentById(R.id.container);
@@ -87,6 +88,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MenuItem mloginstatus = nv.findItem(R.id.nav_loginstatus);
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
+
+        TextView mNavHeadDAPNET=(TextView)findViewById(R.id.navheaddapnet);
+        mNavHeadDAPNET.setText("DAPNET v" +BuildConfig.VERSION_NAME);
         if (loggedIn) {
             mloginstatus.setTitle(R.string.nav_logout);
             Log.i(TAG, "User is logged in!");
@@ -140,6 +144,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         } else if (id == R.id.nav_githublink) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork"));
+            startActivity(browserIntent);
+        }else if (id == R.id.nav_feedbacklink) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork/DAPNETApp/issues"));
             startActivity(browserIntent);
         }
         else if (id == R.id.nav_loginstatus) {
