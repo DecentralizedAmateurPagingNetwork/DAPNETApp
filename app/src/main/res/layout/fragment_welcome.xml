@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,6 +13,7 @@
             android:id="@+id/welcome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView2"
             android:padding="8dp"
             android:text="@string/hello_welcome_fragment"
             android:textAlignment="center"
@@ -67,6 +69,14 @@
             android:layout_toEndOf="@+id/textViewAnd"
             android:layout_toRightOf="@+id/textViewAnd"
             android:text="@string/github_ihfschwarz" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@mipmap/ic_afu_dapnet_logo" />
 
     </RelativeLayout>
 
