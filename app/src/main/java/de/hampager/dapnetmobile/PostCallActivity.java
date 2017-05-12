@@ -18,6 +18,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.List;
@@ -99,8 +100,7 @@ public class PostCallActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     // tasks available
                     //HamnetCall returnValue = response.body();
-
-                    genericSnackbar("Successfully sent message");
+                    Toast.makeText(PostCallActivity.this, "Successfully sent message", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
                     //APIError error = ErrorUtils.parseError(response);
