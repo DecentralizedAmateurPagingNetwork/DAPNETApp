@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -24,13 +23,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import de.hampager.dapnetmobile.api.HamPagerService;
+import de.hampager.dapnetmobile.api.ServiceGenerator;
+import de.hampager.dapnetmobile.api.Versions;
 import de.hampager.dapnetmobile.fragments.CallFragment;
 import de.hampager.dapnetmobile.fragments.WelcomeFragment;
-import de.hampager.dapnetmobile.BuildConfig;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    boolean loggedIn = false;
     private static final String TAG = "MainActivity";
+    boolean loggedIn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
         Fragment currentFragment = getFragmentManager().findFragmentById(R.id.container);
         if (currentFragment == null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -88,9 +94,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MenuItem mloginstatus = nv.findItem(R.id.nav_loginstatus);
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
+        String server = sharedPref.getString("server", null);
 
-        TextView mNavHeadVersions=(TextView)findViewById(R.id.navheadversions);
-        mNavHeadVersions.setText("App v" +BuildConfig.VERSION_NAME);
         //Implement core and api version as soon as https://github.com/DecentralizedAmateurPagingNetwork/Core/issues/93 is fixed
         //mNavHeadVersions.setText("App v" +BuildConfig.VERSION_NAME+", Core v"+"1.1.3.3, "+"API v"+"1.1.3");
         if (loggedIn) {
@@ -100,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mloginstatus.setTitle(R.string.nav_login);
             Log.i(TAG, "User is not logged in!");
         }
+
+        setVersion(server);
         return true;
     }
 
@@ -121,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        /*TODO: Add Settings
+        /*Add Settings?
          if (id == R.id.action_settings) {
          return true;
          }*/
@@ -147,11 +154,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_githublink) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork"));
             startActivity(browserIntent);
-        }else if (id == R.id.nav_feedbacklink) {
+        } else if (id == R.id.nav_feedbacklink) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork/DAPNETApp/issues"));
             startActivity(browserIntent);
-        }
-        else if (id == R.id.nav_loginstatus) {
+        } else if (id == R.id.nav_loginstatus) {
             if (loggedIn) {
                 SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
@@ -165,5 +171,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void setVersion(String server) {
+        if (server != null) {
+
+            ServiceGenerator.changeApiBaseUrl(server);
+
+            HamPagerService service = ServiceGenerator.createService(HamPagerService.class, "", "");
+            Call<Versions> call = service.getVersions();
+            call.enqueue(new Callback<Versions>() {
+                @Override
+                public void onResponse(Call<Versions> call, Response<Versions> response) {
+                    if (response.isSuccessful()) {
+                        Log.i(TAG, "Connection was successful");
+                        TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
+                        String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + response.body().getCore() + ", API v" + response.body().getApi();
+                        mNavHeadVersions.setText(tmp);
+                    } else {
+                        //APIError error = ErrorUtils.parseError(response);
+                        Log.e(TAG, "Error getting versions" + response.code());
+                        Log.e(TAG, response.message());
+                        Snackbar.make(findViewById(R.id.container), "Error getting versions! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Versions> call, Throwable t) {
+                    // something went completely wrong (e.g. no internet connection)
+                    Log.e(TAG, t.getMessage());
+                }
+            });
+        } else {
+            TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
+            mNavHeadVersions.setText("App v" + BuildConfig.VERSION_NAME);
+        }
     }
 }

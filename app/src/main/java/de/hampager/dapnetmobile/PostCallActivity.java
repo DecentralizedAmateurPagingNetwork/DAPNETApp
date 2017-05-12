@@ -19,8 +19,6 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import org.json.JSONObject;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,7 +31,6 @@ import retrofit2.Response;
 
 public class PostCallActivity extends AppCompatActivity {
     private static final String TAG = "PostCallActivity";
-    private static final String jsonData = "saveData";
     private TextInputEditText message;
     private EditText callSignNames;
     private EditText transmitterGroupNames;
@@ -72,25 +69,13 @@ public class PostCallActivity extends AppCompatActivity {
         List<String> csnl = Arrays.asList(callSignNames.getText().toString().split(" "));
         List<String> tgnl = Arrays.asList(transmitterGroupNames.getText().toString().split(" "));
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-
-        String strJson = sharedPref.getString(jsonData, "0");//second parameter is necessary ie.,Value to return if this preference does not exist.
-        JSONObject jobj = null;
-        try {
-            jobj = new JSONObject(strJson);
-        } catch (org.json.JSONException e) {
-            Log.e(TAG, "Error reading JSON Object");
-        }
+        String server = sharedPref.getString("server", null);
+        String user = sharedPref.getString("user", null);
+        String password = sharedPref.getString("pass", null);
         String[] returnString = {"example.com", "exampleUser", "examplePass"};
-        try {
-            returnString[0] = jobj.get("server").toString();
-            returnString[1] = jobj.get("user").toString();
-            returnString[2] = jobj.get("pass").toString();
-        } catch (org.json.JSONException e) {
-            Log.e(TAG, "Error reading JSON Object, have you logged in?");
-        }
 
         if (msg.length() != 0 && msg.length() <= 80 && callSignNames.getText().toString().length() != 0)
-            sendCallMethod(msg, csnl, tgnl, emergencyBool, returnString[0], returnString[1], returnString[2]);
+            sendCallMethod(msg, csnl, tgnl, emergencyBool, server, user, password);
         else if (msg.length() == 0)
             genericSnackbar("Error: Message empty!");
         else if (msg.length() > 79)

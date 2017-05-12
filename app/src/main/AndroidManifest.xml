@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
     package="de.hampager.dapnetmobile">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
@@ -26,9 +27,11 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.hampager.dapnetmobile.LoginActivity" />
-        </activity>,
+        </activity>
+        ,
 
-        <activity android:name=".PostCallActivity"
+        <activity
+            android:name=".PostCallActivity"
             android:label="@string/title_activity_postcall"
             android:parentActivityName=".MainActivity">
             <meta-data

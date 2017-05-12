@@ -16,8 +16,9 @@ public class APIError {
     public String message() {
         return message;
     }
+
     @Override
-    public String toString(){
-        return "code: "+statusCode+" name: "+name+" message: "+message;
+    public String toString() {
+        return "code: " + statusCode + " name: " + name + " message: " + message;
     }
 }

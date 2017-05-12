@@ -9,8 +9,7 @@
             android:title="@string/calls" />
     </group>
     <item android:title="User">
-        <menu
-            android:id="@+id/nav_user_menu">
+        <menu android:id="@+id/nav_user_menu">
             <item
                 android:id="@+id/nav_loginstatus"
                 android:icon="@android:drawable/ic_lock_power_off"
@@ -18,20 +17,19 @@
         </menu>
     </item>
     <item android:title="@string/miscellaneous">
-        <menu
-            android:id="@+id/nav_misc_menu">
+        <menu android:id="@+id/nav_misc_menu">
             <item
                 android:id="@+id/nav_githublink"
-                android:icon="@mipmap/ic_githubmark"
-                android:title="@string/github"
                 android:autoLink="web"
-                android:linksClickable="true"/>
+                android:icon="@mipmap/ic_githubmark"
+                android:linksClickable="true"
+                android:title="@string/github" />
             <item
                 android:id="@+id/nav_feedbacklink"
-                android:icon="@mipmap/ic_feedback_black"
-                android:title="@string/feedback_and_more"
                 android:autoLink="web"
-                android:linksClickable="true"/>
+                android:icon="@mipmap/ic_feedback_black"
+                android:linksClickable="true"
+                android:title="@string/feedback_and_more" />
         </menu>
     </item>
 

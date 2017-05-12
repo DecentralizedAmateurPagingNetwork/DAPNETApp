@@ -12,8 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 import de.hampager.dapnetmobile.R;
@@ -29,6 +27,7 @@ public class CallFragment extends Fragment {
     private final String TAG = "CallFragment";
     private RecyclerView recyclerView;
     private DataAdapter adapter;
+
     public CallFragment() {
         // Required empty public constructor
     }
@@ -49,25 +48,11 @@ public class CallFragment extends Fragment {
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(mLayoutManager);
-        loadJSON();
-    }
-    private void loadJSON(){
-        SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref",Context.MODE_PRIVATE);
-        String strJson = sharedPref.getString("saveData", "0");//second parameter is necessary ie.,Value to return if this preference does not exist.
-        JSONObject jObj;
-        boolean admin = true;
-        String server,user,password;
-        server=user=password="example";
-        try {
-            jObj = new JSONObject(strJson);
-            server = jObj.getString("server");
-            user = jObj.getString("user");
-            password = jObj.getString("pass");
-            admin =  sharedPref.getBoolean("admin",true);
-        } catch (org.json.JSONException e) {
-            Log.e(TAG, "Error reading JSON Object");
-        }
-        Log.i(TAG,"loadJSON, admin: "+admin);
+        SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        String server = sharedPref.getString("server", null);
+        String user = sharedPref.getString("user", null);
+        String password = sharedPref.getString("pass", null);
+        Boolean admin = sharedPref.getBoolean("admin", true);
         fetchJSON(server, user, password, admin);
     }
 
@@ -75,7 +60,7 @@ public class CallFragment extends Fragment {
         ServiceGenerator.changeApiBaseUrl(server);
         HamPagerService service = ServiceGenerator.createService(HamPagerService.class, user, password);
         Call<ArrayList<HamnetCall>> call;
-        Log.i(TAG,"fetchJSON, admin: "+admin);
+        Log.i(TAG, "fetchJSON, admin: " + admin);
         if (admin) {
             Log.i(TAG, "Admin access granted. Fetching All Calls...");
             call = service.getAllHamnetCalls();
@@ -109,7 +94,7 @@ public class CallFragment extends Fragment {
             @Override
             public void onFailure(Call<ArrayList<HamnetCall>> call, Throwable t) {
                 // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG,t.getMessage());
+                Log.e(TAG, t.getMessage());
             }
         });
     }

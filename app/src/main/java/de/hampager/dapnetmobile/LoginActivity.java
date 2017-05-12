@@ -19,9 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import de.hampager.dapnetmobile.api.HamPagerService;
 import de.hampager.dapnetmobile.api.ServiceGenerator;
 import de.hampager.dapnetmobile.api.UserResource;
@@ -34,7 +31,6 @@ import retrofit2.Response;
  */
 
 public class LoginActivity extends AppCompatActivity {
-    private static final String jsonData = "saveData";
     private final String TAG = "LoginActivity";
 
     // UI references.
@@ -100,20 +96,18 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<UserResource> UserResource, Response<UserResource> response) {
                 if (response.isSuccessful()) {
                     UserResource returnValue = response.body();
-                    saveData(server, user, password);
-                    Log.i(TAG,"getUser, admin: "+returnValue.admin());
-                    saveAdmin(returnValue.admin());
+                    saveData(server, user, password, returnValue.admin());
+                    Log.i(TAG, "getUser, admin: " + returnValue.admin());
                     showProgress(false);
                     Log.i(TAG, "Login was successful!");
                     Snackbar.make(findViewById(R.id.loginactivityid), "Success! Welcome " + user, Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    //TODO: Add extra?
-                    //myIntent.putExtra("key", value); //Optional parameters
                     LoginActivity.this.startActivity(myIntent);
                     finish();
+
                 } else {
                     Log.e(TAG, "Error: " + response.code());
-                    //TODO: User APIError
+                    //TODO: Use APIError
                     //APIError error = ErrorUtils.parseError(response);
                     //Log.e(TAG, error.message());
                     showProgress(false);
@@ -177,8 +171,7 @@ public class LoginActivity extends AppCompatActivity {
             // perform the user login attempt.
             showProgress(true);
             Log.i(TAG, "Logging in...");
-            saveData(server, user, password);
-            getUser(user, password,server);
+            getUser(user, password, server);
         }
     }
 
@@ -219,55 +212,16 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    //TODO: Add error messages
-    public void saveAdmin(boolean admin) {
+    public void saveData(String server, String user, String pass, Boolean admin) {
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean("isLoggedIn", true);
+        editor.putString("server", server);
+        editor.putString("user", user);
+        editor.putString("pass", pass);
         editor.putBoolean("admin", admin);
-        editor.apply();
-    }
-
-    public void saveData(String server, String user, String pass) {
-        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        JSONObject jobj = new JSONObject();
-        try {
-            jobj.put("server", server);
-            jobj.put("user", user);
-            jobj.put("pass", pass);
-        } catch (JSONException e) {
-            Log.e(TAG, "Error writing JSON object");
-        }
-        editor.putString(jsonData, jobj.toString());
+        editor.putBoolean("isLoggedIn", true);
         editor.apply();
         Log.i(TAG, "Saved credentials.");
-    }
-
-    public JSONObject loadJSONData() {
-        Log.i(TAG, "Loading JSON data");
-        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        String strJson = sharedPref.getString(jsonData, "0");//second parameter is necessary ie.,Value to return if this preference does not exist.
-        JSONObject jobj = null;
-        try {
-            jobj = new JSONObject(strJson);
-        } catch (JSONException e) {
-            Log.e(TAG, "Error reading JSON Object");
-        }
-        return jobj;
-    }
-
-    public String[] loadStringData() {
-        JSONObject jObject = loadJSONData();
-        String[] returnString = {"example.com", "exampleUser", "examplePass"};
-        try {
-            returnString[0] = jObject.get("server").toString();
-            returnString[1] = jObject.get("user").toString();
-            returnString[2] = jObject.get("pass").toString();
-        } catch (JSONException e) {
-            Log.e(TAG, "Error reading JSON Object");
-        }
-        return returnString;
     }
 }
 

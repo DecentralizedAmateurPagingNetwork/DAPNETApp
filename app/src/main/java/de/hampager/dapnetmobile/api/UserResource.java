@@ -7,8 +7,8 @@ public class UserResource {
     private String hash;
 
     public UserResource(String name, String mail, boolean admin) {
-        this.name=name;
-        this.mail=mail;
+        this.name = name;
+        this.mail = mail;
         this.admin = admin;
     }
 

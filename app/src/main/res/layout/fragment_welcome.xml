@@ -44,29 +44,29 @@
             android:id="@+id/linkView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/github_dh3wr"
             android:layout_alignBaseline="@+id/textViewAnd"
             android:layout_alignBottom="@+id/textViewAnd"
             android:layout_toLeftOf="@+id/textViewAnd"
-            android:layout_toStartOf="@+id/textViewAnd" />
+            android:layout_toStartOf="@+id/textViewAnd"
+            android:text="@string/github_dh3wr" />
 
         <TextView
             android:id="@+id/textViewAnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/and"
             android:layout_below="@+id/infoTextView"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:text="@string/and" />
 
         <TextView
             android:id="@+id/linkView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/github_ihfschwarz"
             android:layout_alignBaseline="@+id/textViewAnd"
             android:layout_alignBottom="@+id/textViewAnd"
+            android:layout_toEndOf="@+id/textViewAnd"
             android:layout_toRightOf="@+id/textViewAnd"
-            android:layout_toEndOf="@+id/textViewAnd" />
+            android:text="@string/github_ihfschwarz" />
 
     </RelativeLayout>
 
