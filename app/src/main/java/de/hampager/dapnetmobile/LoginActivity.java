@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import de.hampager.dapnetmobile.api.HamPagerService;
 import de.hampager.dapnetmobile.api.ServiceGenerator;
@@ -100,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.i(TAG, "getUser, admin: " + returnValue.admin());
                     showProgress(false);
                     Log.i(TAG, "Login was successful!");
-                    Snackbar.make(findViewById(R.id.loginactivityid), "Success! Welcome " + user, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Toast.makeText(LoginActivity.this, getString(R.string.success_welcome) + user, Toast.LENGTH_SHORT).show();
                     Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
                     LoginActivity.this.startActivity(myIntent);
                     finish();
@@ -113,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                     showProgress(false);
                     View focusView = mUsernameView;
                     focusView.requestFocus();
-                    Snackbar.make(findViewById(R.id.loginactivityid), "Error. Are your credentials correct?", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(findViewById(R.id.loginactivityid), getString(R.string.error_credentials), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             }
 
@@ -123,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
                 showProgress(false);
                 View focusView = mUsernameView;
                 focusView.requestFocus();
-                Snackbar.make(findViewById(R.id.loginactivityid), "Error. Do you have Internet access?", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(findViewById(R.id.loginactivityid), getString(R.string.error_no_internet), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
 

@@ -27,15 +27,21 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
     <string name="server">Server</string>
     <string name="message">Message</string>
     <string name="callsignnames">CallSignNames</string>
     <string name="transmittergroupnames">TransmitterGroupNames</string>
     <string name="emergency">Emergency?</string>
+    <string name="successfully_sent_message">Successfully sent message</string>
+    <string name="error_no_internet">Error. Do you have Internet Access?</string>
+    <string name="error_empty_msg">Error. Message empty!</string>
+    <string name="error_msg_too_long">Error: Message above 80 Characters</string>
+    <string name="error_empty_callsignlist">Error. Callsigns empty"</string>
 
+    <string name="success_welcome">"Success! Welcome "</string>
+    <string name="error_credentials">Error. Are your credentials correct?</string>
+    <string name="error_logged_in">Error. Are you logged in?</string>
+    <string name="error_get_versions">"Error getting versions! "</string>
     <string name="github_dh3wr"><a href="https://github.com/dh3wr">DH3WR</a></string>
     <string name="github_ihfschwarz"><a href="https://github.com/IHFSchwarz">IHFSchwarz</a></string>
     <string name="hello_welcome_fragment">Welcome!</string>

@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Intent myIntent = new Intent(MainActivity.this, PostCallActivity.class);
                     MainActivity.this.startActivity(myIntent);
                 } else {
-                    Snackbar.make(findViewById(R.id.container), "Error. Are you logged in?", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
 
             }
@@ -96,8 +96,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
         String server = sharedPref.getString("server", null);
 
-        //Implement core and api version as soon as https://github.com/DecentralizedAmateurPagingNetwork/Core/issues/93 is fixed
-        //mNavHeadVersions.setText("App v" +BuildConfig.VERSION_NAME+", Core v"+"1.1.3.3, "+"API v"+"1.1.3");
         if (loggedIn) {
             mloginstatus.setTitle(R.string.nav_logout);
             Log.i(TAG, "User is logged in!");
@@ -149,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (loggedIn) {
                 ft.replace(R.id.container, CallFragment.newInstance());
             } else {
-                Snackbar.make(findViewById(R.id.container), "Error. Are you logged in?", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         } else if (id == R.id.nav_githublink) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork"));
@@ -192,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         //APIError error = ErrorUtils.parseError(response);
                         Log.e(TAG, "Error getting versions" + response.code());
                         Log.e(TAG, response.message());
-                        Snackbar.make(findViewById(R.id.container), "Error getting versions! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(findViewById(R.id.container), getString(R.string.error_get_versions) + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     }
                 }
 

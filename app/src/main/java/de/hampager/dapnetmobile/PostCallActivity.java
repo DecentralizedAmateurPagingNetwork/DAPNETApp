@@ -78,11 +78,11 @@ public class PostCallActivity extends AppCompatActivity {
         if (msg.length() != 0 && msg.length() <= 80 && callSignNames.getText().toString().length() != 0)
             sendCallMethod(msg, csnl, tgnl, emergencyBool, server, user, password);
         else if (msg.length() == 0)
-            genericSnackbar("Error: Message empty!");
+            genericSnackbar(getString(R.string.error_empty_msg));
         else if (msg.length() > 79)
-            genericSnackbar("Error: Message above 80 Characters");
+            genericSnackbar(getString(R.string.error_msg_too_long));
         else if (callSignNames.getText().toString().length() == 0)
-            genericSnackbar("Error: Callsignlist is empty");
+            genericSnackbar(getString(R.string.error_empty_callsignlist));
     }
 
     private void genericSnackbar(String s) {
@@ -100,12 +100,12 @@ public class PostCallActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     // tasks available
                     //HamnetCall returnValue = response.body();
-                    Toast.makeText(PostCallActivity.this, "Successfully sent message", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PostCallActivity.this, getString(R.string.successfully_sent_message), Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
                     //APIError error = ErrorUtils.parseError(response);
                     Log.e(TAG, "Post Call Error: " + response.code());
-                    genericSnackbar("Error:" + response.code() + "MSG: " + response.message());
+                    genericSnackbar("Error:" + response.code() + "Msg: " + response.message());
                     if (response.code() == 401) {
                         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
@@ -119,7 +119,7 @@ public class PostCallActivity extends AppCompatActivity {
             public void onFailure(Call<HamnetCall> call, Throwable t) {
                 // something went completely south (like no internet connection)
                 Log.e(TAG, t.toString());
-                Snackbar.make(getWindow().getDecorView().getRootView(), "Error. Do you have Internet Access?", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(getWindow().getDecorView().getRootView(), getString(R.string.error_no_internet), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
     }
