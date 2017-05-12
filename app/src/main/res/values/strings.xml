@@ -57,4 +57,13 @@
     <string name="http_hampager_de_8080">http://www.hampager.de:8080</string>
     <string name="in_order_to_use_this_service_please_login">In order to use this service, please login.</string>
     <string name="and">" and "</string>
+
+
+    <string name="server_prompt">Choose a server</string>
+
+    <string-array name="server_array">
+        <item>http://www.hampager.de:8080</item>
+        <item>http://dapnet.db0sda.ampr.org:8080</item>
+        <item>Custom</item>
+    </string-array>
 </resources>

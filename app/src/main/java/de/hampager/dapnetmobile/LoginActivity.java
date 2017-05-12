@@ -16,7 +16,7 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +40,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-
+    private Spinner spinner;
+    private Button mSignInButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +50,20 @@ public class LoginActivity extends AppCompatActivity {
         // Set up the login form.
         mServerView = (EditText) findViewById(R.id.server);
         mUsernameView = (EditText) findViewById(R.id.user);
-
         mPasswordView = (EditText) findViewById(R.id.password);
+        mSignInButton = (Button) findViewById(R.id.user_sign_in_button);
+        mLoginFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.login_progress);
+
+        spinner = (Spinner) findViewById(R.id.spinner);
+        addListenerOnButton();
+        spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener(findViewById(R.id.loginactivityid)));
+
+    }
+
+    public void addListenerOnButton() {
+        spinner = (Spinner) findViewById(R.id.spinner);
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -62,32 +75,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.user_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
         });
-        ImageButton mSettingsButton = (ImageButton) findViewById(R.id.settingsImageButton);
-        mSettingsButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TextInputLayout til =(TextInputLayout)findViewById(R.id.servertextinput);
-                if (mServerView.getVisibility() == View.VISIBLE) {
-                    mServerView.setVisibility(View.GONE);
-                } else {
-                    mServerView.setVisibility(View.VISIBLE);
-                }
-            }
-        });
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-
     }
-
     public UserResource getUser(final String user, final String password, final String server) {
         UserResource returnValue = null;
+        Log.i(TAG, "Server to be used: " + server);
         ServiceGenerator.changeApiBaseUrl(server);
         HamPagerService service = ServiceGenerator.createService(HamPagerService.class, user, password);
 
@@ -137,9 +134,11 @@ public class LoginActivity extends AppCompatActivity {
         // Reset errors.
         mUsernameView.setError(null);
         mPasswordView.setError(null);
-
-        // Store values at the time of the login attempt.
         String server = mServerView.getText().toString();
+        // Store values at the time of the login attempt
+        if (mServerView.getVisibility() == View.GONE) {
+            server = String.valueOf(spinner.getSelectedItem());
+        }
         String user = mUsernameView.getText().toString();
         String password = mPasswordView.getText().toString();
 

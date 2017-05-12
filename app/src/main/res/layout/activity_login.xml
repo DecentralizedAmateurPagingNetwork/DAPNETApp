@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/loginactivityid"
     android:layout_width="match_parent"
@@ -71,36 +70,35 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/user_sign_in_button"
-                style="?android:textAppearanceSmall"
+            <Spinner
+                android:id="@+id/spinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/passwordtextinput"
-                android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in"
-                android:textStyle="bold" />
-
-            <ImageButton
-                android:id="@+id/settingsImageButton"
-                style="@android:style/Widget.DeviceDefault.ImageButton"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/user_sign_in_button"
-                app:srcCompat="@mipmap/ic_settings_black" />
+                android:layout_below="@+id/passwordtextinput"
+                android:entries="@array/server_array"
+                android:prompt="@string/server_prompt" />
+
 
             <EditText
                 android:id="@+id/server"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/user_sign_in_button"
-                android:layout_toEndOf="@+id/settingsImageButton"
-                android:layout_toRightOf="@+id/settingsImageButton"
+                android:layout_below="@+id/spinner"
                 android:hint="Server"
-                android:text="@string/http_hampager_de_8080"
                 android:visibility="gone" />
+
+            <Button
+                android:id="@+id/user_sign_in_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/server"
+                android:text="@string/action_sign_in"
+                android:textStyle="bold" />
+
         </RelativeLayout>
     </ScrollView>
+
 </LinearLayout>
