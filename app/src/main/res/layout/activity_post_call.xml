@@ -24,8 +24,7 @@
             android:inputType="textMultiLine"
             android:maxLines="3"
             android:minLines="2"
-            android:scrollbars="vertical"
-            android:selectAllOnFocus="false" />
+            android:scrollbars="vertical" />
     </android.support.design.widget.TextInputLayout>
 
 

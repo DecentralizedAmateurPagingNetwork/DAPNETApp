@@ -54,9 +54,9 @@ public class CallFragment extends Fragment {
         mLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(mLayoutManager);
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        server = sharedPref.getString("server", null);
-        user = sharedPref.getString("user", null);
-        password = sharedPref.getString("pass", null);
+        server = sharedPref.getString("server", "http://hampager.de:8080");
+        user = sharedPref.getString("user", "invalid");
+        password = sharedPref.getString("pass", "invalid");
         admin = sharedPref.getBoolean("admin", true);
         fetchJSON(server, user, password, admin);
     }
@@ -127,6 +127,7 @@ public class CallFragment extends Fragment {
                 // Make sure you call swipeContainer.setRefreshing(false)
 
                 // once the network request has completed successfully.
+
                 fetchJSON(server, user, password, admin);
 
             }

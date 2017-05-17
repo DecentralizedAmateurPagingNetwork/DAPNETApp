@@ -7,15 +7,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,22 +36,23 @@ public class LoginActivity extends AppCompatActivity {
     private final String TAG = "LoginActivity";
 
     // UI references.
-    private EditText mServerView;
-    private EditText mUsernameView;
-    private EditText mPasswordView;
+    private TextInputEditText mServerView;
+    private TextInputEditText mUsernameView;
+    private TextInputEditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
     private Spinner spinner;
     private Button mSignInButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         //setupActionBar();
         // Set up the login form.
-        mServerView = (EditText) findViewById(R.id.server);
-        mUsernameView = (EditText) findViewById(R.id.user);
-        mPasswordView = (EditText) findViewById(R.id.password);
+        mServerView = (TextInputEditText) findViewById(R.id.server);
+        mUsernameView = (TextInputEditText) findViewById(R.id.user);
+        mPasswordView = (TextInputEditText) findViewById(R.id.password);
         mSignInButton = (Button) findViewById(R.id.user_sign_in_button);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
@@ -58,7 +60,9 @@ public class LoginActivity extends AppCompatActivity {
         spinner = (Spinner) findViewById(R.id.spinner);
         addListenerOnButton();
         spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener(findViewById(R.id.loginactivityid)));
-
+        mUsernameView.requestFocus();
+        //TextInputLayout mUserMeta =(TextInputLayout) findViewById(R.id.usertextinput);
+        //mUserMeta.requestFocus();
     }
 
     public void addListenerOnButton() {
@@ -82,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
     public UserResource getUser(final String user, final String password, final String server) {
         UserResource returnValue = null;
         Log.i(TAG, "Server to be used: " + server);
@@ -130,20 +135,32 @@ public class LoginActivity extends AppCompatActivity {
 
     private void attemptLogin() {
 
-
         // Reset errors.
         mUsernameView.setError(null);
         mPasswordView.setError(null);
         String server = mServerView.getText().toString();
+        boolean cancel = false;
+        View focusView = null;
         // Store values at the time of the login attempt
-        if (mServerView.getVisibility() == View.GONE) {
-            server = String.valueOf(spinner.getSelectedItem());
+        if (spinner.getSelectedItemPosition() == 2) {
+            // Check for a valid server address.
+            if (TextUtils.isEmpty(server)) {
+                mServerView.setError(getString(R.string.error_field_required));
+                focusView = mServerView;
+                cancel = true;
+            } else if (!isServerValid(server)) {
+                mServerView.setError(getString(R.string.error_invalid_server));
+                focusView = mServerView;
+                cancel = true;
+            }
+        } else if (spinner.getSelectedItemPosition() == 1) {
+            server = "http://dapnet.db0sda.ampr.org:8080";
+        } else {
+            server = "http://www.hampager.de:8080";
         }
         String user = mUsernameView.getText().toString();
         String password = mPasswordView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
@@ -158,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
             focusView = mUsernameView;
             cancel = true;
         } else if (!isEmailValid(user)) {
-            mUsernameView.setError(getString(R.string.error_invalid_email));
+            mUsernameView.setError(getString(R.string.error_invalid_user));
             focusView = mUsernameView;
             cancel = true;
         }
@@ -182,6 +199,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private boolean isPasswordValid(String password) {
         return true;
+    }
+
+    private boolean isServerValid(String server) {
+        return Patterns.WEB_URL.matcher(server).matches();
     }
 
 

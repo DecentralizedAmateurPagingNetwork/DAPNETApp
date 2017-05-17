@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/loginactivityid"
     android:layout_width="match_parent"
@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/login_form2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,9 +36,6 @@
                 android:id="@+id/usertextinput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
                 android:hint="@string/prompt_user">
 
                 <android.support.design.widget.TextInputEditText
@@ -52,10 +49,7 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/passwordtextinput"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/usertextinput">
+                android:layout_height="wrap_content">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/password"
@@ -74,31 +68,45 @@
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/passwordtextinput"
                 android:entries="@array/server_array"
                 android:prompt="@string/server_prompt" />
 
 
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/servertextinput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Server"
+                android:inputType="textUri"
+                android:visibility="gone">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/server"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="http://" />
+            </android.support.design.widget.TextInputLayout>
+            <!--
             <EditText
                 android:id="@+id/server"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/spinner"
                 android:hint="Server"
+                android:inputType="textUri"
+                android:text="http://"
                 android:visibility="gone" />
-
+-->
             <Button
                 android:id="@+id/user_sign_in_button"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/server"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
 
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 
-</LinearLayout>
+</RelativeLayout>

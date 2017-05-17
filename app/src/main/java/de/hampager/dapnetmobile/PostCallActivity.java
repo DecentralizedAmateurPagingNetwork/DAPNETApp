@@ -45,6 +45,7 @@ public class PostCallActivity extends AppCompatActivity {
         callSignNames = (EditText) findViewById(R.id.post_call_callSignNames);
         transmitterGroupNames = (EditText) findViewById(R.id.post_call_transmitterGroupNames);
         Switch emergency = (Switch) findViewById(R.id.post_call_emergencyswitch);
+
         message.requestFocus();
         emergency.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

@@ -62,8 +62,8 @@
     <string name="server_prompt">Choose a server</string>
 
     <string-array name="server_array">
-        <item>http://www.hampager.de:8080</item>
-        <item>http://dapnet.db0sda.ampr.org:8080</item>
+        <item>hampager.de (Internet, default)</item>
+        <item>dapnet.db0sda.ampr.org (Hamnet)</item>
         <item>Custom</item>
     </string-array>
 </resources>

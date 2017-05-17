@@ -1,8 +1,8 @@
 package de.hampager.dapnetmobile;
 
+import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 
 public class CustomOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
     private final View rootView;
@@ -12,7 +12,7 @@ public class CustomOnItemSelectedListener implements AdapterView.OnItemSelectedL
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        EditText server = (EditText) rootView.findViewById(R.id.server);
+        TextInputLayout server = (TextInputLayout) rootView.findViewById(R.id.servertextinput);
         if (pos == 2) {
             server.setVisibility(View.VISIBLE);
         } else {
