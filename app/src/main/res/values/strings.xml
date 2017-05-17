@@ -38,6 +38,7 @@
     <string name="error_msg_too_long">Error: Message above 80 Characters</string>
     <string name="error_empty_callsignlist">Error. Callsigns empty"</string>
 
+    <string name="help">Help</string>
     <string name="success_welcome">"Success! Welcome "</string>
     <string name="error_credentials">Error. Are your credentials correct?</string>
     <string name="error_logged_in">Error. Are you logged in?</string>

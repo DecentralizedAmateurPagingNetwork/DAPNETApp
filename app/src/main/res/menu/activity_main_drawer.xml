@@ -8,7 +8,7 @@
             android:icon="@drawable/ic_textsms"
             android:title="@string/calls" />
     </group>
-    <item android:title="User">
+    <item android:title="@string/prompt_user">
         <menu android:id="@+id/nav_user_menu">
             <item
                 android:id="@+id/nav_loginstatus"
@@ -19,17 +19,23 @@
     <item android:title="@string/miscellaneous">
         <menu android:id="@+id/nav_misc_menu">
             <item
-                android:id="@+id/nav_githublink"
-                android:autoLink="web"
-                android:icon="@mipmap/ic_githubmark"
+                android:id="@+id/nav_help"
+                android:icon="@mipmap/ic_help_black"
                 android:linksClickable="true"
-                android:title="@string/github" />
+                android:title="@string/help" />
             <item
                 android:id="@+id/nav_feedbacklink"
                 android:autoLink="web"
                 android:icon="@mipmap/ic_feedback_black"
                 android:linksClickable="true"
                 android:title="@string/feedback_and_more" />
+            <item
+                android:id="@+id/nav_githublink"
+                android:autoLink="web"
+                android:icon="@mipmap/ic_githubmark"
+                android:linksClickable="true"
+                android:title="@string/github" />
+
         </menu>
     </item>
 
