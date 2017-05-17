@@ -56,8 +56,8 @@ public class WelcomeFragment extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             if (bundle.getBoolean(ARG_PARAM1, false)) {
-                TextView mLogInText = (TextView) v.findViewById(R.id.call_call_sign);
-                mLogInText.setText(R.string.welcome_loggedInText);
+                //TextView mLogInText = (TextView) v.findViewById(R.id.call_call_sign);
+                //mLogInText.setText(R.string.welcome_loggedInText);
             }
         }
         TextView mLinkView1 = (TextView) v.findViewById(R.id.linkView1);
