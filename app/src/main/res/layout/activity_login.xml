@@ -38,13 +38,13 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true">
+                android:layout_alignParentTop="true"
+                android:hint="@string/prompt_user">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/user"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/prompt_user"
                     android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
