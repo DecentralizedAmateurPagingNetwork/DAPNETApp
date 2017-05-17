@@ -158,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             server = "http://www.hampager.de:8080";
         }
-        String user = mUsernameView.getText().toString();
+        String user = mUsernameView.getText().toString().trim();
         String password = mPasswordView.getText().toString();
 
 
