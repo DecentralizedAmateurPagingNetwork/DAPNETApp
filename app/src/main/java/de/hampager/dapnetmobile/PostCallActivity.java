@@ -34,7 +34,9 @@ import de.hampager.dapnetmobile.api.CallSignResource;
 import de.hampager.dapnetmobile.api.HamPagerService;
 import de.hampager.dapnetmobile.api.HamnetCall;
 import de.hampager.dapnetmobile.api.ServiceGenerator;
+import de.hampager.dapnetmobile.api.TransmitterGroupResource;
 import de.hampager.dapnetmobile.tokenautocomplete.CallsignsCompletionView;
+import de.hampager.dapnetmobile.tokenautocomplete.TransmitterGroupCompletionView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,6 +44,7 @@ import retrofit2.Response;
 public class PostCallActivity extends AppCompatActivity implements TokenCompleteTextView.TokenListener<CallSignResource> {
     private static final String TAG = "PostCallActivity";
     CallsignsCompletionView callSignsCompletion;
+    TransmitterGroupCompletionView transmitterGroupCompletion;
     String server;
     String user;
     String password;
@@ -161,6 +164,83 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
             }
         };
     }
+
+
+    private void getTransmitterGroups() {
+        try {
+            ServiceGenerator.changeApiBaseUrl(server);
+        } catch (java.lang.NullPointerException e) {
+            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
+        }
+        HamPagerService service = ServiceGenerator.createService(HamPagerService.class, user, password);
+        Call<ArrayList<TransmitterGroupResource>> call;
+        call = service.getAllTransmitterGroups();
+        call.enqueue(new Callback<ArrayList<TransmitterGroupResource>>() {
+            @Override
+            public void onResponse(Call<ArrayList<TransmitterGroupResource>> call, Response<ArrayList<TransmitterGroupResource>> response) {
+                if (response.isSuccessful()) {
+                    Log.i(TAG, "Connection was successful");
+                    // tasks available
+                    ArrayList<TransmitterGroupResource> data = response.body();
+                    setTransmittergroups(data);
+                    //adapter = new DataAdapter(data);
+                } else {
+                    //APIError error = ErrorUtils.parseError(response);
+                    Log.e(TAG, "Error " + response.code());
+                    Log.e(TAG, response.message());
+                    if (response.code() == 401) {
+                        SharedPreferences sharedPref = PostCallActivity.this.getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.clear();
+                        editor.apply();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<TransmitterGroupResource>> call, Throwable t) {
+                // something went completely wrong (e.g. no internet connection)
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    private void setTransmittergroups(ArrayList<TransmitterGroupResource> data) {
+        TransmitterGroupResource[] tgrs = data.toArray(new TransmitterGroupResource[data.size()]);
+        transmitterGroupCompletion = (TransmitterGroupCompletionView) findViewById(R.id.transmittergroupSearchView);
+        transmitterGroupCompletion.setAdapter(generateAdapter(tgrs));
+        //transmitterGroupCompletion.setTokenListener(this);
+        transmitterGroupCompletion.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
+        transmitterGroupCompletion.allowDuplicates(false);
+    }
+
+    private FilteredArrayAdapter<TransmitterGroupResource> generateAdapter(TransmitterGroupResource[] transmittergroups) {
+        return new FilteredArrayAdapter<TransmitterGroupResource>(this, R.layout.callsign_layout, transmittergroups) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+
+                    LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+                    convertView = l.inflate(R.layout.callsign_layout, parent, false);
+                }
+
+                TransmitterGroupResource p = getItem(position);
+                ((TextView) convertView.findViewById(R.id.name)).setText(p.getName());
+                //((TextView)convertView.findViewById(R.id.email)).setText(p.getEmail());
+
+                return convertView;
+            }
+
+            @Override
+            protected boolean keepObject(TransmitterGroupResource transmittergroup, String mask) {
+                mask = mask.toLowerCase();
+                //return callsign.getName().toLowerCase().startsWith(mask) || callsign.getEmail().toLowerCase().startsWith(mask);
+                return transmittergroup.getName().toLowerCase().startsWith(mask);
+            }
+        };
+    }
+
     private void sendCall() {
         String msg = message.getText().toString();
         List<String> tgnl = Arrays.asList(transmitterGroupNames.getText().toString().split(" "));
@@ -252,5 +332,12 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     public void onTokenRemoved(CallSignResource token) {
         csnl.remove(token.getName());
     }
+    /**@Override public void onTokenAdded(TransmitterGroupResource token) {
+    csnl.add(token.getName());
+    }
 
+     @Override public void onTokenRemoved(TransmitterGroupResource token) {
+        csnl.remove(token.getName());
+    }
+     */
 }

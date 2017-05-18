@@ -63,7 +63,7 @@
     <string name="default_url_prefix">http://"</string>
     <string name="server_prompt">Choose a server</string>
     <string name="callsign_prompt">Enter your desired callsigns</string>
-
+    <string name="transmittergroup_prompt">Enter your desired transmitter groups</string>
     <string-array name="server_array">
         <item>hampager.de (Internet, default)</item>
         <item>dapnet.db0sda.ampr.org (Hamnet)</item>

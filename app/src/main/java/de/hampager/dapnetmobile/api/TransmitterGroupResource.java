@@ -13,6 +13,10 @@ public class TransmitterGroupResource {
     private List<String> ownerNames = null;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
+    public TransmitterGroupResource(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
