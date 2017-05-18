@@ -72,4 +72,6 @@
 
     <string name="email_prompt">enter a name or email address</string>
 
+    <string name="hello_blank_fragment">Help is on the way!\n This page will shortly be filled.</string>
+
 </resources>

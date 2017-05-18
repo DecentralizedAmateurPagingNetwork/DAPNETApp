@@ -163,6 +163,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
             MainActivity.this.startActivity(myIntent);
+        } else if (id == R.id.nav_help) {
+            ft.replace(R.id.container, HelpFragment.newInstance());
         }
         ft.commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
