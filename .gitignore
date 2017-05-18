@@ -1,8 +1,6 @@
 *.iml
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
 .DS_Store
 /captures
 .externalNativeBuild
@@ -32,8 +30,7 @@ proguard/
 captures/
 
 # Intellij
-.idea/tasks.xml
-.idea/gradle.xml
+.idea/
 .idea/dictionaries
 # Keystore files
 *.jks
@@ -88,19 +85,6 @@ gen-external-apklibs
 /out/
 
 # User-specific configurations
-.idea/.name
-.idea/compiler.xml
-.idea/copyright/profiles_settings.xml
-.idea/encodings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/scopes/scope_settings.xml
-.idea/jsLibraryMappings.xml
-.idea/datasources.xml
-.idea/dataSources.ids
-.idea/dynamic.xml
-.idea/uiDesigner.xml
-
 # Keystore files
 
 # OS-specific files
@@ -182,4 +166,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/linux,android,windows,androidstudio
-.idea/markdown-navigator/
+app/app-release.apk
+app/libs/
