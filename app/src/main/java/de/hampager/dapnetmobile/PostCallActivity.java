@@ -207,7 +207,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
     private void setTransmittergroups(ArrayList<TransmitterGroupResource> data) {
         TransmitterGroupResource[] tgrs = data.toArray(new TransmitterGroupResource[data.size()]);
-        transmitterGroupCompletion = (TransmitterGroupCompletionView) findViewById(R.id.transmittergroupSearchView);
+        //transmitterGroupCompletion = (TransmitterGroupCompletionView) findViewById(R.id.transmittergroupSearchView);
         transmitterGroupCompletion.setAdapter(generateAdapter(tgrs));
         //transmitterGroupCompletion.setTokenListener(this);
         transmitterGroupCompletion.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
