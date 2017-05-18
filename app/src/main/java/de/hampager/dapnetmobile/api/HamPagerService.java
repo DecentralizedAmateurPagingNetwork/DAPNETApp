@@ -27,4 +27,6 @@ public interface HamPagerService {
     @GET("core/version")
     Call<Versions> getVersions();
 
+    @GET("callsigns/{name}")
+    Call<ArrayList<CallSignResource>> getAllCallSigns(@Path("name") String username);
 }

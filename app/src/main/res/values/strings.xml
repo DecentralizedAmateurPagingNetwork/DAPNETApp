@@ -62,10 +62,14 @@
     <string name="rwth_afu_dapnet_logo_desc">RWTH AFU DAPNET logo</string>
     <string name="default_url_prefix">http://"</string>
     <string name="server_prompt">Choose a server</string>
+    <string name="callsign_prompt">Enter your desired callsigns</string>
 
     <string-array name="server_array">
         <item>hampager.de (Internet, default)</item>
         <item>dapnet.db0sda.ampr.org (Hamnet)</item>
         <item>Custom</item>
     </string-array>
+
+    <string name="email_prompt">enter a name or email address</string>
+
 </resources>

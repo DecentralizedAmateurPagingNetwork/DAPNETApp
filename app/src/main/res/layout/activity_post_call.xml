@@ -27,24 +27,33 @@
             android:scrollbars="vertical" />
     </android.support.design.widget.TextInputLayout>
 
-
-    <EditText
-        android:id="@+id/post_call_callSignNames"
+    <!--
+        <EditText
+            android:id="@+id/post_call_callSignNames"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/til_postcalltext"
+            android:ems="10"
+            android:hint="@string/callsignnames"
+            android:inputType="textPersonName"
+            android:maxLines="1" />-->
+    <de.hampager.dapnetmobile.tokenautocomplete.CallsignsCompletionView
+        android:id="@+id/callSignSearchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/til_postcalltext"
-        android:ems="10"
-        android:hint="@string/callsignnames"
-        android:inputType="textPersonName"
-        android:maxLines="1" />
+        android:focusableInTouchMode="true"
+        android:hint="@string/callsign_prompt"
+        android:inputType="text|textNoSuggestions|textMultiLine" />
+
 
     <EditText
         android:id="@+id/post_call_transmitterGroupNames"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/post_call_callSignNames"
+        android:layout_below="@+id/callSignSearchView"
         android:hint="@string/transmittergroupnames"
         android:maxLines="1" />
 

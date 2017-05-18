@@ -35,7 +35,9 @@
                 android:icon="@mipmap/ic_githubmark"
                 android:linksClickable="true"
                 android:title="@string/github" />
-
+            <item
+                android:id="@+id/nav_tokenview"
+                android:title="Token test" />
         </menu>
     </item>
 
