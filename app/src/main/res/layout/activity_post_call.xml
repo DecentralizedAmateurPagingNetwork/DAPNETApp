@@ -48,31 +48,31 @@
         android:hint="@string/callsign_prompt"
         android:inputType="text|textNoSuggestions|textMultiLine" />
 
-
-    <EditText
-        android:id="@+id/post_call_transmitterGroupNames"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/callSignSearchView"
-        android:hint="@string/transmittergroupnames"
-        android:maxLines="1" />
     <!--
-        <de.hampager.dapnetmobile.tokenautocomplete.TransmitterGroupCompletionView
+        <EditText
+            android:id="@+id/post_call_transmitterGroupNames"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/callSignSearchView"
+            android:hint="@string/transmittergroupnames"
+            android:maxLines="1" />-->
+
+    <de.hampager.dapnetmobile.tokenautocomplete.TransmitterGroupCompletionView
             android:id="@+id/transmittergroupSearchView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/post_call_transmitterGroupNames"
+        android:layout_below="@+id/callSignSearchView"
             android:focusableInTouchMode="true"
             android:hint="@string/transmittergroup_prompt"
             android:inputType="text|textNoSuggestions|textMultiLine" />
-        -->
+
     <Switch
         android:id="@+id/post_call_emergencyswitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/post_call_transmitterGroupNames"
+        android:layout_below="@+id/transmittergroupSearchView"
         android:text="@string/emergency" />
 
 

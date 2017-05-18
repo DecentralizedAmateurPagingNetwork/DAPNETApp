@@ -8,14 +8,12 @@ import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -27,7 +25,6 @@ import com.tokenautocomplete.FilteredArrayAdapter;
 import com.tokenautocomplete.TokenCompleteTextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import de.hampager.dapnetmobile.api.CallSignResource;
@@ -52,6 +49,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     private EditText transmitterGroupNames;
     private Boolean emergencyBool = false;
     private List<String> csnl = new ArrayList<>();
+    private List<String> tgnl = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +61,11 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         user = sharedPref.getString("user", "invalid");
         password = sharedPref.getString("pass", "invalid");
         getCallsigns();
+        getTransmitterGroups();
     }
 
     private void defineObjects() {
         message = (TextInputEditText) findViewById(R.id.post_call_text);
-        transmitterGroupNames = (EditText) findViewById(R.id.post_call_transmitterGroupNames);
         Switch emergency = (Switch) findViewById(R.id.post_call_emergencyswitch);
         message.requestFocus();
 
@@ -77,17 +75,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                 emergencyBool = isChecked;
             }
         });
-        //TODO: On return pressed on keyboard->Send
-        transmitterGroupNames.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    sendCall();
-                    return true;
-                }
-                return false;
-            }
-        });
+
     }
 
     private void getCallsigns() {
@@ -207,9 +195,9 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
     private void setTransmittergroups(ArrayList<TransmitterGroupResource> data) {
         TransmitterGroupResource[] tgrs = data.toArray(new TransmitterGroupResource[data.size()]);
-        //transmitterGroupCompletion = (TransmitterGroupCompletionView) findViewById(R.id.transmittergroupSearchView);
+        transmitterGroupCompletion = (TransmitterGroupCompletionView) findViewById(R.id.transmittergroupSearchView);
         transmitterGroupCompletion.setAdapter(generateAdapter(tgrs));
-        //transmitterGroupCompletion.setTokenListener(this);
+        transmitterGroupCompletion.setTokenListener(new tokenTransmitter());
         transmitterGroupCompletion.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
         transmitterGroupCompletion.allowDuplicates(false);
     }
@@ -243,7 +231,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
     private void sendCall() {
         String msg = message.getText().toString();
-        List<String> tgnl = Arrays.asList(transmitterGroupNames.getText().toString().split(" "));
+        //List<String> tgnl = Arrays.asList(transmitterGroupNames.getText().toString().split(" "));
 
         if (msg.length() != 0 && msg.length() <= 80 && callSignsCompletion.getText().toString().length() != 0) {
             Log.i(TAG, "CSNL,sendcall" + csnl.toString());
@@ -332,12 +320,16 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     public void onTokenRemoved(CallSignResource token) {
         csnl.remove(token.getName());
     }
-    /**@Override public void onTokenAdded(TransmitterGroupResource token) {
-    csnl.add(token.getName());
-    }
 
-     @Override public void onTokenRemoved(TransmitterGroupResource token) {
-        csnl.remove(token.getName());
+    public class tokenTransmitter implements TokenCompleteTextView.TokenListener<TransmitterGroupResource> {
+        @Override
+        public void onTokenAdded(TransmitterGroupResource token) {
+            tgnl.add(token.getName());
+        }
+
+        @Override
+        public void onTokenRemoved(TransmitterGroupResource token) {
+            tgnl.remove(token.getName());
+        }
     }
-     */
 }

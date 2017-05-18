@@ -30,6 +30,6 @@ public interface HamPagerService {
     @GET("callsigns/{name}")
     Call<ArrayList<CallSignResource>> getAllCallSigns(@Path("name") String username);
 
-    @GET("transmitterGroups)")
+    @GET("transmitterGroups")
     Call<ArrayList<TransmitterGroupResource>> getAllTransmitterGroups();
 }
