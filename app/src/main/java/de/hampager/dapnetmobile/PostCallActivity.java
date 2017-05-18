@@ -42,21 +42,28 @@ import retrofit2.Response;
 public class PostCallActivity extends AppCompatActivity implements TokenCompleteTextView.TokenListener<CallSignResource> {
     private static final String TAG = "PostCallActivity";
     CallsignsCompletionView callSignsCompletion;
+    String server;
+    String user;
+    String password;
     private TextInputEditText message;
     private EditText transmitterGroupNames;
     private Boolean emergencyBool = false;
     private List<String> csnl = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_call);
         defineObjects();
-        getCallsigns("http://www.hampager.de:8080", "dh3wr", "de1rcw");
+        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        server = sharedPref.getString("server", "http://www.hampager.de:8080");
+        user = sharedPref.getString("user", "invalid");
+        password = sharedPref.getString("pass", "invalid");
+        getCallsigns();
     }
 
     private void defineObjects() {
         message = (TextInputEditText) findViewById(R.id.post_call_text);
-        //callSignNames = (EditText) findViewById(R.id.post_call_callSignNames);
         transmitterGroupNames = (EditText) findViewById(R.id.post_call_transmitterGroupNames);
         Switch emergency = (Switch) findViewById(R.id.post_call_emergencyswitch);
         message.requestFocus();
@@ -80,7 +87,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         });
     }
 
-    private void getCallsigns(String server, String user, String password) {
+    private void getCallsigns() {
         try {
             ServiceGenerator.changeApiBaseUrl(server);
         } catch (java.lang.NullPointerException e) {
@@ -157,10 +164,6 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     private void sendCall() {
         String msg = message.getText().toString();
         List<String> tgnl = Arrays.asList(transmitterGroupNames.getText().toString().split(" "));
-        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        String server = sharedPref.getString("server", null);
-        String user = sharedPref.getString("user", null);
-        String password = sharedPref.getString("pass", null);
 
         if (msg.length() != 0 && msg.length() <= 80 && callSignsCompletion.getText().toString().length() != 0) {
             Log.i(TAG, "CSNL,sendcall" + csnl.toString());
@@ -180,7 +183,12 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     private void sendCallMethod(String msg, List<String> csnl, List<String> tgnl, boolean e, String server, String user, String password) {
         HamnetCall sendvalue = new HamnetCall(msg, csnl, tgnl, e);
         Log.i(TAG, csnl.toString());
-        ServiceGenerator.changeApiBaseUrl(server);
+
+        try {
+            ServiceGenerator.changeApiBaseUrl(server);
+        } catch (NullPointerException err) {
+            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
+        }
         HamPagerService service = ServiceGenerator.createService(HamPagerService.class, user, password);
         Call<HamnetCall> call = service.postHamnetCall(sendvalue);
         call.enqueue(new Callback<HamnetCall>() {
@@ -237,9 +245,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
     @Override
     public void onTokenAdded(CallSignResource token) {
-        Log.i(TAG, "TOKEN ADDED");
         csnl.add(token.getName());
-        //updateTokenConfirmation();
     }
 
     @Override
