@@ -54,7 +54,7 @@ public class CallFragment extends Fragment {
         mLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(mLayoutManager);
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        server = sharedPref.getString("server", "http://hampager.de:8080");
+        server = sharedPref.getString("server", "http://www.hampager.de:8080");
         user = sharedPref.getString("user", "invalid");
         password = sharedPref.getString("pass", "invalid");
         admin = sharedPref.getBoolean("admin", true);
@@ -62,7 +62,11 @@ public class CallFragment extends Fragment {
     }
 
     private void fetchJSON(String server, String user, String password, boolean admin) {
-        ServiceGenerator.changeApiBaseUrl(server);
+        try {
+            ServiceGenerator.changeApiBaseUrl(server);
+        } catch (java.lang.NullPointerException e) {
+            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
+        }
         HamPagerService service = ServiceGenerator.createService(HamPagerService.class, user, password);
         Call<ArrayList<HamnetCall>> call;
         Log.i(TAG, "fetchJSON, admin: " + admin);

@@ -38,6 +38,7 @@
     <string name="error_msg_too_long">Error: Message above 80 Characters</string>
     <string name="error_empty_callsignlist">Error. Callsigns empty"</string>
 
+
     <string name="help">Help</string>
     <string name="success_welcome">"Success! Welcome "</string>
     <string name="error_credentials">Error. Are your credentials correct?</string>
@@ -59,7 +60,7 @@
     <string name="in_order_to_use_this_service_please_login">In order to use this service, please login.</string>
     <string name="and">" and "</string>
     <string name="rwth_afu_dapnet_logo_desc">RWTH AFU DAPNET logo</string>
-
+    <string name="default_url_prefix">http://"</string>
     <string name="server_prompt">Choose a server</string>
 
     <string-array name="server_array">
