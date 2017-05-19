@@ -12,7 +12,7 @@
 
         <TextView
             android:id="@+id/welcome"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageView2"
             android:layout_centerHorizontal="true"
@@ -35,10 +35,8 @@
 
         <TextView
             android:id="@+id/infoTextView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_below="@+id/welcome"
             android:layout_centerHorizontal="true"
             android:text="This is the official DAPNET app created by"
