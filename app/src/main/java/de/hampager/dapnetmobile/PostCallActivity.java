@@ -20,6 +20,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.tokenautocomplete.FilteredArrayAdapter;
 import com.tokenautocomplete.TokenCompleteTextView;
 
@@ -59,12 +61,11 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         server = sharedPref.getString("server", "http://www.hampager.de:8080");
         user = sharedPref.getString("user", "invalid");
         password = sharedPref.getString("pass", "invalid");
-        setCallsigns(callsigncache);
-        setTransmittergroups(transmittergroupcache);
+        getCache();
+        if (callsigncache != null) setCallsigns(callsigncache);
+        if (transmittergroupcache != null) setTransmittergroups(transmittergroupcache);
         getCallsigns();
         getTransmitterGroups();
-
-
     }
 
     private void defineObjects() {
@@ -81,6 +82,41 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
     }
 
+    private void cacheCallsign(ArrayList<CallSignResource> data) {
+        Gson gson = new Gson();
+        String json = gson.toJson(data);
+        cache(json, true);
+    }
+
+    private void cacheTransmittergroups(ArrayList<TransmitterGroupResource> data) {
+        Gson gson = new Gson();
+        String json = gson.toJson(data);
+        cache(json, false);
+    }
+
+    private void cache(String json, boolean CS) {
+        SharedPreferences sharedPref = PostCallActivity.this.getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        if (CS) editor.putString("CSCache", json);
+        else editor.putString("TGCache", json);
+        Log.i(TAG, "Caching...");
+
+        editor.apply();
+    }
+
+    private void getCache() {
+        SharedPreferences sharedPref = PostCallActivity.this.getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+
+        try {
+            callsigncache = gson.fromJson(sharedPref.getString("CSCache", null), new TypeToken<List<CallSignResource>>() {
+            }.getType());
+            transmittergroupcache = gson.fromJson(sharedPref.getString("TGCache", null), new TypeToken<List<TransmitterGroupResource>>() {
+            }.getType());
+        } catch (NullPointerException e) {
+            Log.w(TAG, "Getting cache didn't work");
+        }
+    }
     private void getCallsigns() {
         try {
             ServiceGenerator.changeApiBaseUrl(server);
@@ -98,7 +134,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     // tasks available
                     ArrayList<CallSignResource> data = response.body();
                     setCallsigns(data);
-                    callsigncache = data;
+                    cacheCallsign(data);
                     //adapter = new DataAdapter(data);
                 } else {
                     //APIError error = ErrorUtils.parseError(response);
@@ -176,7 +212,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     // tasks available
                     ArrayList<TransmitterGroupResource> data = response.body();
                     setTransmittergroups(data);
-                    transmittergroupcache = data;
+                    cacheTransmittergroups(data);
                     //adapter = new DataAdapter(data);
                 } else {
                     //APIError error = ErrorUtils.parseError(response);
