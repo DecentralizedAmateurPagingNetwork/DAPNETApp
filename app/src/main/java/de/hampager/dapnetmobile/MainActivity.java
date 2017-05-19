@@ -1,6 +1,5 @@
 package de.hampager.dapnetmobile;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -64,9 +63,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        Fragment currentFragment = getFragmentManager().findFragmentById(R.id.container);
-        if (currentFragment == null) {
+        
+        if (savedInstanceState == null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn));

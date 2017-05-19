@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,11 +45,11 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     String user;
     String password;
     private TextInputEditText message;
-    private EditText transmitterGroupNames;
     private Boolean emergencyBool = false;
     private List<String> csnl = new ArrayList<>();
     private List<String> tgnl = new ArrayList<>();
-
+    private ArrayList<TransmitterGroupResource> transmittergroupcache;
+    private ArrayList<CallSignResource> callsigncache;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +59,8 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         server = sharedPref.getString("server", "http://www.hampager.de:8080");
         user = sharedPref.getString("user", "invalid");
         password = sharedPref.getString("pass", "invalid");
+        setCallsigns(callsigncache);
+        setTransmittergroups(transmittergroupcache);
         getCallsigns();
         getTransmitterGroups();
 
@@ -97,6 +98,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     // tasks available
                     ArrayList<CallSignResource> data = response.body();
                     setCallsigns(data);
+                    callsigncache = data;
                     //adapter = new DataAdapter(data);
                 } else {
                     //APIError error = ErrorUtils.parseError(response);
@@ -174,6 +176,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     // tasks available
                     ArrayList<TransmitterGroupResource> data = response.body();
                     setTransmittergroups(data);
+                    transmittergroupcache = data;
                     //adapter = new DataAdapter(data);
                 } else {
                     //APIError error = ErrorUtils.parseError(response);
