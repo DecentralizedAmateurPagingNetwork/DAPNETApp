@@ -93,7 +93,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
             @Override
             public void onResponse(Call<ArrayList<CallSignResource>> call, Response<ArrayList<CallSignResource>> response) {
                 if (response.isSuccessful()) {
-                    Log.i(TAG, "Connection was successful");
+                    Log.i(TAG, "Connection getting Callsigns was successful");
                     // tasks available
                     ArrayList<CallSignResource> data = response.body();
                     setCallsigns(data);
@@ -142,7 +142,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
                 CallSignResource p = getItem(position);
                 ((TextView) convertView.findViewById(R.id.name)).setText(p.getName());
-                //((TextView)convertView.findViewById(R.id.email)).setText(p.getEmail());
+                ((TextView) convertView.findViewById(R.id.token_desc)).setText(p.getDescription());
 
                 return convertView;
             }
@@ -170,7 +170,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
             @Override
             public void onResponse(Call<ArrayList<TransmitterGroupResource>> call, Response<ArrayList<TransmitterGroupResource>> response) {
                 if (response.isSuccessful()) {
-                    Log.i(TAG, "Connection was successful");
+                    Log.i(TAG, "Connection getting transmittergroups was successful");
                     // tasks available
                     ArrayList<TransmitterGroupResource> data = response.body();
                     setTransmittergroups(data);
@@ -219,7 +219,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
                 TransmitterGroupResource p = getItem(position);
                 ((TextView) convertView.findViewById(R.id.name)).setText(p.getName());
-                //((TextView)convertView.findViewById(R.id.email)).setText(p.getEmail());
+                ((TextView) convertView.findViewById(R.id.token_desc)).setText(p.getDescription());
 
                 return convertView;
             }
@@ -269,6 +269,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                 if (response.isSuccessful()) {
                     // tasks available
                     //HamnetCall returnValue = response.body();
+                    Log.i(TAG, "Sending call worked with successful response");
                     Toast.makeText(PostCallActivity.this, getString(R.string.successfully_sent_message), Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -287,6 +288,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
             @Override
             public void onFailure(Call<HamnetCall> call, Throwable t) {
                 // something went completely south (like no internet connection)
+                Log.e(TAG, "Sending call seems to have failed");
                 Log.e(TAG, t.toString());
                 Snackbar.make(getWindow().getDecorView().getRootView(), getString(R.string.error_no_internet), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
