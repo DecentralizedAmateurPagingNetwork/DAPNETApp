@@ -1,19 +1,21 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="de.hampager.dapnetmobile.fragments.WelcomeFragment">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/welcome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageView2"
+            android:layout_centerHorizontal="true"
             android:padding="8dp"
             android:text="@string/hello_welcome_fragment"
             android:textAlignment="center"
@@ -38,7 +40,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/welcome"
-            android:layout_centerHorizontal="false"
+            android:layout_centerHorizontal="true"
             android:text="This is the official DAPNET app created by"
             android:textAlignment="center" />
 
@@ -80,6 +82,7 @@
             android:padding="8dp"
             app:srcCompat="@mipmap/ic_afu_dapnet_logo" />
 
-    </RelativeLayout>
-
+    </RelativeLayout><!--
 </FrameLayout>
+
+-->

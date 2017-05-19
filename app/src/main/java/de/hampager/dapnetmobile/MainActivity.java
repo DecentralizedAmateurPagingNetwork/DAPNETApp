@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public boolean onNavHeaderSelected(View v) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        /*FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn));
         ft.commit();
@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //TODO: Find which item is checked and uncheck it
         navigationView.getMenu().findItem(R.id.nav_calls).setChecked(false);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawer.closeDrawer(GravityCompat.START);*/
         return true;
     }
     private void setVersion(String server) {

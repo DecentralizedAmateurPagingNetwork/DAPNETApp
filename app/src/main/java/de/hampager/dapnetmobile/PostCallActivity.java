@@ -62,6 +62,8 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         password = sharedPref.getString("pass", "invalid");
         getCallsigns();
         getTransmitterGroups();
+
+
     }
 
     private void defineObjects() {
@@ -124,6 +126,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         callSignsCompletion.setTokenListener(this);
         callSignsCompletion.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
         callSignsCompletion.allowDuplicates(false);
+        callSignsCompletion.setThreshold(0);
     }
 
     private FilteredArrayAdapter<CallSignResource> generateAdapter(CallSignResource[] callsigns) {
@@ -200,6 +203,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         transmitterGroupCompletion.setTokenListener(new tokenTransmitter());
         transmitterGroupCompletion.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
         transmitterGroupCompletion.allowDuplicates(false);
+        transmitterGroupCompletion.setThreshold(0);
     }
 
     private FilteredArrayAdapter<TransmitterGroupResource> generateAdapter(TransmitterGroupResource[] transmittergroups) {
