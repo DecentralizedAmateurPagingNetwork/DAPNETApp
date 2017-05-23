@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">DAPNET</string>
+    <string name="title_activity_login">サインイン</string>
+    <string name="title_activity_postcall">コールの後</string>
+    <string name="welcome_loggedInText">"ログインしました!"</string>
+    <!--Strings related to Navigation-->
+    <string name="navigation_drawer_open">ナビゲーションドロワーを開く</string>
+    <string name="navigation_drawer_close">ナビゲーションドロワーを閉じる</string>
+    <string name="action_settings">設定</string>
+    <string name="calls">コール</string>
+    <string name="miscellaneous">その他</string>
+    <string name="login">ログイン_ログアウト</string>
+    <string name="please_login">ログインしてください</string>
+    <string name="nav_login">ログイン</string>
+    <string name="nav_logout">ログアウト</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">メール</string>
+
+    <string name="prompt_user">ユーザー</string>
+    <string name="prompt_password">パスワード</string>
+    <string name="action_sign_in">サインイン</string>
+    <string name="action_sign_in_short">サインイン</string>
+    <string name="error_invalid_server">このサーバー名は正しくありません</string>
+    <string name="error_invalid_user">このユーザー名は正しくありません</string>
+    <string name="error_invalid_email">このメールアドレスは正しくありません</string>
+    <string name="error_invalid_password">このパスワードは短すぎます</string>
+    <string name="error_incorrect_password">このパスワードは間違っています</string>
+    <string name="error_field_required">このフィールドは必須です</string>
+    <string name="server">サーバー</string>
+    <string name="message">メッセージ</string>
+    <string name="callsignnames">コールサイン名</string>
+    <string name="transmittergroupnames">送信グループ名</string>
+    <string name="emergency">緊急?</string>
+    <string name="successfully_sent_message">正常にメッセージを送信しました</string>
+    <string name="error_no_internet">エラー。インターネット接続されていますか?</string>
+    <string name="error_empty_msg">エラー。メッセージが空です!</string>
+    <string name="error_msg_too_long">エラー: メッセージが 80 文字を超えています</string>
+    <string name="error_empty_callsignlist">エラー。コールサインが空です"</string>
+
+
+    <string name="help">ヘルプ</string>
+    <string name="success_welcome">"成功しました! ようこそ "</string>
+    <string name="error_credentials">エラー。資格情報は正しいですか?</string>
+    <string name="error_logged_in">エラー。ログインしていますか?</string>
+    <string name="error_get_versions">"バージョンの取得時にエラーが発生しました! "</string>
+    <string name="github_dh3wr"><a href="https://github.com/dh3wr">DH3WR</a></string>
+    <string name="github_ihfschwarz"><a href="https://github.com/IHFSchwarz">IHFSchwarz</a></string>
+    <string name="hello_welcome_fragment">ようこそ!</string>
+    <string name="github">DAPNET on GitHub</string>
+    <string name="feedback_and_more">フィードバックと問題</string>
+    <string name="www_hampager_de">www.hampager.de</string>
+    <string name="dotdotdot">…</string>
+    <string name="send">送信</string>
+    <string name="dapnet">DAPNET</string>
+    <string name="plchldr">PLCHLDR</string>
+    <string name="all">すべて</string>
+    <string name="msg_placeceholder">MSG プレースホルダー</string>
+    <string name="http_hampager_de_8080">http://www.hampager.de:8080</string>
+    <string name="in_order_to_use_this_service_please_login">このサービスを使用するために、ログインしてください。</string>
+    <string name="and">" および "</string>
+    <string name="rwth_afu_dapnet_logo_desc">RWTH AFU DAPNET ロゴ</string>
+    <string name="default_url_prefix">http://"</string>
+    <string name="server_prompt">サーバーを選択</string>
+    <string name="callsign_prompt">希望のコールサインを入力</string>
+    <string name="transmittergroup_prompt">希望の送信グループを入力</string>
+    <string-array name="server_array">
+        <item>hampager.de (インターネット。デフォルト)</item>
+        <item>dapnet.db0sda.ampr.org (Hamnet)</item>
+        <item>カスタム</item>
+    </string-array>
+
+    <string name="email_prompt">名前またはメールアドレスを入力</string>
+
+    <string name="hello_blank_fragment">ヘルプは準備中です!\n このページは間もなく作成されます。</string>
+
+</resources>
