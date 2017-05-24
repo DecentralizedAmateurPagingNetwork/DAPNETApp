@@ -57,7 +57,7 @@
     <string name="all">All</string>
     <string name="msg_placeceholder">MSG Platzhalter</string>
     <string name="http_hampager_de_8080">http://www.hampager.de:8080</string>
-    <string name="in_order_to_use_this_service_please_login">Im diese Funktion zu verwenden, melden Sie sich bitte an.>/string>
+    <string name="in_order_to_use_this_service_please_login">Im diese Funktion zu verwenden, melden Sie sich bitte an.</string>
     <string name="and">" und "</string>
     <string name="rwth_afu_dapnet_logo_desc">RWTH AFU DAPNET logo</string>
     <string name="default_url_prefix">http://"</string>
