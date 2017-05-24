@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">DAPNET</string>
+    <string name="title_activity_login">Anmelden</string>
+    <string name="title_activity_postcall">Ruf absetzen</string>
+    <string name="welcome_loggedInText">"Sie sind nicht angemeldet!"</string>
+    <!--Strings related to Navigation-->
+    <string name="navigation_drawer_open">Öffne navigation drawer</string>
+    <string name="navigation_drawer_close">Schließe navigation drawer</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="calls">Rufe</string>
+    <string name="miscellaneous">Sonstiges</string>
+    <string name="login">Login_Logout</string>
+    <string name="please_login">Bitte anmelden</string>
+    <string name="nav_login">Anmelden</string>
+    <string name="nav_logout">Abmelden</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+
+    <string name="prompt_user">Benutzername</string>
+    <string name="prompt_password">Passwort</string>
+    <string name="action_sign_in">Anmelden</string>
+    <string name="action_sign_in_short">Anmelden</string>
+    <string name="error_invalid_server">Dieser Servername ist nicht gültig</string>
+    <string name="error_invalid_user">Dieser Benutzername ist nicht gültig</string>
+    <string name="error_invalid_email">Diese Emailadresse ist nicht gültig</string>
+    <string name="error_invalid_password">Das Passwort ist zu kurz</string>
+    <string name="error_incorrect_password">Das Passwort ist ungültig</string>
+    <string name="error_field_required">Diese Angabe wird benötigt</string>
+    <string name="server">Server</string>
+    <string name="message">Nachricht</string>
+    <string name="callsignnames">Rufzeichen</string>
+    <string name="transmittergroupnames">Sendergruppe</string>
+    <string name="emergency">Notfall?</string>
+    <string name="successfully_sent_message">Nachricht erfolgreich zum Server gesendet</string>
+    <string name="error_no_internet">Fehler. Besteht Internetzugang??</string>
+    <string name="error_empty_msg">Fehler. Nachricht ist leer!</string>
+    <string name="error_msg_too_long">Fehler: Nachricht enthält mehr als 80 Zeichen</string>
+    <string name="error_empty_callsignlist">Fehler: Kein Empfänger-Rufzeichen angegeben"</string>
+
+
+    <string name="help">Hilfe</string>
+    <string name="success_welcome">"Erfolg! Wilkommen "</string>
+    <string name="error_credentials">Fehler. Sind Ihre Anmeldedaten richtig?</string>
+    <string name="error_logged_in">Fehler. Sind Sie angemeldet?</string>
+    <string name="error_get_versions">"Fehler bei der Bestimmung der Programmversionen! "</string>
+    <string name="github_dh3wr"><a href="https://github.com/dh3wr">DH3WR</a></string>
+    <string name="github_ihfschwarz"><a href="https://github.com/IHFSchwarz">IHFSchwarz</a></string>
+    <string name="hello_welcome_fragment">Willkommen!</string>
+    <string name="github">DAPNET auf GitHub</string>
+    <string name="feedback_and_more">Rückmeldung und Probleme</string>
+    <string name="www_hampager_de">www.hampager.de</string>
+    <string name="dotdotdot">…</string>
+    <string name="send">Ansenden</string>
+    <string name="dapnet">DAPNET</string>
+    <string name="plchldr">PLCHLDR</string>
+    <string name="all">All</string>
+    <string name="msg_placeceholder">MSG Platzhalter</string>
+    <string name="http_hampager_de_8080">http://www.hampager.de:8080</string>
+    <string name="in_order_to_use_this_service_please_login">Im diese Funktion zu verwenden, melden Sie sich bitte an.>/string>
+    <string name="and">" und "</string>
+    <string name="rwth_afu_dapnet_logo_desc">RWTH AFU DAPNET logo</string>
+    <string name="default_url_prefix">http://"</string>
+    <string name="server_prompt">Server auswählen</string>
+    <string name="callsign_prompt">Bitte die gewünschten Rufzeichen eingeben</string>
+    <string name="transmittergroup_prompt">Bitte die gewünschte Sendergruppe auswählen</string>
+    <string-array name="server_array">
+        <item>hampager.de (Internet, default)</item>
+        <item>dapnet.db0sda.ampr.org (Hamnet)</item>
+        <item>Custom</item>
+    </string-array>
+
+    <string name="email_prompt">Bitte einen Namen oder eine Email-Adresse angeben</string>
+
+    <string name="hello_blank_fragment">Hilfe kommt bald.</string>
+
+</resources>
