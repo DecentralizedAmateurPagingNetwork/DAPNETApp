@@ -21,7 +21,7 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_server">This Server name is invalid</string>
+    <string name="error_invalid_server">This server name is invalid</string>
     <string name="error_invalid_user">This username is invalid</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -29,13 +29,13 @@
     <string name="error_field_required">This field is required</string>
     <string name="server">Server</string>
     <string name="message">Message</string>
-    <string name="callsignnames">CallSignNames</string>
-    <string name="transmittergroupnames">TransmitterGroupNames</string>
+    <string name="callsignnames">Callsigns</string>
+    <string name="transmittergroupnames">Transmitter group</string>
     <string name="emergency">Emergency?</string>
     <string name="successfully_sent_message">Successfully sent message</string>
-    <string name="error_no_internet">Error. Do you have Internet Access?</string>
+    <string name="error_no_internet">Error. Do you have internet access?</string>
     <string name="error_empty_msg">Error. Message empty!</string>
-    <string name="error_msg_too_long">Error: Message above 80 Characters</string>
+    <string name="error_msg_too_long">Error: Message above 80 characters</string>
     <string name="error_empty_callsignlist">Error. Callsigns empty"</string>
 
 
@@ -55,7 +55,7 @@
     <string name="dapnet">DAPNET</string>
     <string name="plchldr">PLCHLDR</string>
     <string name="all">All</string>
-    <string name="msg_placeceholder">MSG Placeceholder</string>
+    <string name="msg_placeceholder">MSG placeceholder</string>
     <string name="http_hampager_de_8080">http://www.hampager.de:8080</string>
     <string name="in_order_to_use_this_service_please_login">In order to use this service, please login.</string>
     <string name="and">" and "</string>
