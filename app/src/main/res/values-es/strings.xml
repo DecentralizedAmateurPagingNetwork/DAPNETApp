@@ -70,7 +70,7 @@
         <item>Custom</item>
     </string-array>
 
-    <string name="email_prompt">Por favor ingrease un nombre o un correo electronico.</string>
+    <string name="email_prompt">Por favor ingrese un nombre o un correo electronico.</string>
 
     <string name="hello_blank_fragment">Ya viene ayudo pronto.</string>
 
