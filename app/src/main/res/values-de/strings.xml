@@ -43,7 +43,7 @@
     <string name="success_welcome">"Erfolg! Wilkommen "</string>
     <string name="error_credentials">Fehler. Sind Ihre Anmeldedaten richtig?</string>
     <string name="error_logged_in">Fehler. Sind Sie angemeldet?</string>
-    <string name="error_get_versions">"Fehler bei der Bestimmung der Programmversionen! "</string>
+    <string name="error_get_versions">Fehler bei der Bestimmung der Programmversionen!</string>
     <string name="github_dh3wr"><a href="https://github.com/dh3wr">DH3WR</a></string>
     <string name="github_ihfschwarz"><a href="https://github.com/IHFSchwarz">IHFSchwarz</a></string>
     <string name="hello_welcome_fragment">Willkommen!</string>

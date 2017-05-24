@@ -43,7 +43,7 @@
     <string name="success_welcome">"Success! Welcome "</string>
     <string name="error_credentials">Error. Are your credentials correct?</string>
     <string name="error_logged_in">Error. Are you logged in?</string>
-    <string name="error_get_versions">"Error getting versions! "</string>
+    <string name="error_get_versions">Error getting versions!</string>
     <string name="github_dh3wr"><a href="https://github.com/dh3wr">DH3WR</a></string>
     <string name="github_ihfschwarz"><a href="https://github.com/IHFSchwarz">IHFSchwarz</a></string>
     <string name="hello_welcome_fragment">Welcome!</string>

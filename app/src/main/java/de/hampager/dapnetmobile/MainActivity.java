@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         //APIError error = ErrorUtils.parseError(response);
                         Log.e(TAG, "Error getting versions" + response.code());
                         Log.e(TAG, response.message());
-                        Snackbar.make(findViewById(R.id.container), getString(R.string.error_get_versions) + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                        Snackbar.make(findViewById(R.id.container), getString(R.string.error_get_versions) + " " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     }
                 }
 
