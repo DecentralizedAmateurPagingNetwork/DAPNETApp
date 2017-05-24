@@ -80,7 +80,14 @@
             android:padding="8dp"
             app:srcCompat="@mipmap/ic_afu_dapnet_logo" />
 
-    </RelativeLayout><!--
+        <ListView
+            android:id="@+id/statsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/linkView1"
+            android:layout_centerHorizontal="true" />
+
+</RelativeLayout><!--
 </FrameLayout>
 
 -->

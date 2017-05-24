@@ -7,6 +7,7 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import de.hampager.dapnetmobile.R;
@@ -20,7 +21,7 @@ import de.hampager.dapnetmobile.R;
 public class WelcomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String TAG = "WelcomeFragment";
-
+    ListView statsList;
     public WelcomeFragment() {
         // Required empty public constructor
     }
@@ -43,9 +44,8 @@ public class WelcomeFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-
         super.onCreate(savedInstanceState);
+        initList();
     }
 
     @Override
@@ -64,9 +64,18 @@ public class WelcomeFragment extends Fragment {
         mLinkView1.setMovementMethod(LinkMovementMethod.getInstance());
         TextView mLinkView2 = (TextView) v.findViewById(R.id.linkView2);
         mLinkView2.setMovementMethod(LinkMovementMethod.getInstance());
+        statsList = (ListView) v.findViewById(R.id.statsList);
+
         return v;
     }
 
+    private void initList() {
+
+    }
+
+    private void getStats() {
+
+    }
 
     @Override
     public void onAttach(Context context) {
