@@ -21,11 +21,11 @@
     <string name="prompt_password">Contraseña</string>
     <string name="action_sign_in">Entrar</string>
     <string name="action_sign_in_short">Entrar</string>
-    <string name="error_invalid_server">Este nombre de servidor no está valido</string>
-    <string name="error_invalid_user">Este nombre de usario no está valido</string>
-    <string name="error_invalid_email">Este correo electrónico no está valido</string>
-    <string name="error_invalid_password">Esta contraseña está demasiado corta.</string>
-    <string name="error_incorrect_password">Esta contraseña está invalido</string>
+    <string name="error_invalid_server">Este nombre de servidor no es válido</string>
+    <string name="error_invalid_user">Este nombre de usario no es válido</string>
+    <string name="error_invalid_email">Este correo electrónico no es válido</string>
+    <string name="error_invalid_password">Esta contraseña es demasiado corta.</string>
+    <string name="error_incorrect_password">Esta contraseña no es válido</string>
     <string name="error_field_required">Esta información es necesaria.</string>
     <string name="server">Servidor</string>
     <string name="message">Mensaje</string>
@@ -43,7 +43,7 @@
     <string name="success_welcome">"Exito! Bienvenido"</string>
     <string name="error_credentials">Error. Sus datos están correctos??</string>
     <string name="error_logged_in">Error. Usted está registrado?</string>
-    <string name="error_get_versions">"Error para obtener los versiones de los programas! "</string>
+    <string name="error_get_versions">Error para obtener los versiones de los programas!</string>
     <string name="github_dh3wr"><a href="https://github.com/dh3wr">DH3WR</a></string>
     <string name="github_ihfschwarz"><a href="https://github.com/IHFSchwarz">IHFSchwarz</a></string>
     <string name="hello_welcome_fragment">Bienvenido!</string>
@@ -57,13 +57,13 @@
     <string name="all">All</string>
     <string name="msg_placeceholder">MSG Platzhalter</string>
     <string name="http_hampager_de_8080">http://www.hampager.de:8080</string>
-    <string name="in_order_to_use_this_service_please_login">Para usar esta función Im diese Funktion zu verwenden, registrase.</string>
-    <string name="and">" und "</string>
+    <string name="in_order_to_use_this_service_please_login">Para usar esta función, registrase.</string>
+    <string name="and">" y "</string>
     <string name="rwth_afu_dapnet_logo_desc">RWTH AFU DAPNET logo</string>
     <string name="default_url_prefix">http://"</string>
-    <string name="server_prompt">Selectiona servidor</string>
+    <string name="server_prompt">Selecciona servidor</string>
     <string name="callsign_prompt">Ingresa los señales de llamada</string>
-    <string name="transmittergroup_prompt">Selectiona el grupo de emisoras</string>
+    <string name="transmittergroup_prompt">Selecciona el grupo de emisoras</string>
     <string-array name="server_array">
         <item>hampager.de (Internet, default)</item>
         <item>dapnet.db0sda.ampr.org (Hamnet)</item>
@@ -72,6 +72,6 @@
 
     <string name="email_prompt">Por favor ingrese un nombre o un correo electronico.</string>
 
-    <string name="hello_blank_fragment">Ya viene ayudo pronto.</string>
+    <string name="hello_blank_fragment">Ya viene ayuda pronto.</string>
 
 </resources>
