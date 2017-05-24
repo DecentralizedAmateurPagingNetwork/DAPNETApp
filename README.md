@@ -1,7 +1,8 @@
 # DAPNETApp
-The official DAPNET Android App. Developed at AFU RWTH by [DH3WR](https://github.com/dh3wr) and [IHFSchwarz](https://github.com/IHFSchwarz)
+The official DAPNET Android App. Developed at AFU RWTH by [DH3WR](https://github.com/dh3wr) and [IHFSchwarz](https://github.com/IHFSchwarz).
 
 Available on Google Play and F-Droid:
+
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Get it on Google Play"
       height="80">](https://play.google.com/store/apps/details?id=de.hampager.dapnetmobile)
