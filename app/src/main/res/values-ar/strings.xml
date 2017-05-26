@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<resources>
+<string name="app_name">DAPNET</string>
+<string name="title_activity_login">تسجيل الدخول</string>
+<string name="title_activity_postcall">ارسل رسالة نداء</string>
+<string name="welcome_loggedInText">"لقد سجلت الدخول!"</string>
+<string name="navigation_drawer_open">افتح قائمة العرض</string>
+<!--Strings related to Navigation-->
+<string name="navigation_drawer_close">اغلق قائمة العرض</string>
+<string name="action_settings">الإعدادات</string>
+<string name="calls">المكالمات</string>
+<string name="miscellaneous">متنوع</string>
+<string name="login">Login_Logout</string>
+<string name="please_login">الرجاء تسجيل الدخول</string>
+<string name="nav_login">تسجيل الدخول</string>
+<string name="nav_logout">تسجيل الخروج</string>
+<!-- Strings related to login -->
+<string name="prompt_email">البريد الإلكتروني</string>
+<string name="prompt_user">اسم المستخدم</string>
+<string name="prompt_password">كلمة السر</string>
+<string name="action_sign_in">تسجيل الدخول</string>
+<string name="action_sign_in_short">تسجيل الدخول</string>
+<string name="error_invalid_server">أسم السيرفر غير صالح</string>
+<string name="error_invalid_user">أسم المستخدم غير صالح</string>
+<string name="error_invalid_email">البريد الإلكتروني غير صالح</string>
+<string name="error_invalid_password">كلمة السر قصير جداً</string>
+<string name="error_field_required">هذه الخانة مطلوبة</string>
+<string name="error_incorrect_password">كلمة السر غير صالحة</string>
+<string name="server">سيرفر</string>
+<string name="callsignnames">رمز الاتصال</string>
+<string name="message">رسالة</string>
+<string name="transmittergroupnames">مجموعة الإرسال</string>
+<string name="emergency">الطوارئ؟</string>
+<string name="successfully_sent_message">تم إرسال الرسالة بنجاح</string>
+<string name="error_no_internet">خطأ. هل لديك اتصال بالإنترنت؟</string>
+<string name="error_empty_msg">خطأ. رسالة فارغة!</string>
+<string name="error_msg_too_long">خط: الرسالة تحتوي على أكثر من 80 حرفاً</string>
+<string name="error_empty_callsignlist">خط. رمز الاتصال فارغ"</string>
+<string name="help">المساعدة</string>
+<string name="success_welcome">"نجاح! مرحباً "</string>
+<string name="error_credentials">خطاْ. هل انت متأكد من صحة معلومات تسجيل الدخول؟</string>
+<string name="error_logged_in">خطاْ. هل قمت بتسجيل الدخول؟</string>
+<string name="error_get_versions">خطاْ بالحصول على إصدار التطبيق!</string>
+<string name="github_dh3wr"><a href="https://github.com/dh3wr">DH3WR</a></string>
+<string name="github_ihfschwarz"><a href="https://github.com/IHFSchwarz">IHFSchwarz</a></string>
+<string name="hello_welcome_fragment">مرحباً!</string>
+<string name="github">DAPNET على GitHub</string>
+<string name="feedback_and_more">الإقتراحات والمشاكل</string>
+<string name="www_hampager_de">www.hampager.de</string>
+<string name="dotdotdot">…</string>
+<string name="send">إرسال</string>
+<string name="dapnet">DAPNET</string>
+<string name="plchldr">PLCHLDR</string>
+<string name="all">الجميع</string>
+<string name="msg_placeceholder">MSG placeceholder</string>
+<string name="http_hampager_de_8080">http://www.hampager.de:8080</string>
+<string name="in_order_to_use_this_service_please_login">الرجاء تسجيل الدخول لاستخدام هذه الخدمة..</string>
+<string name="and">" و "</string>
+<string name="rwth_afu_dapnet_logo_desc">RWTH AFU DAPNET logo</string>
+<string name="default_url_prefix">http://"</string>
+<string name="server_prompt">اختر سيرفر</string>
+<string name="callsign_prompt">Enter your desired callsigns</string>
+<string name="transmittergroup_prompt">Enter your desired transmitter groups</string>
+<string-array name="server_array">
+<item>hampager.de (Internet, default)</item>
+<item>dapnet.db0sda.ampr.org (Hamnet)</item>
+<item>Custom</item>
+</string-array>
+<string name="email_prompt">ادخل الاسم أو البريد الإلكتروني</string>
+<string name="hello_blank_fragment">المساعدة تحت الأنشاء!\n سيتم ملء هذه الصفحة قريبا.</string>
+</resources>
