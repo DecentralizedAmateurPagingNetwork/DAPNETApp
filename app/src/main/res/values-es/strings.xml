@@ -21,11 +21,11 @@
     <string name="prompt_password">Contraseña</string>
     <string name="action_sign_in">Entrar</string>
     <string name="action_sign_in_short">Entrar</string>
-    <string name="error_invalid_server">Este nombre de servidor no está valido</string>
-    <string name="error_invalid_user">Este nombre de usario no está valido</string>
-    <string name="error_invalid_email">Este correo electrónico no está valido</string>
-    <string name="error_invalid_password">Esta contraseña está demasiado corta.</string>
-    <string name="error_incorrect_password">Esta contraseña está invalido</string>
+    <string name="error_invalid_server">Este nombre de servidor no es válido</string>
+    <string name="error_invalid_user">Este nombre de usario no es válido</string>
+    <string name="error_invalid_email">Este correo electrónico no es válido</string>
+    <string name="error_invalid_password">Esta contraseña es demasiado corta.</string>
+    <string name="error_incorrect_password">Esta contraseña no es válido</string>
     <string name="error_field_required">Esta información es necesaria.</string>
     <string name="server">Servidor</string>
     <string name="message">Mensaje</string>
@@ -33,45 +33,45 @@
     <string name="transmittergroupnames">Grupo de emisoras</string>
     <string name="emergency">Emergencia?</string>
     <string name="successfully_sent_message">Mensaje enviado</string>
-    <string name="error_no_internet">Fehler. Besteht Internetzugang??</string>
-    <string name="error_empty_msg">Fehler. Nachricht ist leer!</string>
-    <string name="error_msg_too_long">Fehler: Nachricht enthält mehr als 80 Zeichen</string>
-    <string name="error_empty_callsignlist">Fehler: Kein Empfänger-Rufzeichen angegeben"</string>
+    <string name="error_no_internet">Error. Usted tiene acceso al internet?</string>
+    <string name="error_empty_msg">Error. El mensaje está vacío!</string>
+    <string name="error_msg_too_long">Error: El mensaje contiene más que 80 caracteres.</string>
+    <string name="error_empty_callsignlist">Error: Ningun señal de llamada puesto"</string>
 
 
-    <string name="help">Hilfe</string>
-    <string name="success_welcome">"Erfolg! Wilkommen "</string>
-    <string name="error_credentials">Fehler. Sind Ihre Anmeldedaten richtig?</string>
-    <string name="error_logged_in">Fehler. Sind Sie angemeldet?</string>
-    <string name="error_get_versions">"Fehler bei der Bestimmung der Programmversionen! "</string>
+    <string name="help">Ayuda</string>
+    <string name="success_welcome">"Exito! Bienvenido"</string>
+    <string name="error_credentials">Error. Sus datos están correctos??</string>
+    <string name="error_logged_in">Error. Usted está registrado?</string>
+    <string name="error_get_versions">Error para obtener los versiones de los programas!</string>
     <string name="github_dh3wr"><a href="https://github.com/dh3wr">DH3WR</a></string>
     <string name="github_ihfschwarz"><a href="https://github.com/IHFSchwarz">IHFSchwarz</a></string>
-    <string name="hello_welcome_fragment">Willkommen!</string>
-    <string name="github">DAPNET auf GitHub</string>
-    <string name="feedback_and_more">Rückmeldung und Probleme</string>
+    <string name="hello_welcome_fragment">Bienvenido!</string>
+    <string name="github">DAPNET en GitHub</string>
+    <string name="feedback_and_more">Feedback y problemas</string>
     <string name="www_hampager_de">www.hampager.de</string>
     <string name="dotdotdot">…</string>
-    <string name="send">Ansenden</string>
+    <string name="send">Enviar</string>
     <string name="dapnet">DAPNET</string>
     <string name="plchldr">PLCHLDR</string>
     <string name="all">All</string>
     <string name="msg_placeceholder">MSG Platzhalter</string>
     <string name="http_hampager_de_8080">http://www.hampager.de:8080</string>
-    <string name="in_order_to_use_this_service_please_login">Im diese Funktion zu verwenden, melden Sie sich bitte an.</string>
-    <string name="and">" und "</string>
+    <string name="in_order_to_use_this_service_please_login">Para usar esta función, registrase.</string>
+    <string name="and">" y "</string>
     <string name="rwth_afu_dapnet_logo_desc">RWTH AFU DAPNET logo</string>
     <string name="default_url_prefix">http://"</string>
-    <string name="server_prompt">Server auswählen</string>
-    <string name="callsign_prompt">Bitte die gewünschten Rufzeichen eingeben</string>
-    <string name="transmittergroup_prompt">Bitte die gewünschte Sendergruppe auswählen</string>
+    <string name="server_prompt">Selecciona servidor</string>
+    <string name="callsign_prompt">Ingresa los señales de llamada</string>
+    <string name="transmittergroup_prompt">Selecciona el grupo de emisoras</string>
     <string-array name="server_array">
         <item>hampager.de (Internet, default)</item>
         <item>dapnet.db0sda.ampr.org (Hamnet)</item>
         <item>Custom</item>
     </string-array>
 
-    <string name="email_prompt">Bitte einen Namen oder eine Email-Adresse angeben</string>
+    <string name="email_prompt">Por favor ingrese un nombre o un correo electronico.</string>
 
-    <string name="hello_blank_fragment">Hilfe kommt bald.</string>
+    <string name="hello_blank_fragment">Ya viene ayuda pronto.</string>
 
 </resources>

@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">DAPNET</string>
     <string name="title_activity_login">Sign in</string>
-    <string name="title_activity_postcall">Post Call</string>
+    <string name="title_activity_postcall">Send paging message</string>
     <string name="welcome_loggedInText">"You are logged in!"</string>
     <!--Strings related to Navigation-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
