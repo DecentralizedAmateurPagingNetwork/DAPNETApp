@@ -34,7 +34,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
     private final String TAG = "LoginActivity";
-
+    private boolean hamConnection = false;
     // UI references.
     private TextInputEditText mServerView;
     private TextInputEditText mUsernameView;
@@ -57,17 +57,22 @@ public class LoginActivity extends AppCompatActivity {
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        spinner = (Spinner) findViewById(R.id.spinner);
         addListenerOnButton();
-        spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener(findViewById(R.id.loginactivityid)));
         mUsernameView.requestFocus();
+
         //TextInputLayout mUserMeta =(TextInputLayout) findViewById(R.id.usertextinput);
         //mUserMeta.requestFocus();
     }
 
     public void addListenerOnButton() {
         spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener(findViewById(R.id.loginactivityid)));
 
+        String defServer = getIntent().getStringExtra("defServer");
+
+        if (defServer != null && !(defServer.equals("http://hampager.de:8080"))) {
+            spinner.setSelection(1);
+        }
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {

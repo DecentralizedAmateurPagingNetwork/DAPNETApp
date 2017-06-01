@@ -37,6 +37,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";
     boolean loggedIn = false;
+    String mServer;
     private MenuItem mPreviousMenuItem;
     private boolean isDrawerLocked = false;
 
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        
+
         if (savedInstanceState == null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -105,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
     }
+
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -112,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MenuItem mloginstatus = nv.findItem(R.id.nav_loginstatus);
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
-        String server = sharedPref.getString("server", null);
+        String mServer = sharedPref.getString("server", null);
 
         if (loggedIn) {
             mloginstatus.setTitle(R.string.nav_logout);
@@ -121,8 +123,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mloginstatus.setTitle(R.string.nav_login);
             Log.i(TAG, "User is not logged in!");
         }
+        if (mServer != null) {
+            setVersion(mServer);
+        } else {
+            setVersion("http://hampager.de:8080");
+            if (mServer == null) setVersion("http://dapnet.db0sda.ampr.org:8080");
+        }
 
-        setVersion(server);
         return true;
     }
 
@@ -188,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 editor.apply();
             }
             Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
+            myIntent.putExtra("defServer", mServer);
             MainActivity.this.startActivity(myIntent);
         } else if (id == R.id.nav_help) {
             ft.replace(R.id.container, HelpFragment.newInstance());
@@ -213,38 +221,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return true;
     }
+
+    private void setServer(String server) {
+        mServer = server;
+        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sharedPref.edit();
+        edit.putString("defServer", server);
+        edit.commit();
+    }
+
     private void setVersion(String server) {
-        if (server != null) {
-
-            ServiceGenerator.changeApiBaseUrl(server);
-
-            HamPagerService service = ServiceGenerator.createService(HamPagerService.class, "", "");
-            Call<Versions> call = service.getVersions();
-            call.enqueue(new Callback<Versions>() {
-                @Override
-                public void onResponse(Call<Versions> call, Response<Versions> response) {
-                    if (response.isSuccessful()) {
-                        Log.i(TAG, "Connection was successful");
-                        TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
-                        String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + response.body().getCore() + ", API v" + response.body().getApi();
-                        mNavHeadVersions.setText(tmp);
-                    } else {
-                        //APIError error = ErrorUtils.parseError(response);
-                        Log.e(TAG, "Error getting versions" + response.code());
-                        Log.e(TAG, response.message());
-                        Snackbar.make(findViewById(R.id.container), getString(R.string.error_get_versions) + " " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    }
+        final String inServer = server;
+        ServiceGenerator.changeApiBaseUrl(inServer);
+        HamPagerService service = ServiceGenerator.createService(HamPagerService.class);
+        Call<Versions> call = service.getVersions();
+        call.enqueue(new Callback<Versions>() {
+            @Override
+            public void onResponse(Call<Versions> call, Response<Versions> response) {
+                if (response.isSuccessful()) {
+                    Log.i(TAG, "Connection was successful");
+                    setServer(inServer);
+                    TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
+                    String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + response.body().getCore() + ", API v" + response.body().getApi() + ", " + inServer;
+                    mNavHeadVersions.setText(tmp);
+                } else {
+                    //APIError error = ErrorUtils.parseError(response);
+                    Log.e(TAG, "Error getting versions" + response.code());
+                    Log.e(TAG, response.message());
+                    Snackbar.make(findViewById(R.id.container), getString(R.string.error_get_versions) + " " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
+            }
 
-                @Override
-                public void onFailure(Call<Versions> call, Throwable t) {
-                    // something went completely wrong (e.g. no internet connection)
-                    Log.e(TAG, t.getMessage());
-                }
-            });
-        } else {
-            TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
-            mNavHeadVersions.setText("App v" + BuildConfig.VERSION_NAME);
-        }
+            @Override
+            public void onFailure(Call<Versions> call, Throwable t) {
+                // something went completely wrong (e.g. no internet connection)
+                Log.e(TAG, t.getMessage());
+            }
+        });
+        TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
+        mNavHeadVersions.setText("App v" + BuildConfig.VERSION_NAME);
+
     }
 }
