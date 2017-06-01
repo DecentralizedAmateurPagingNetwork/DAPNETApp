@@ -1,16 +1,32 @@
 package de.hampager.dapnetmobile.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import de.hampager.dapnetmobile.R;
+import de.hampager.dapnetmobile.adapters.DataAdapter;
+import de.hampager.dapnetmobile.adapters.StatsAdapter;
+import de.hampager.dapnetmobile.api.HamPagerService;
+import de.hampager.dapnetmobile.api.HamnetCall;
+import de.hampager.dapnetmobile.api.ServiceGenerator;
+import de.hampager.dapnetmobile.api.StatsResource;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -21,7 +37,10 @@ import de.hampager.dapnetmobile.R;
 public class WelcomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String TAG = "WelcomeFragment";
-    ListView statsList;
+    private RecyclerView recyclerView;
+    private StatsAdapter adapter;
+    private String server;
+    ArrayList<CardView> listItems=new ArrayList<CardView>();
     public WelcomeFragment() {
         // Required empty public constructor
     }
@@ -45,9 +64,49 @@ public class WelcomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initList();
     }
+    private void initViews(View v){
+        recyclerView = (RecyclerView) v.findViewById(R.id.welcome_statslist);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        server = sharedPref.getString("server", "http://www.hampager.de:8080");
+        fetchJSON(server);
+    }
+    private void fetchJSON(String server) {
+        try {
+            ServiceGenerator.changeApiBaseUrl(server);
+        } catch (java.lang.NullPointerException e) {
+            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
+        }
+        HamPagerService service = ServiceGenerator.createService(HamPagerService.class);
+        Call<StatsResource> call = service.getStats();
+        call.enqueue(new Callback<StatsResource>() {
+            @Override
+            public void onResponse(Call<StatsResource> call, Response<StatsResource> response) {
+                if (response.isSuccessful()) {
+                    Log.i(TAG, "Connection was successful");
+                    // tasks available
+                    StatsResource data = response.body();
+                    adapter = new StatsAdapter(data);
+                    recyclerView.setAdapter(adapter);
 
+                } else {
+                    //APIError error = ErrorUtils.parseError(response);
+                    Log.e(TAG, "Error " + response.code());
+                    Log.e(TAG, response.message());
+                    Snackbar.make(recyclerView, "Error! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<StatsResource> call, Throwable t) {
+                // something went completely wrong (e.g. no internet connection)
+                Log.e(TAG, t.getMessage());
+            }
+        });
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,18 +123,10 @@ public class WelcomeFragment extends Fragment {
         mLinkView1.setMovementMethod(LinkMovementMethod.getInstance());
         TextView mLinkView2 = (TextView) v.findViewById(R.id.linkView2);
         mLinkView2.setMovementMethod(LinkMovementMethod.getInstance());
-        statsList = (ListView) v.findViewById(R.id.statsList);
-
+        initViews(v);
         return v;
     }
 
-    private void initList() {
-
-    }
-
-    private void getStats() {
-
-    }
 
     @Override
     public void onAttach(Context context) {
