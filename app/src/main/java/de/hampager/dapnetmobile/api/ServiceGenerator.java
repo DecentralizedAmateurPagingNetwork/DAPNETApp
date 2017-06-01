@@ -24,7 +24,11 @@ public class ServiceGenerator {
     public static <S> S createService(Class<S> serviceClass) {
         return createService(serviceClass, null, null);
     }*/
-
+    public static <S> S createService(Class<S> serviceClass) {
+        builder.client(httpClient.build());
+        retrofit = builder.build();
+        return retrofit.create(serviceClass);
+    }
     public static <S> S createService(Class<S> serviceClass, String username, String password) {
         if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
             String authToken = Credentials.basic(username, password);
