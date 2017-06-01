@@ -37,7 +37,7 @@
     <string name="error_empty_msg">Error. Message empty!</string>
     <string name="error_msg_too_long">Error: Message above 80 characters</string>
     <string name="error_empty_callsignlist">Error. Callsigns empty"</string>
-
+    <string name="generic_error">Generic error</string>
 
     <string name="help">Help</string>
     <string name="success_welcome">"Success! Welcome "</string>

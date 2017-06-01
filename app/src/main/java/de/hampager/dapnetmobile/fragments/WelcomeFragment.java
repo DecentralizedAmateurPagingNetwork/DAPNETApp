@@ -18,10 +18,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import de.hampager.dapnetmobile.R;
-import de.hampager.dapnetmobile.adapters.DataAdapter;
 import de.hampager.dapnetmobile.adapters.StatsAdapter;
 import de.hampager.dapnetmobile.api.HamPagerService;
-import de.hampager.dapnetmobile.api.HamnetCall;
 import de.hampager.dapnetmobile.api.ServiceGenerator;
 import de.hampager.dapnetmobile.api.StatsResource;
 import retrofit2.Call;
@@ -37,10 +35,10 @@ import retrofit2.Response;
 public class WelcomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String TAG = "WelcomeFragment";
+    ArrayList<CardView> listItems = new ArrayList<CardView>();
     private RecyclerView recyclerView;
     private StatsAdapter adapter;
     private String server;
-    ArrayList<CardView> listItems=new ArrayList<CardView>();
     public WelcomeFragment() {
         // Required empty public constructor
     }
@@ -65,7 +63,8 @@ public class WelcomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-    private void initViews(View v){
+
+    private void initViews(View v) {
         recyclerView = (RecyclerView) v.findViewById(R.id.welcome_statslist);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -74,6 +73,7 @@ public class WelcomeFragment extends Fragment {
         server = sharedPref.getString("server", "http://www.hampager.de:8080");
         fetchJSON(server);
     }
+
     private void fetchJSON(String server) {
         try {
             ServiceGenerator.changeApiBaseUrl(server);

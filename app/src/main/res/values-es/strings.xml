@@ -73,5 +73,6 @@
     <string name="email_prompt">Por favor ingrese un nombre o un correo electronico.</string>
 
     <string name="hello_blank_fragment">Ya viene ayuda pronto.</string>
+    <string name="generic_error">Generic error</string>
 
 </resources>

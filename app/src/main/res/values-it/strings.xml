@@ -140,6 +140,7 @@
 
 
     <string name="hello_blank_fragment">L\'aiuto sta arrivando!\n La pagina sarà riempita al più presto.</string>
+    <string name="generic_error">Generic error</string>
 
 
 </resources>

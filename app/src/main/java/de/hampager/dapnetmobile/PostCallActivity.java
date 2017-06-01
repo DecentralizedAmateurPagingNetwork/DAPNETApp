@@ -236,16 +236,19 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     private void sendCall() {
         String msg = message.getText().toString();
         //List<String> tgnl = Arrays.asList(transmitterGroupNames.getText().toString().split(" "));
-
-        if (msg.length() != 0 && msg.length() <= 80 && callSignsCompletion.getText().toString().length() != 0) {
-            Log.i(TAG, "CSNL,sendcall" + csnl.toString());
-            sendCallMethod(msg, csnl, tgnl, emergencyBool, server, user, password);
-        } else if (msg.length() == 0)
-            genericSnackbar(getString(R.string.error_empty_msg));
-        else if (msg.length() > 79)
-            genericSnackbar(getString(R.string.error_msg_too_long));
-        else if (callSignsCompletion.getText().toString().length() == 0)
-            genericSnackbar(getString(R.string.error_empty_callsignlist));
+        if (callSignsCompletion != null) {
+            if (msg.length() != 0 && msg.length() <= 80 && callSignsCompletion.getText().toString().length() != 0) {
+                Log.i(TAG, "CSNL,sendcall" + csnl.toString());
+                sendCallMethod(msg, csnl, tgnl, emergencyBool, server, user, password);
+            } else if (msg.length() == 0)
+                genericSnackbar(getString(R.string.error_empty_msg));
+            else if (msg.length() > 79)
+                genericSnackbar(getString(R.string.error_msg_too_long));
+            else if (callSignsCompletion.getText().toString().length() == 0)
+                genericSnackbar(getString(R.string.error_empty_callsignlist));
+        } else {
+            genericSnackbar(getString(R.string.generic_error));
+        }
     }
 
     private void genericSnackbar(String s) {

@@ -34,7 +34,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";
     boolean loggedIn = false;
-
+    private MenuItem mPreviousMenuItem;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,11 +79,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+
+            SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+            loggedIn = sharedPref.getBoolean("isLoggedIn", false);
             super.onBackPressed();
         }
     }
 
-
+    public void updateLoggedIn() {
+        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        loggedIn = sharedPref.getBoolean("isLoggedIn", false);
+    }
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -136,6 +142,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        //item.setCheckable(true);
+
+        item.setChecked(true);
+        if (mPreviousMenuItem != null && !(mPreviousMenuItem.equals(item))) {
+            mPreviousMenuItem.setChecked(false);
+        }
+        mPreviousMenuItem = item;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         if (id == R.id.nav_calls) {
@@ -166,12 +179,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         ft.commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        //item.setChecked(true);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
     public boolean onNavHeaderSelected(View v) {
-        /*FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn));
         ft.commit();
@@ -179,7 +194,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //TODO: Find which item is checked and uncheck it
         navigationView.getMenu().findItem(R.id.nav_calls).setChecked(false);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);*/
+        drawer.closeDrawer(GravityCompat.START);
+
         return true;
     }
     private void setVersion(String server) {

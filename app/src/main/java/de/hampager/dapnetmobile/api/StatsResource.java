@@ -97,17 +97,18 @@ public class StatsResource {
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
     }
-    public LinkedHashMap<String,Integer> getStats(){
-        LinkedHashMap<String,Integer> map=new LinkedHashMap<>();
-        map.put("Users",users);
-        map.put("Calls",calls);
-        map.put("Callsigns",callSigns);
-        map.put("News",news);
-        map.put("Rubrics",rubrics);
-        map.put("Nodes",nodesTotal);
-        map.put("NodesUp",nodesOnline);
-        map.put("Transmitters",transmittersTotal);
-        map.put("TransmittersUp",transmittersOnline);
+
+    public LinkedHashMap<String, Integer> getStats() {
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
+        map.put("Users", users);
+        map.put("Calls", calls);
+        map.put("Callsigns", callSigns);
+        map.put("News", news);
+        map.put("Rubrics", rubrics);
+        map.put("Nodes", nodesTotal);
+        map.put("NodesUp", nodesOnline);
+        map.put("Transmitters", transmittersTotal);
+        map.put("TransmittersUp", transmittersOnline);
         return map;
     }
 }
