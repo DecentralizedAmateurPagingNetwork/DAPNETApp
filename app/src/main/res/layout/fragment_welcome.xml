@@ -70,15 +70,15 @@
             android:layout_toRightOf="@+id/textViewAnd"
             android:text="@string/github_ihfschwarz" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:contentDescription="@string/rwth_afu_dapnet_logo_desc"
-            android:padding="8dp"
-            app:srcCompat="@mipmap/ic_afu_dapnet_logo" />
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/nav_header_height"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/rwth_afu_dapnet_logo_desc"
+        android:padding="8dp"
+        app:srcCompat="@mipmap/ic_afu_dapnet_logo" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/welcome_statslist"
