@@ -2,6 +2,8 @@ package de.hampager.dapnetmobile.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -16,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import de.hampager.dapnetmobile.R;
@@ -26,6 +30,8 @@ import de.hampager.dapnetmobile.api.StatsResource;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static de.hampager.dapnetmobile.R.mipmap.ic_afu_dapnet_logo;
 
 
 /**
@@ -74,8 +80,8 @@ public class WelcomeFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         server = sharedPref.getString("server", "http://www.hampager.de:8080");
-        muninImageView = (ImageView) getActivity().findViewById(R.id.statsImage);
-        //Picasso.with(getActivity()).load("http://i.imgur.com/DvpvklR.png").into((ImageView) getActivity().findViewById(R.id.statsImage));
+        muninImageView = (ImageView) v.findViewById(R.id.statsImage);
+        Picasso.with(muninImageView.getContext()).load("https://www.afu.rwth-aachen.de/munin/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png").into(muninImageView);
         fetchJSON(server);
     }
 
@@ -86,6 +92,7 @@ public class WelcomeFragment extends Fragment {
 
 
     private void fetchJSON(String server) {
+
         try {
             ServiceGenerator.changeApiBaseUrl(server);
         } catch (java.lang.NullPointerException e) {

@@ -5,17 +5,28 @@
     android:layout_height="match_parent"
     tools:context="de.hampager.dapnetmobile.fragments.WelcomeFragment">
 -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            app:srcCompat="@mipmap/ic_afu_dapnet_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/rwth_afu_dapnet_logo_desc"
+            android:padding="8dp" />
 
         <TextView
             android:id="@+id/welcome"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView2"
-            android:layout_centerHorizontal="true"
             android:padding="8dp"
             android:text="@string/hello_welcome_fragment"
             android:textAlignment="center"
@@ -24,82 +35,54 @@
 
         <TextView
             android:id="@+id/loggedinmessage"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/welcome"
-            android:layout_centerHorizontal="false"
-            android:layout_centerInParent="false"
-            android:layout_centerVertical="false"
             android:text="@string/in_order_to_use_this_service_please_login"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/infoTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/welcome"
-            android:layout_centerHorizontal="true"
-            android:text="This is the official DAPNET app created by"
-            android:textAlignment="center" />
+            android:textAlignment="center"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/linkView1"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textViewAnd"
-            android:layout_alignBottom="@+id/textViewAnd"
-            android:layout_toLeftOf="@+id/textViewAnd"
-            android:layout_toStartOf="@+id/textViewAnd"
-            android:text="@string/github_dh3wr" />
+            android:text="@string/github_dh3wr"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/textViewAnd"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/infoTextView"
-            android:layout_centerHorizontal="true"
-            android:text="@string/and" />
+            android:text="@string/and"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/linkView2"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textViewAnd"
-            android:layout_alignBottom="@+id/textViewAnd"
-            android:layout_toEndOf="@+id/textViewAnd"
-            android:layout_toRightOf="@+id/textViewAnd"
-            android:text="@string/github_ihfschwarz" />
+            android:visibility="gone" />
 
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/nav_header_height"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:contentDescription="@string/rwth_afu_dapnet_logo_desc"
-        android:padding="8dp"
-        app:srcCompat="@mipmap/ic_afu_dapnet_logo" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/welcome_statslist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/welcome_statslist"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linkView1"
-        android:layout_centerHorizontal="true">
+        </android.support.v7.widget.RecyclerView>
 
-    </android.support.v7.widget.RecyclerView>
+        <ImageView
+            android:id="@+id/statsImage"
+            app:srcCompat="@mipmap/ic_afu_dapnet_logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    <ImageView
-        android:id="@+id/statsImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentStart="false"
-        android:layout_below="@+id/welcome_statslist"
-        android:layout_centerHorizontal="true"
-        app:srcCompat="@mipmap/ic_afu_dapnet_logo" />
-
-</RelativeLayout><!--
+    </LinearLayout>
+</ScrollView>
+<!--
 </FrameLayout>
 
 -->
