@@ -6,13 +6,14 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -36,9 +37,11 @@ public class WelcomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String TAG = "WelcomeFragment";
     ArrayList<CardView> listItems = new ArrayList<CardView>();
+    ImageView muninImageView;
     private RecyclerView recyclerView;
     private StatsAdapter adapter;
     private String server;
+
     public WelcomeFragment() {
         // Required empty public constructor
     }
@@ -67,12 +70,20 @@ public class WelcomeFragment extends Fragment {
     private void initViews(View v) {
         recyclerView = (RecyclerView) v.findViewById(R.id.welcome_statslist);
         recyclerView.setHasFixedSize(true);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         server = sharedPref.getString("server", "http://www.hampager.de:8080");
+        muninImageView = (ImageView) getActivity().findViewById(R.id.statsImage);
+        //Picasso.with(getActivity()).load("http://i.imgur.com/DvpvklR.png").into((ImageView) getActivity().findViewById(R.id.statsImage));
         fetchJSON(server);
     }
+
+    private void getImage() {
+
+    }
+
+
 
     private void fetchJSON(String server) {
         try {
@@ -107,6 +118,7 @@ public class WelcomeFragment extends Fragment {
             }
         });
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -123,6 +135,7 @@ public class WelcomeFragment extends Fragment {
         mLinkView1.setMovementMethod(LinkMovementMethod.getInstance());
         TextView mLinkView2 = (TextView) v.findViewById(R.id.linkView2);
         mLinkView2.setMovementMethod(LinkMovementMethod.getInstance());
+
         initViews(v);
         return v;
     }
