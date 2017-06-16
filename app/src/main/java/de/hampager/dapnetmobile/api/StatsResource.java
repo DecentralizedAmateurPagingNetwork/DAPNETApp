@@ -9,8 +9,10 @@ public class StatsResource {
 
     private Integer users;
     private Integer calls;
+    private Integer callsTotal;
     private Integer callSigns;
     private Integer news;
+    private Integer newsTotal;
     private Integer rubrics;
     private Integer nodesTotal;
     private Integer nodesOnline;
@@ -34,6 +36,13 @@ public class StatsResource {
         this.calls = calls;
     }
 
+    public Integer getCallsTotal() {
+        return callsTotal;
+    }
+
+    public void setCallsTotal(Integer callsTotal) {
+        this.callsTotal = callsTotal;
+    }
     public Integer getCallSigns() {
         return callSigns;
     }
@@ -50,6 +59,14 @@ public class StatsResource {
         this.news = news;
     }
 
+
+    public Integer getNewsTotal() {
+        return newsTotal;
+    }
+
+    public void setNewsTotal(Integer newsTotal) {
+        this.newsTotal = newsTotal;
+    }
     public Integer getRubrics() {
         return rubrics;
     }
@@ -102,8 +119,10 @@ public class StatsResource {
         LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
         map.put("Users", users);
         map.put("Calls", calls);
+        map.put("CallsTotal",callsTotal);
         map.put("Callsigns", callSigns);
         map.put("News", news);
+        map.put("NewsTotal",newsTotal);
         map.put("Rubrics", rubrics);
         map.put("Nodes", nodesTotal);
         map.put("NodesUp", nodesOnline);

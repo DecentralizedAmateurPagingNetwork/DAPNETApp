@@ -26,14 +26,23 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.StatsViewHol
 
     @Override
     public void onBindViewHolder(StatsViewHolder holder, int position) {
-        holder.nameTextView.setText(getNameByIndex(map, position));
-        holder.numberTextView.setText(String.valueOf(getNumberByIndex(map, position)));
+        if (position==7){
+            holder.nameTextView.setText(getNameByIndex(map, position)+"/Up");
+            holder.numberTextView.setText(String.valueOf(getNumberByIndex(map, position))+"/"+String.valueOf(getNumberByIndex(map,position+1)));
+        }else if(position==8){
+            holder.nameTextView.setText(getNameByIndex(map, position+1)+"/Up");
+            holder.numberTextView.setText(String.valueOf(getNumberByIndex(map, position+1))+"/"+String.valueOf(getNumberByIndex(map,position+2)));
+        }else{
+            holder.nameTextView.setText(getNameByIndex(map, position));
+            holder.numberTextView.setText(String.valueOf(getNumberByIndex(map, position)));
+        }
+
     }
 
 
     @Override
     public int getItemCount() {
-        return map.size();
+        return map.size()-2;
     }
 
     private String getNameByIndex(LinkedHashMap<String, Integer> hMap, int index) {
