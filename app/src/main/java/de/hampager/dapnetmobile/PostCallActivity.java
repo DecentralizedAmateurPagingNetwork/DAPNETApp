@@ -55,11 +55,11 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_call);
-        defineObjects();
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         server = sharedPref.getString("server", "http://www.hampager.de:8080");
         user = sharedPref.getString("user", "invalid");
         password = sharedPref.getString("pass", "invalid");
+        defineObjects();
         getCallsigns();
         getTransmitterGroups();
 
@@ -67,17 +67,18 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     }
 
     private void defineObjects() {
+        Log.i("TEST","TEST");
         message = (TextInputEditText) findViewById(R.id.post_call_text);
         Switch emergency = (Switch) findViewById(R.id.post_call_emergencyswitch);
-        message.requestFocus();
 
+        message.setText(user.toUpperCase()+": ");
+        message.requestFocus();
         emergency.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 emergencyBool = isChecked;
             }
         });
-
     }
 
     private void getCallsigns() {
