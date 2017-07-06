@@ -73,5 +73,6 @@
     <string name="email_prompt">名前またはメールアドレスを入力</string>
 
     <string name="hello_blank_fragment">ヘルプは準備中です!\n このページは間もなく作成されます。</string>
+    <string name="generic_error">Generic error</string>
 
 </resources>
