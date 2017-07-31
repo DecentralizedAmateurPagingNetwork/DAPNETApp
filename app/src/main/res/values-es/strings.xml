@@ -36,11 +36,11 @@
     <string name="error_no_internet">Error. Usted tiene acceso al internet?</string>
     <string name="error_empty_msg">Error. El mensaje está vacío!</string>
     <string name="error_msg_too_long">Error: El mensaje contiene más que 80 caracteres.</string>
-    <string name="error_empty_callsignlist">Error: Ningun señal de llamada puesto"</string>
+    <string name="error_empty_callsignlist">Error: Ningún señal de llamada puesto"</string>
 
 
     <string name="help">Ayuda</string>
-    <string name="success_welcome">"Exito! Bienvenido"</string>
+    <string name="success_welcome">"Éxito! Bienvenido"</string>
     <string name="error_credentials">Error. Sus datos están correctos??</string>
     <string name="error_logged_in">Error. Usted está registrado?</string>
     <string name="error_get_versions">Error para obtener los versiones de los programas!</string>
@@ -50,7 +50,6 @@
     <string name="github">DAPNET en GitHub</string>
     <string name="feedback_and_more">Feedback y problemas</string>
     <string name="www_hampager_de">www.hampager.de</string>
-    <string name="dotdotdot">…</string>
     <string name="send">Enviar</string>
     <string name="dapnet">DAPNET</string>
     <string name="plchldr">PLCHLDR</string>
@@ -74,5 +73,6 @@
 
     <string name="hello_blank_fragment">Ya viene ayuda pronto.</string>
     <string name="generic_error">Generic error</string>
+    <string name="map">Mapa</string>
 
 </resources>

@@ -35,4 +35,7 @@ public interface HamPagerService {
 
     @GET("stats")
     Call<StatsResource> getStats();
+
+    @GET("transmitters")
+    Call<ArrayList<TransmitterResource>> getAllTransmitter();
 }

@@ -89,15 +89,13 @@
 
     <string name="github_ihfschwarz"><a href="https://github.com/IHFSchwarz">IHFSchwarz</a></string>
 
-    <string name="hello_welcome_fragment">Benvenut@!</string>
+    <string name="hello_welcome_fragment">Benvenuto!</string>
 
     <string name="github">DAPNET su GitHub</string>
 
     <string name="feedback_and_more">Feedback e problemi</string>
 
     <string name="www_hampager_de">www.hampager.de</string>
-
-    <string name="dotdotdot">…</string>
 
     <string name="send">Invio</string>
 
@@ -141,6 +139,7 @@
 
     <string name="hello_blank_fragment">L\'aiuto sta arrivando!\n La pagina sarà riempita al più presto.</string>
     <string name="generic_error">Generic error</string>
+    <string name="map">Mappa</string>
 
 
 </resources>

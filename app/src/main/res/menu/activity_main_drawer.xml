@@ -8,7 +8,11 @@
             android:checkable="true"
             android:icon="@drawable/ic_textsms"
             android:title="@string/calls" />
-
+        <item
+            android:id="@+id/nav_map"
+            android:checkable="true"
+            android:icon="@mipmap/ic_map_black"
+            android:title="@string/map" />
         <item android:title="@string/prompt_user">
             <menu android:id="@+id/nav_user_menu">
                 <item

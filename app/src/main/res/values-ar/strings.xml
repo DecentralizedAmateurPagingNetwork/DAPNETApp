@@ -47,8 +47,7 @@
 <string name="github">DAPNET على GitHub</string>
 <string name="feedback_and_more">الإقتراحات والمشاكل</string>
 <string name="www_hampager_de">www.hampager.de</string>
-<string name="dotdotdot">…</string>
-<string name="send">إرسال</string>
+    <string name="send">إرسال</string>
 <string name="dapnet">DAPNET</string>
 <string name="plchldr">PLCHLDR</string>
 <string name="all">الجميع</string>

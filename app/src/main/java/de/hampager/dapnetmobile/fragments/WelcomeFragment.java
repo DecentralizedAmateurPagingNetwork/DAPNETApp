@@ -31,7 +31,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static de.hampager.dapnetmobile.R.mipmap.ic_afu_dapnet_logo;
 
 
 /**
@@ -42,7 +41,7 @@ import static de.hampager.dapnetmobile.R.mipmap.ic_afu_dapnet_logo;
 public class WelcomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String TAG = "WelcomeFragment";
-    ArrayList<CardView> listItems = new ArrayList<CardView>();
+    ArrayList<CardView> listItems = new ArrayList<>();
     ImageView muninImageView;
     private RecyclerView recyclerView;
     private StatsAdapter adapter;

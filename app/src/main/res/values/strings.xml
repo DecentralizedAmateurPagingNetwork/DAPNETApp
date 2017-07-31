@@ -50,7 +50,7 @@
     <string name="github">DAPNET on GitHub</string>
     <string name="feedback_and_more">Feedback and problems</string>
     <string name="www_hampager_de">www.hampager.de</string>
-    <string name="dotdotdot">…</string>
+    <string name="dotdotdot" translatable="false">…</string>
     <string name="send">Send</string>
     <string name="dapnet">DAPNET</string>
     <string name="plchldr">PLCHLDR</string>
@@ -73,5 +73,9 @@
     <string name="email_prompt">enter a name or email address</string>
 
     <string name="hello_blank_fragment">Help is on the way!\n This page will shortly be filled.</string>
-
+<string name="map">Map</string>
+    <string name="online_filter" translatable="false">Online</string>
+    <string name="offline_filter" translatable="false">Offline</string>
+    <string name="widerange_filter" translatable="false">Widerange</string>
+    <string name="personal_filter" translatable="false">Personal</string>
 </resources>

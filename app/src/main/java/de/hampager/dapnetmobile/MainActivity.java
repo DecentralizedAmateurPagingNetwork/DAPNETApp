@@ -29,6 +29,8 @@ import de.hampager.dapnetmobile.api.HamPagerService;
 import de.hampager.dapnetmobile.api.ServiceGenerator;
 import de.hampager.dapnetmobile.api.Versions;
 import de.hampager.dapnetmobile.fragments.CallFragment;
+import de.hampager.dapnetmobile.fragments.HelpFragment;
+import de.hampager.dapnetmobile.fragments.MapFragment;
 import de.hampager.dapnetmobile.fragments.WelcomeFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -181,6 +183,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } else {
                 Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
+        } else if (id == R.id.nav_map) {
+            ft.replace(R.id.container, MapFragment.newInstance());
         } else if (id == R.id.nav_githublink) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork"));
             startActivity(browserIntent);
