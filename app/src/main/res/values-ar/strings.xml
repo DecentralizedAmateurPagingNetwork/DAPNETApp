@@ -68,4 +68,5 @@
 <string name="email_prompt">ادخل الاسم أو البريد الإلكتروني</string>
 <string name="hello_blank_fragment">المساعدة تحت الأنشاء!\n سيتم ملء هذه الصفحة قريبا.</string>
     <string name="generic_error">Generic error</string>
+
 </resources>
