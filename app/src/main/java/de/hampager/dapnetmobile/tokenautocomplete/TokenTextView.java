@@ -15,8 +15,4 @@ public class TokenTextView extends AppCompatTextView {
     }
 
 
-    @Override
-    public void setSelected(boolean selected) {
-        super.setSelected(selected);
-    }
 }

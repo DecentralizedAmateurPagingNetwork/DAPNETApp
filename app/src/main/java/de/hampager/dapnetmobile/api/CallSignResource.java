@@ -2,16 +2,13 @@
 package de.hampager.dapnetmobile.api;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 public class CallSignResource implements Serializable {
     private String name;
     private String description;
-    private List<Pager> pagers = null;
-    private List<String> ownerNames = null;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private ArrayList<Pager> pagers = null;
+    private ArrayList<String> ownerNames = null;
 
     public CallSignResource(String name) {
         this.name = name;
@@ -38,7 +35,7 @@ public class CallSignResource implements Serializable {
     }
 
     public void setPagers(List<Pager> pagers) {
-        this.pagers = pagers;
+        this.pagers = (ArrayList<Pager>) pagers;
     }
 
     public List<String> getOwnerNames() {
@@ -46,15 +43,7 @@ public class CallSignResource implements Serializable {
     }
 
     public void setOwnerNames(List<String> ownerNames) {
-        this.ownerNames = ownerNames;
-    }
-
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
+        this.ownerNames = (ArrayList<String>) ownerNames;
     }
 
 }

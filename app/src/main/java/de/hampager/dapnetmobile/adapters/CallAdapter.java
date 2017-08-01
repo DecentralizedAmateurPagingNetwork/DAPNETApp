@@ -5,28 +5,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import java.util.ArrayList;
+import java.util.List;
 
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.api.HamnetCall;
 
-public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
-    private ArrayList<HamnetCall> mValues;
+public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder> {
+    private List<HamnetCall> mValues;
 
-    public DataAdapter(ArrayList<HamnetCall> mValues) {
+    public CallAdapter(List<HamnetCall> mValues) {
         this.mValues = mValues;
     }
 
     @Override
-    public DataAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public CallAdapter.CallViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_call_item_row, viewGroup, false);
-        return new ViewHolder(view);
+        return new CallViewHolder(view);
     }
 
     //Write Content of Call Items for the RecyclerView
     @Override
-    public void onBindViewHolder(DataAdapter.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(CallAdapter.CallViewHolder viewHolder, int i) {
         viewHolder.mCallTransmitterGroup.setText(mValues.get(i).getTransmitterGroupNames().toString());
         viewHolder.mCallMsgContent.setText(mValues.get(i).getText());
         viewHolder.mCallCallSign.setText(mValues.get(i).getCallSignNames().get(0));
@@ -43,10 +42,13 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     }
 
     //Holds relevant parts of one Call Item
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView mCallCallSign, mCallTransmitterGroup, mCallMsgContent, mCallMoreCalls;
+    public class CallViewHolder extends RecyclerView.ViewHolder {
+        private TextView mCallCallSign;
+        private TextView mCallTransmitterGroup;
+        private TextView mCallMsgContent;
+        private TextView mCallMoreCalls;
 
-        public ViewHolder(View view) {
+        public CallViewHolder(View view) {
             super(view);
             mCallCallSign = (TextView) view.findViewById(R.id.call_call_sign);
             mCallTransmitterGroup = (TextView) view.findViewById(R.id.call_transmitter_groups);

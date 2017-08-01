@@ -9,6 +9,10 @@ import retrofit2.Converter;
 import retrofit2.Response;
 
 public class ErrorUtils {
+    private ErrorUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static APIError parseError(Response<?> response) {
         Converter<ResponseBody, APIError> converter =
                 ServiceGenerator.retrofit

@@ -73,6 +73,7 @@
 
     <string name="hello_blank_fragment">ヘルプは準備中です!\n このページは間もなく作成されます。</string>
     <string name="generic_error">Generic error</string>
+    <string name="map">Map</string>
 
 
 </resources>

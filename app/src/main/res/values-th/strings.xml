@@ -73,5 +73,6 @@
 
     <string name="hello_blank_fragment">Hilfe kommt bald.</string>
     <string name="generic_error">Generic error</string>
+    <string name="map">Map</string>
 
 </resources>

@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.icu.text.IDNA;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -20,8 +19,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
@@ -31,7 +28,6 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.FolderOverlay;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
-import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
@@ -60,7 +56,6 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE=1;
     private static final String TAG = "MapFragment";
     private MapView map;
-    //private OnFragmentInteractionListener mListener;
     //Items for our Overlays
     ArrayList<OverlayItem> onlineWide = new ArrayList<>();
     ArrayList<OverlayItem> offlineWide = new ArrayList<>();
@@ -71,11 +66,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     ItemizedOverlayWithFocus<OverlayItem> epOverlay;
     ItemizedOverlayWithFocus<OverlayItem> dpOverlay;
     Menu menu;
-    //MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(getContext(), this);
     FolderOverlay fo;
-    private String server;
-    private String user;
-    private String password;
     public MapFragment() {
         // Required empty public constructor
     }
@@ -107,7 +98,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         //important! set your user agent to prevent getting banned from the osm servers
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
-        //setContentView(R.layout.activity_main);
+
         if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -142,7 +133,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
 
-        //map.setTilesScaledToDpi(true);
+
         map.setFlingEnabled(true);
         IMapController mapController = map.getController();
         mapController.setZoom(6);
@@ -150,9 +141,9 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         mapController.setCenter(startPoint);
 
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        server = sharedPref.getString("server", "http://www.hampager.de:8080");
-        user = sharedPref.getString("user", "invalid");
-        password = sharedPref.getString("pass", "invalid");
+        String server = sharedPref.getString("server", "http://www.hampager.de:8080");
+        String user = sharedPref.getString("user", "invalid");
+        String password = sharedPref.getString("pass", "invalid");
 
         fetchJSON(server,user,password);
     }
@@ -220,19 +211,14 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
             t.setDescriptionBoxCornerWidth(32);
             t.setDescriptionBoxPadding(6);
             t.setDescriptionMaxWidth(200);
-            //map.getOverlays().add(t);
             fo.add(t);
         }
         map.getOverlays().add(fo);
-        //map.getOverlays().add(0,mapEventsOverlay);
 
         ewOverlay.setFocusItemsOnTap(true);
     }
 
     @Override public boolean singleTapConfirmedHelper(GeoPoint p) {
-        //Toast.makeText(getContext(), "Tapped", Toast.LENGTH_SHORT).show();
-        //InfoWindow.closeAllInfoWindowsOn(map);
-        Toast.makeText(getContext(),""+map.getOverlays().size(),Toast.LENGTH_SHORT).show();
         fo.closeAllInfoWindows();
         return true;
     }
@@ -272,14 +258,11 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                                 offlinePers.add(offlinePers.size(),temp);
                             }
                         }
-                        //items.add(items.size(),temp);
                     }
                     config();
                 } else {
-                    //APIError error = ErrorUtils.parseError(response);
                     Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
-                    //Snackbar.make(getView, "Error! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                     if (response.code() == 401) {
                         SharedPreferences sharedPref = getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
@@ -297,28 +280,21 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         });
     }
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-
-                } else {
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                }
-                return;
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        Log.i(TAG,"Permission");
+        if(requestCode==PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE){
+            // If request is cancelled, the result arrays are empty.
+            Log.i(TAG,"Permission request");
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission was granted
+                Log.i(TAG,"Permission granted");
+            } else {
+                Log.i(TAG,"Permission not granted");
+                // permission denied
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
+        //To use more Permissions you should implement a switch
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
@@ -328,27 +304,6 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         item.setChecked(!item.isChecked());
-        /*int id = item.getItemId();
-        if(id == R.id.online_filter){
-            item.setChecked(!item.isChecked());
-            Overlay currOv = map.getOverlays().get(map.getOverlays().indexOf(ewOverlay));
-            /*if (map.getOverlays().get(0).isEnabled()){
-                Log.i(TAG,"Overlay 0 enabled");
-                map.getOverlays().get(0).setEnabled(false);
-            }else{
-                map.getOverlays().get(0).setEnabled(true);
-            }*/
-            /*if (ewOverlay.isEnabled()){
-                Log.i(TAG,"Overlay 0 enabled");
-                ewOverlay.setEnabled(false);
-                item.setChecked(false);
-            }else{
-                ewOverlay.setEnabled(true);
-                item.setChecked(true);
-            }
-            
-            return true;
-        }*/
         if(menu.getItem(2).isChecked()){
             ewOverlay.setEnabled(menu.getItem(0).isChecked());
             ewOverlay.setFocusItemsOnTap(menu.getItem(0).isChecked());
@@ -374,47 +329,22 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
             dpOverlay.setEnabled(false);
             dpOverlay.setFocusItemsOnTap(false);
         }
-        //Quick Hack used to refresh map
-        IMapController mapController = map.getController();
-        //mapController.scrollBy(1,1);
-        //mapController.scrollBy(-1,-1);
         map.invalidate();
         InfoWindow.closeAllInfoWindowsOn(map);
 
         return true;
 
-        //return super.onOptionsItemSelected(item);
     }
+    @Override
     public void onResume(){
         super.onResume();
         //this will refresh the osmdroid configuration on resuming.
         //if you make changes to the configuration, use
-        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        //Configuration.getInstance().save(this, prefs);
+        //Shared Preferences prefs = Preference Manager.getDefault SharedPreferences(this)
         Configuration.getInstance().load(getActivity().getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()));
     }
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        /*if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }*/
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        /*if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }*/
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        //mListener = null;
+        //Not yet implemented
     }
 
     /*
@@ -427,9 +357,4 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    /*
-    public interface OnFragmentInteractionListener {
-
-        void onFragmentInteraction(Uri uri);
-    }*/
 }

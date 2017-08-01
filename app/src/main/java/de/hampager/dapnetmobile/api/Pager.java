@@ -8,7 +8,7 @@ public class Pager {
 
     private Integer number;
     private String name;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     public Integer getNumber() {
         return number;

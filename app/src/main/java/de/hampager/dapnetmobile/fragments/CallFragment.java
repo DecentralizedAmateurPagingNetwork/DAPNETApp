@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import de.hampager.dapnetmobile.R;
-import de.hampager.dapnetmobile.adapters.DataAdapter;
+import de.hampager.dapnetmobile.adapters.CallAdapter;
 import de.hampager.dapnetmobile.api.HamPagerService;
 import de.hampager.dapnetmobile.api.HamnetCall;
 import de.hampager.dapnetmobile.api.ServiceGenerator;
@@ -25,9 +25,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CallFragment extends Fragment {
-    private final String TAG = "CallFragment";
+    private static final String TAG = "CallFragment";
     private RecyclerView recyclerView;
-    private DataAdapter adapter;
+    private CallAdapter adapter;
     private SwipeRefreshLayout mSwipe;
     private String server;
     private String user;
@@ -41,10 +41,6 @@ public class CallFragment extends Fragment {
         return new CallFragment();
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     private void initViews(View v) {
         recyclerView = (RecyclerView) v.findViewById(R.id.item_recycler_view);
@@ -84,11 +80,10 @@ public class CallFragment extends Fragment {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
                     ArrayList<HamnetCall> data = response.body();
-                    adapter = new DataAdapter(data);
+                    adapter = new CallAdapter(data);
                     recyclerView.setAdapter(adapter);
                     mSwipe.setRefreshing(false);
                 } else {
-                    //APIError error = ErrorUtils.parseError(response);
                     Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
                     Snackbar.make(recyclerView, "Error! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();

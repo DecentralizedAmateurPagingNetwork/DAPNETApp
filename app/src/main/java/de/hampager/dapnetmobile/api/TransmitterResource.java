@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TransmitterResource {
-
+    //Currently not assigned: authKey, nodeName, address, deviceType, deviceVersion, callCount, antennaAbobeGroundLevel,antennaType,a ntennaDirection,
     private String name;
     private String authKey;
     private double longitude;
@@ -38,31 +38,6 @@ public class TransmitterResource {
     public TransmitterResource() {
     }
 
-    /**
-     * 
-     * @param identificationAddress
-     * @param antennaType
-     * @param antennaAboveGroundLevel
-     * @param authKey
-     * @param status
-     * @param lastUpdate
-     * @param nodeName
-     * @param ownerNames
-     * @param timeSlot
-     * @param connectedSince
-     * @param antennaDirection
-     * @param lastConnected
-     * @param address
-     * @param deviceType
-     * @param name
-     * @param usage
-     * @param antennaGainDbi
-     * @param power
-     * @param deviceVersion
-     * @param longitude
-     * @param latitude
-     * @param callCount
-     */
     public TransmitterResource(String name, String authKey, double longitude, double latitude, String power, String nodeName, Address address, String timeSlot, List<String> ownerNames, String deviceType, String deviceVersion, Integer callCount, String status, Integer antennaAboveGroundLevel, String antennaType, Integer antennaDirection, String antennaGainDbi, Object lastUpdate, String usage, Integer identificationAddress, String lastConnected, Object connectedSince) {
         super();
         this.name = name;

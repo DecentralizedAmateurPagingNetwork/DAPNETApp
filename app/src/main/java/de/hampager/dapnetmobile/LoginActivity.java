@@ -34,7 +34,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
     private final String TAG = "LoginActivity";
-    private boolean hamConnection = false;
+
     // UI references.
     private TextInputEditText mServerView;
     private TextInputEditText mUsernameView;
@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        //setupActionBar();
+
         // Set up the login form.
         mServerView = (TextInputEditText) findViewById(R.id.server);
         mUsernameView = (TextInputEditText) findViewById(R.id.user);
@@ -60,8 +60,8 @@ public class LoginActivity extends AppCompatActivity {
         addListenerOnButton();
         mUsernameView.requestFocus();
 
-        //TextInputLayout mUserMeta =(TextInputLayout) findViewById(R.id.usertextinput);
-        //mUserMeta.requestFocus();
+
+
     }
 
     public void addListenerOnButton() {
@@ -115,8 +115,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 } else {
                     Log.e(TAG, "Error: " + response.code());
-                    //TODO: Use APIError
-                    //APIError error = ErrorUtils.parseError(response);
+                    //Should Use APIError
+
                     //Log.e(TAG, error.message());
                     showProgress(false);
                     View focusView = mUsernameView;

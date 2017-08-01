@@ -15,7 +15,7 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.StatsViewHol
     private LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
 
     public StatsAdapter(StatsResource stats) {
-        this.map = stats.getStats();
+        this.map = (LinkedHashMap<String, Integer>) stats.getStats();
     }
 
     @Override

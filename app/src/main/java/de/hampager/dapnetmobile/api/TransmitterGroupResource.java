@@ -2,17 +2,15 @@
 package de.hampager.dapnetmobile.api;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class TransmitterGroupResource implements Serializable {
 
     private String name;
     private String description;
-    private List<String> transmitterNames = null;
-    private List<String> ownerNames = null;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private ArrayList<String> transmitterNames = null;
+    private ArrayList<String> ownerNames = null;
 
     public TransmitterGroupResource(String name) {
         this.name = name;
@@ -39,7 +37,7 @@ public class TransmitterGroupResource implements Serializable {
     }
 
     public void setTransmitterNames(List<String> transmitterNames) {
-        this.transmitterNames = transmitterNames;
+        this.transmitterNames = (ArrayList<String>) transmitterNames;
     }
 
     public List<String> getOwnerNames() {
@@ -47,15 +45,8 @@ public class TransmitterGroupResource implements Serializable {
     }
 
     public void setOwnerNames(List<String> ownerNames) {
-        this.ownerNames = ownerNames;
+        this.ownerNames = (ArrayList<String>) ownerNames;
     }
 
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
 
 }

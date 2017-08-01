@@ -2,8 +2,6 @@ package de.hampager.dapnetmobile.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -27,6 +25,8 @@ import de.hampager.dapnetmobile.adapters.StatsAdapter;
 import de.hampager.dapnetmobile.api.HamPagerService;
 import de.hampager.dapnetmobile.api.ServiceGenerator;
 import de.hampager.dapnetmobile.api.StatsResource;
+import de.hampager.dapnetmobile.api.error.APIError;
+import de.hampager.dapnetmobile.api.error.ErrorUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,7 +45,7 @@ public class WelcomeFragment extends Fragment {
     ImageView muninImageView;
     private RecyclerView recyclerView;
     private StatsAdapter adapter;
-    private String server;
+
 
     public WelcomeFragment() {
         // Required empty public constructor
@@ -67,10 +67,6 @@ public class WelcomeFragment extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     private void initViews(View v) {
         recyclerView = (RecyclerView) v.findViewById(R.id.welcome_statslist);
@@ -78,14 +74,10 @@ public class WelcomeFragment extends Fragment {
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        server = sharedPref.getString("server", "http://www.hampager.de:8080");
+        String server = sharedPref.getString("server", "http://www.hampager.de:8080");
         muninImageView = (ImageView) v.findViewById(R.id.statsImage);
         Picasso.with(muninImageView.getContext()).load("https://www.afu.rwth-aachen.de/munin/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png").into(muninImageView);
         fetchJSON(server);
-    }
-
-    private void getImage() {
-
     }
 
 
@@ -110,7 +102,8 @@ public class WelcomeFragment extends Fragment {
                     recyclerView.setAdapter(adapter);
 
                 } else {
-                    //APIError error = ErrorUtils.parseError(response);
+                    APIError error = ErrorUtils.parseError(response);
+                    Log.e(TAG,error.toString());
                     Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
                     Snackbar.make(recyclerView, "Error! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -130,13 +123,8 @@ public class WelcomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_welcome, container, false);
-        Bundle bundle = this.getArguments();
-        if (bundle != null) {
-            if (bundle.getBoolean(ARG_PARAM1, false)) {
-                //TextView mLogInText = (TextView) v.findViewById(R.id.call_call_sign);
-                //mLogInText.setText(R.string.welcome_loggedInText);
-            }
-        }
+
+        //Implement arguments and bundle checks
         TextView mLinkView1 = (TextView) v.findViewById(R.id.linkView1);
         mLinkView1.setMovementMethod(LinkMovementMethod.getInstance());
         TextView mLinkView2 = (TextView) v.findViewById(R.id.linkView2);
@@ -146,16 +134,5 @@ public class WelcomeFragment extends Fragment {
         return v;
     }
 
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-    }
 
 }

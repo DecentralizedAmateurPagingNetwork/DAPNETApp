@@ -39,10 +39,8 @@ public class TransmitterGroupCompletionView extends TokenCompleteTextView<Transm
         //Stupid simple example of guessing if we have an email or not
         int index = completionText.indexOf('@');
         if (index == -1) {
-            //return new Callsign(completionText, completionText.replace(" ", "") + "@example.com");
             return new TransmitterGroupResource(completionText);
         } else {
-            //return new Callsign(completionText.substring(0, index), completionText);
             return new TransmitterGroupResource(completionText.substring(0, index));
         }
     }

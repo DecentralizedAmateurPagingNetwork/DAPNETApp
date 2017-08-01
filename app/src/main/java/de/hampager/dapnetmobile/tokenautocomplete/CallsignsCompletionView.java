@@ -12,7 +12,6 @@ import com.tokenautocomplete.TokenCompleteTextView;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.api.CallSignResource;
 
-//import com.tokenautocomplete.TokenCompleteTextView;
 
 public class CallsignsCompletionView extends TokenCompleteTextView<CallSignResource> {
 
@@ -41,10 +40,8 @@ public class CallsignsCompletionView extends TokenCompleteTextView<CallSignResou
         //Stupid simple example of guessing if we have an email or not
         int index = completionText.indexOf('@');
         if (index == -1) {
-            //return new Callsign(completionText, completionText.replace(" ", "") + "@example.com");
             return new CallSignResource(completionText);
         } else {
-            //return new Callsign(completionText.substring(0, index), completionText);
             return new CallSignResource(completionText.substring(0, index));
         }
     }

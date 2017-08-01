@@ -20,10 +20,6 @@ public class ServiceGenerator {
     // No need to instantiate this class.
     private ServiceGenerator() {
     }
-    /*
-    public static <S> S createService(Class<S> serviceClass) {
-        return createService(serviceClass, null, null);
-    }*/
     public static <S> S createService(Class<S> serviceClass) {
         builder.client(httpClient.build());
         retrofit = builder.build();
@@ -34,7 +30,6 @@ public class ServiceGenerator {
             String authToken = Credentials.basic(username, password);
             return createService(serviceClass, authToken);
         }
-        //Old code will create stack overflow: return createService(serviceClass, null, null);
         builder.client(httpClient.build());
         retrofit = builder.build();
         return retrofit.create(serviceClass);
@@ -51,6 +46,8 @@ public class ServiceGenerator {
                 builder.client(httpClient.build());
                 retrofit = builder.build();
             }
+        } else {
+            throw new IllegalArgumentException("Error: Empty authToken received");
         }
 
         return retrofit.create(serviceClass);

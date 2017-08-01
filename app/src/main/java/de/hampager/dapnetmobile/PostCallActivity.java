@@ -98,7 +98,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     // tasks available
                     ArrayList<CallSignResource> data = response.body();
                     setCallsigns(data);
-                    //adapter = new DataAdapter(data);
+                    //adapter = new CallAdapter(data);
                 } else {
                     //APIError error = ErrorUtils.parseError(response);
                     Log.e(TAG, "Error " + response.code());
@@ -175,7 +175,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     // tasks available
                     ArrayList<TransmitterGroupResource> data = response.body();
                     setTransmittergroups(data);
-                    //adapter = new DataAdapter(data);
+                    //adapter = new CallAdapter(data);
                 } else {
                     //APIError error = ErrorUtils.parseError(response);
                     Log.e(TAG, "Error " + response.code());
