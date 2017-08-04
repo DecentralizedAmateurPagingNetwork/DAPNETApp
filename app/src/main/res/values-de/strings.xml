@@ -79,7 +79,7 @@
     <string name="owners">Besitzer</string>
     <string name="timeslot">Timeslot</string>
     <string name="timeslots">Timeslots</string>
-    <string name="transmission_power">Übertragungsleistung</string>
+    <string name="transmission_power">Übertragungsleistung (W)</string>
     <string name="type">Type</string>
 
 
