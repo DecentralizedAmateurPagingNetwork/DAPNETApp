@@ -72,14 +72,14 @@
     <string name="email_prompt">Por favor ingrese un nombre o un correo electronico.</string>
 
     <string name="hello_blank_fragment">Ya viene ayuda pronto.</string>
-    <string name="generic_error">Generic error</string>
+    <string name="generic_error">Error generico</string>
     <string name="map">Mapa</string>
-    <string name="owner">Owner</string>
-    <string name="owners">Owners</string>
+    <string name="owner">Possedor</string>
+    <string name="owners">Possedores</string>
     <string name="timeslot">Timeslot</string>
     <string name="timeslots">Timeslots</string>
-    <string name="transmission_power">Transmission Power (W)</string>
-    <string name="type">Type</string>
+    <string name="transmission_power">Potencia de transmisión (W)</string>
+    <string name="type">Tipo</string>
 
 
 </resources>
