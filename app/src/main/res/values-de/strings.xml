@@ -75,6 +75,12 @@
     <string name="generic_error">Generischer Fehler</string>
 
     <string name="map">Karte</string>
+    <string name="owner">Besitzer</string>
+    <string name="owners">Besitzer</string>
+    <string name="timeslot">Timeslot</string>
+    <string name="timeslots">Timeslots</string>
+    <string name="transmission_power">Übertragungsleistung</string>
+    <string name="type">Type</string>
 
 
 </resources>

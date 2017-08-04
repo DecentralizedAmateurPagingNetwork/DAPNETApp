@@ -211,7 +211,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
             //t.setDescriptionBoxCornerWidth(32);
             //t.setDescriptionBoxPadding(6);
             //t.setDescriptionMaxWidth(200);
-            
+
             fo.add(t);
         }
 

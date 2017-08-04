@@ -140,7 +140,12 @@
     <string name="hello_blank_fragment">L\'aiuto sta arrivando!\n La pagina sarà riempita al più presto.</string>
     <string name="generic_error">Generic error</string>
     <string name="map">Mappa</string>
-
+    <string name="owner">Owner</string>
+    <string name="owners">Owners</string>
+    <string name="timeslot">Timeslot</string>
+    <string name="timeslots">Timeslots</string>
+    <string name="transmission_power">Transmission Power (W)</string>
+    <string name="type">Type</string>
 
 
 </resources>

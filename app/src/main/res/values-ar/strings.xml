@@ -69,5 +69,11 @@
 <string name="hello_blank_fragment">المساعدة تحت الأنشاء!\n سيتم ملء هذه الصفحة قريبا.</string>
     <string name="generic_error">Generic error</string>
     <string name="map">Map</string>
+    <string name="owner">Owner</string>
+    <string name="owners">Owners</string>
+    <string name="timeslot">Timeslot</string>
+    <string name="timeslots">Timeslots</string>
+    <string name="transmission_power">Transmission Power (W)</string>
+    <string name="type">Type</string>
 
 </resources>
