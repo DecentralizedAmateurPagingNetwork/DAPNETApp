@@ -55,7 +55,6 @@ import retrofit2.Response;
 public class MapFragment extends Fragment implements MapEventsReceiver {
     static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE=1;
     private static final String TAG = "MapFragment";
-    private MapView map;
     //Items for our Overlays
     ArrayList<OverlayItem> onlineWide = new ArrayList<>();
     ArrayList<OverlayItem> offlineWide = new ArrayList<>();
@@ -67,6 +66,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     ItemizedOverlayWithFocus<OverlayItem> dpOverlay;
     Menu menu;
     FolderOverlay fo;
+    private MapView map;
     public MapFragment() {
         // Required empty public constructor
     }
@@ -208,11 +208,13 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         ItemizedOverlayWithFocus[] ovList={ewOverlay,dwOverlay,epOverlay,dpOverlay};
         fo = new FolderOverlay();
         for(ItemizedOverlayWithFocus t : ovList){
-            t.setDescriptionBoxCornerWidth(32);
-            t.setDescriptionBoxPadding(6);
-            t.setDescriptionMaxWidth(200);
+            //t.setDescriptionBoxCornerWidth(32);
+            //t.setDescriptionBoxPadding(6);
+            //t.setDescriptionMaxWidth(200);
+            
             fo.add(t);
         }
+
         map.getOverlays().add(fo);
 
         ewOverlay.setFocusItemsOnTap(true);
@@ -244,7 +246,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                     // tasks available
                     ArrayList<TransmitterResource> data = response.body();
                     for(TransmitterResource t: data){
-                        OverlayItem temp = new OverlayItem(t.getName(),t.toString(),new GeoPoint(t.getLatitude(),t.getLongitude()));
+                        OverlayItem temp = new OverlayItem(t.getName(), getDesc(t), new GeoPoint(t.getLatitude(), t.getLongitude()));
                         if (t.getUsage().equals("WIDERANGE")){
                             if(t.getStatus().equals("ONLINE")){
                                 onlineWide.add(onlineWide.size(),temp);
@@ -278,6 +280,32 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                 Log.e(TAG, t.getMessage());
             }
         });
+    }
+
+    private String getDesc(TransmitterResource TrRe) {
+        String s = "";
+        String dot = ": ";
+        Context res = getActivity();
+        s += res.getString(R.string.type);
+        s += dot;
+        s += TrRe.getUsage();
+        s += "\n";
+        s += res.getString(R.string.transmission_power);
+        s += dot;
+        s += Double.toString(TrRe.getPower());
+        s += "\n";
+        if (TrRe.getTimeSlot().length() > 1) s += res.getString(R.string.timeslots);
+        else s += res.getString(R.string.timeslot);
+        s += dot;
+        s += TrRe.getTimeSlot();
+        s += "\n";
+        if (TrRe.getOwnerNames().size() > 1) s += res.getString(R.string.owners);
+        else s += res.getString(R.string.owner);
+        s += dot;
+        for (String temp : TrRe.getOwnerNames()) {
+            s += temp + " ";
+        }
+        return s;
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

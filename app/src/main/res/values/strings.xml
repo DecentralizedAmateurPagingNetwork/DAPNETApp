@@ -78,4 +78,11 @@
     <string name="offline_filter" translatable="false">Offline</string>
     <string name="widerange_filter" translatable="false">Widerange</string>
     <string name="personal_filter" translatable="false">Personal</string>
+    <string name="action_search" translatable="false">Search</string>
+    <string name="type">Type</string>
+    <string name="transmission_power">Transmission Power (W)</string>
+    <string name="timeslots">Timeslots</string>
+    <string name="timeslot">Timeslot</string>
+    <string name="owner">Owner</string>
+    <string name="owners">Owners</string>
 </resources>

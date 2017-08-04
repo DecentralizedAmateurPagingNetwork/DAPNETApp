@@ -1,9 +1,13 @@
 
 package de.hampager.dapnetmobile.api;
 
+import android.content.res.Resources;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.hampager.dapnetmobile.R;
 
 public class TransmitterResource {
     //Currently not assigned: authKey, nodeName, address, deviceType, deviceVersion, callCount, antennaAbobeGroundLevel,antennaType,a ntennaDirection,
@@ -11,7 +15,7 @@ public class TransmitterResource {
     private String authKey;
     private double longitude;
     private double latitude;
-    private String power;
+    private double power;
     private String nodeName;
     private Address address;
     private String timeSlot;
@@ -38,7 +42,7 @@ public class TransmitterResource {
     public TransmitterResource() {
     }
 
-    public TransmitterResource(String name, String authKey, double longitude, double latitude, String power, String nodeName, Address address, String timeSlot, List<String> ownerNames, String deviceType, String deviceVersion, Integer callCount, String status, Integer antennaAboveGroundLevel, String antennaType, Integer antennaDirection, String antennaGainDbi, Object lastUpdate, String usage, Integer identificationAddress, String lastConnected, Object connectedSince) {
+    public TransmitterResource(String name, String authKey, double longitude, double latitude, double power, String nodeName, Address address, String timeSlot, List<String> ownerNames, String deviceType, String deviceVersion, Integer callCount, String status, Integer antennaAboveGroundLevel, String antennaType, Integer antennaDirection, String antennaGainDbi, Object lastUpdate, String usage, Integer identificationAddress, String lastConnected, Object connectedSince) {
         super();
         this.name = name;
         this.authKey = authKey;
@@ -63,7 +67,8 @@ public class TransmitterResource {
         this.lastConnected = lastConnected;
         this.connectedSince = connectedSince;
     }
-    public TransmitterResource(String name, String authKey, double longitude, double latitude, String power, String nodeName, String timeSlot, List<String> ownerNames, String deviceType, String deviceVersion, Integer callCount, String status, Integer antennaAboveGroundLevel, String antennaType, Integer antennaDirection, String antennaGainDbi, Object lastUpdate, String usage, Integer identificationAddress, String lastConnected, Object connectedSince) {
+
+    public TransmitterResource(String name, String authKey, double longitude, double latitude, double power, String nodeName, String timeSlot, List<String> ownerNames, String deviceType, String deviceVersion, Integer callCount, String status, Integer antennaAboveGroundLevel, String antennaType, Integer antennaDirection, String antennaGainDbi, Object lastUpdate, String usage, Integer identificationAddress, String lastConnected, Object connectedSince) {
         super();
         this.name = name;
         this.authKey = authKey;
@@ -105,15 +110,15 @@ public class TransmitterResource {
     }
 
 
-    private String getPower() {
+    public double getPower() {
         return power;
     }
 
-    private String getTimeSlot() {
+    public String getTimeSlot() {
         return timeSlot;
     }
 
-    private List<String> getOwnerNames() {
+    public List<String> getOwnerNames() {
         return ownerNames;
     }
 
@@ -123,20 +128,5 @@ public class TransmitterResource {
 
     public String getUsage() {
         return usage;
-    }
-    public String toString(){
-        String s = "";
-        s+="Usage: ";
-        s+=getUsage();
-        s+="\n";
-        s+="Transmission Power (W): ";
-        s+=getPower();
-        s+="\n";
-        s+="Timeslot: ";
-        s+=getTimeSlot();
-        s+="\n";
-        s+="Owner: ";
-        s+=getOwnerNames();
-        return s;
     }
 }
