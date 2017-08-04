@@ -32,5 +32,5 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.splitwise:tokenautocomplete:2.0.8@aar'
     compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.github.MKergall:osmbonuspack:6.4'
+    
 }
