@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         if (!isDrawerLocked) {
             drawer.addDrawerListener(toggle);
-            //getActionBar().setDisplayHomeAsUpEnabled(true);
+            // getActionBar().setDisplayHomeAsUpEnabled(true)
         }
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -104,11 +104,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void updateLoggedIn() {
-        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        loggedIn = sharedPref.getBoolean("isLoggedIn", false);
-    }
-
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -116,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MenuItem mloginstatus = nv.findItem(R.id.nav_loginstatus);
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
-        String mServer = sharedPref.getString("server", null);
+        mServer = sharedPref.getString("server", null);
 
         if (loggedIn) {
             mloginstatus.setTitle(R.string.nav_logout);
@@ -129,7 +124,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setVersion(mServer);
         } else {
             setVersion("http://hampager.de:8080");
-            if (mServer == null) setVersion("http://dapnet.db0sda.ampr.org:8080");
+            //if mServer == null
+            // setVersion("http://dapnet.db0sda.ampr.org:8080")
         }
 
         return true;
@@ -145,28 +141,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        //int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        /*Add Settings?
-         if (id == R.id.action_settings) {
-         return true;
-         }*/
-
-        return super.onOptionsItemSelected(item);
-    }
+    // Handle action bar item clicks in boolean onOptionsItemSelected(MenuItem item). The action bar will
+    // automatically handle clicks on the Home/Up button, so long
+    // as you specify a parent activity in AndroidManifest.xml.
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        //item.setCheckable(true);
+        // item.setCheckable(true)
 
         item.setChecked(true);
         if (mPreviousMenuItem != null && !(mPreviousMenuItem.equals(item))) {
@@ -177,7 +161,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction ft = fragmentManager.beginTransaction();
         if (id == R.id.nav_calls) {
             //Insert Call Fragment with 1 Coloumn
-            //ft.replace(R.id.container, HamnetCallFragment.newInstance(1));
+            // ft.replace(R.id.container, HamnetCallFragment.newInstance(1))
             if (loggedIn) {
                 ft.replace(R.id.container, CallFragment.newInstance());
             } else {
@@ -207,12 +191,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ft.commit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        //item.setChecked(true);
+        // item.setChecked(true)
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    public boolean onNavHeaderSelected(View v) {
+    public boolean onNavHeaderSelected() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn));
@@ -222,7 +206,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.getMenu().findItem(R.id.nav_calls).setChecked(false);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-
         return true;
     }
 
@@ -231,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = sharedPref.edit();
         edit.putString("defServer", server);
-        edit.commit();
+        edit.apply();
     }
 
     private void setVersion(String server) {
@@ -249,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + response.body().getCore() + ", API v" + response.body().getApi() + ", " + inServer;
                     mNavHeadVersions.setText(tmp);
                 } else {
-                    //APIError error = ErrorUtils.parseError(response);
+                    // APIError error = ErrorUtils.parseError(response)
                     Log.e(TAG, "Error getting versions" + response.code());
                     Log.e(TAG, response.message());
                     Snackbar.make(findViewById(R.id.container), getString(R.string.error_get_versions) + " " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -263,7 +246,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
-        mNavHeadVersions.setText("App v" + BuildConfig.VERSION_NAME);
+        String s = "";
+        s += "App v";
+        s += BuildConfig.VERSION_NAME;
+        mNavHeadVersions.setText(s);
 
     }
 }

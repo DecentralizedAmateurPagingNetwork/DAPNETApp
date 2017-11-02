@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.hampager.dapnetmobile.R;
 
 public class TransmitterResource {
     //Currently not assigned: authKey, nodeName, address, deviceType, deviceVersion, callCount, antennaAbobeGroundLevel,antennaType,a ntennaDirection,

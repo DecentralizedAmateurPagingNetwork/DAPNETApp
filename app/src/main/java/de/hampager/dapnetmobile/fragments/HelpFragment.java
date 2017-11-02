@@ -2,9 +2,12 @@ package de.hampager.dapnetmobile.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import de.hampager.dapnetmobile.R;
 
@@ -36,7 +39,14 @@ public class HelpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_help, container, false);
+        View result =inflater.inflate(R.layout.fragment_help, container, false);
+        LinearLayout linearLayout = (LinearLayout) result.findViewById(R.id.helpLayout);
+        for (String s : getResources().getStringArray(R.array.faq)){
+            TextView tv = new TextView(getActivity());
+            tv.setText(Html.fromHtml(s));
+            linearLayout.addView(tv);
+        }
+        return result;
     }
 
 }

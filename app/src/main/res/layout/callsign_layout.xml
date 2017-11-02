@@ -10,12 +10,12 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="NAME"
+        android:text="@string/name"
         android:textAllCaps="true" />
 
     <TextView
         android:id="@+id/token_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Description" />
+        android:text="@string/description" />
 </LinearLayout>

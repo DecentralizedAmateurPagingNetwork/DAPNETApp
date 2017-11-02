@@ -1,15 +1,16 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="de.hampager.dapnetmobile.fragments.HelpFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+<ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="de.hampager.dapnetmobile.fragments.HelpFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
-
-</FrameLayout>
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:paddingTop="4dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="64dp"
+        android:id="@+id/helpLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
+</ScrollView>

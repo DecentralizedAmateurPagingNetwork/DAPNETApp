@@ -19,6 +19,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
@@ -28,10 +30,12 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.FolderOverlay;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
+import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hampager.dapnetmobile.BuildConfig;
 import de.hampager.dapnetmobile.R;
@@ -60,6 +64,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     ArrayList<OverlayItem> offlineWide = new ArrayList<>();
     ArrayList<OverlayItem> onlinePers = new ArrayList<>();
     ArrayList<OverlayItem> offlinePers = new ArrayList<>();
+    List<TransmitterOverlayItem> transmitters = new ArrayList<>();
     ItemizedOverlayWithFocus<OverlayItem> ewOverlay;
     ItemizedOverlayWithFocus<OverlayItem> dwOverlay;
     ItemizedOverlayWithFocus<OverlayItem> epOverlay;
@@ -139,7 +144,8 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         mapController.setZoom(6);
         GeoPoint startPoint = new GeoPoint(50.77623, 6.06937);
         mapController.setCenter(startPoint);
-
+        MapEventsOverlay mapEventsOverlay = new MapEventsOverlay(this);
+        map.getOverlays().add(0, mapEventsOverlay);
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         String server = sharedPref.getString("server", "http://www.hampager.de:8080");
         String user = sharedPref.getString("user", "invalid");
@@ -212,7 +218,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
             //t.setDescriptionBoxPadding(6);
             //t.setDescriptionMaxWidth(200);
 
-            fo.add(t);
+            map.getOverlays().add(t);
         }
 
         map.getOverlays().add(fo);
@@ -221,7 +227,9 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     }
 
     @Override public boolean singleTapConfirmedHelper(GeoPoint p) {
+        Toast.makeText(getActivity(), "Tap on ("+p.getLatitude()+","+p.getLongitude()+")", Toast.LENGTH_SHORT).show();
         fo.closeAllInfoWindows();
+        InfoWindow.closeAllInfoWindowsOn(map);
         return true;
     }
 
@@ -246,20 +254,15 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                     // tasks available
                     ArrayList<TransmitterResource> data = response.body();
                     for(TransmitterResource t: data){
-                        OverlayItem temp = new OverlayItem(t.getName(), getDesc(t), new GeoPoint(t.getLatitude(), t.getLongitude()));
+                        boolean tWideRange=false;
+                        boolean tOnline=false;
                         if (t.getUsage().equals("WIDERANGE")){
-                            if(t.getStatus().equals("ONLINE")){
-                                onlineWide.add(onlineWide.size(),temp);
-                            }else{
-                                offlineWide.add(offlineWide.size(),temp);
-                            }
-                        }else{
-                            if(t.getStatus().equals("ONLINE")){
-                                onlinePers.add(onlinePers.size(),temp);
-                            }else{
-                                offlinePers.add(offlinePers.size(),temp);
-                            }
+                            tWideRange=true;
                         }
+                        if(t.getStatus().equals("ONLINE")){
+                            tOnline=true;
+                        }
+                        transmitters.add(new TransmitterOverlayItem(t.getName(), getDesc(t), new GeoPoint(t.getLatitude(), t.getLongitude()),tWideRange,tOnline));
                     }
                     config();
                 } else {
@@ -282,30 +285,31 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         });
     }
 
-    private String getDesc(TransmitterResource TrRe) {
-        String s = "";
+    private String getDesc(TransmitterResource transmitterResource) {
+        StringBuilder sb = new StringBuilder();
         String dot = ": ";
         Context res = getActivity();
-        s += res.getString(R.string.type);
-        s += dot;
-        s += TrRe.getUsage();
-        s += "\n";
-        s += res.getString(R.string.transmission_power);
-        s += dot;
-        s += Double.toString(TrRe.getPower());
-        s += "\n";
-        if (TrRe.getTimeSlot().length() > 1) s += res.getString(R.string.timeslots);
-        else s += res.getString(R.string.timeslot);
-        s += dot;
-        s += TrRe.getTimeSlot();
-        s += "\n";
-        if (TrRe.getOwnerNames().size() > 1) s += res.getString(R.string.owners);
-        else s += res.getString(R.string.owner);
-        s += dot;
-        for (String temp : TrRe.getOwnerNames()) {
-            s += temp + " ";
+        sb.append(res.getString(R.string.type));
+        sb.append(dot);
+        sb.append(transmitterResource.getUsage());
+        sb.append("\n");
+        sb.append(res.getString(R.string.transmission_power));
+        sb.append(dot);
+        sb.append(Double.toString(transmitterResource.getPower()));
+        sb.append("\n");
+        if (transmitterResource.getTimeSlot().length() > 1) sb.append(res.getString(R.string.timeslots));
+        else sb.append(res.getString(R.string.timeslot));
+        sb.append(dot);
+        sb.append(transmitterResource.getTimeSlot());
+        sb.append("\n");
+        if (transmitterResource.getOwnerNames().size() > 1) sb.append(res.getString(R.string.owners));
+        else sb.append(res.getString(R.string.owner));
+        sb.append(dot);
+        for (String temp : transmitterResource.getOwnerNames()) {
+            sb.append(temp);
+            sb.append(" ");
         }
-        return s;
+        return sb.toString();
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -332,12 +336,15 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         item.setChecked(!item.isChecked());
+        //If widerange/personal is true, the corresponding online/offline Overlays will be enabled/disabled according to the state of online/offline
+        //Widerange first
         if(menu.getItem(2).isChecked()){
+            //Online second
             ewOverlay.setEnabled(menu.getItem(0).isChecked());
             ewOverlay.setFocusItemsOnTap(menu.getItem(0).isChecked());
-
+            //Offline second
             dwOverlay.setEnabled(menu.getItem(1).isChecked());
-            ewOverlay.setFocusItemsOnTap(menu.getItem(1).isChecked());
+            dwOverlay.setFocusItemsOnTap(menu.getItem(1).isChecked());
         }else {
             //Disable Online&&Offline WiderangeOverlay
             ewOverlay.setEnabled(false);
@@ -345,11 +352,14 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
             dwOverlay.setEnabled(false);
             dwOverlay.setFocusItemsOnTap(false);
         }
+        //Personal first
         if(menu.getItem(3).isChecked()){
+            //Online second
             epOverlay.setEnabled(menu.getItem(0).isChecked());
             epOverlay.setFocusItemsOnTap(menu.getItem(0).isChecked());
+            //Offline second
             dpOverlay.setEnabled(menu.getItem(1).isChecked());
-            epOverlay.setFocusItemsOnTap(menu.getItem(1).isChecked());
+            dpOverlay.setFocusItemsOnTap(menu.getItem(1).isChecked());
         }else {
             //Disable Online&&Offline PersOverlay
             epOverlay.setEnabled(false);
@@ -358,10 +368,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
             dpOverlay.setFocusItemsOnTap(false);
         }
         map.invalidate();
-        InfoWindow.closeAllInfoWindowsOn(map);
-
         return true;
-
     }
     @Override
     public void onResume(){

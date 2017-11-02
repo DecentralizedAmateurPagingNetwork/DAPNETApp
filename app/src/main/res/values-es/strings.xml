@@ -80,6 +80,10 @@
     <string name="timeslots">Timeslots</string>
     <string name="transmission_power">Potencia de transmisión (W)</string>
     <string name="type">Tipo</string>
+    <string name="statistics_for_dapnet">Statistics for DAPNET</string>
+    <string name="name">NAME</string>
+    <string name="description">Description</string>
+    <string name="miniature_logo">Miniature Logo</string>
 
 
 </resources>

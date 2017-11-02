@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="faq">
+        <item name="getAccount_title">&lt;b>I do not have an account. How do I get one?&lt;/b></item>
+        <item name="getAccount_text">Due to the reason that you can trigger amateur radio transmissions with your account, please apply for an account by emailing to rwth-afu [at] online.de and provide some prove that you are a licensed amateur radio operator. Also give your Pager ID (RIC) as you can see here: </item>
+        <item name="accountEmail_title">&lt;b>I emailed 10 minutes ago. No answer yet. How long does it take to get an account?&lt;/b></item>
+        <item name="accountEmail_text">We review the applications in our free time. So please be patient for some days.</item>
+        <item name="whatCallSign_title">&lt;b>What is a callsign?&lt;/b></item>
+        <item name="whatCallSign_text">A callsign is logical connection between a name (the callsign) and one or multiple RIC numbers.</item>
+        <item name="whatTransmitter_title">&lt;b>What is a transmitter?&lt;/b></item>
+        <item name="whatTransmitter_text">A transmitter is a device that puts the POCSAG signal on the air. There are many hardware configurations, like C9000, RasPager. Have a look at https://www.afu.rwth-aachen.de/projekte/funkruf-pager-pocsag.</item>
+        <item name="whatRIC_title">&lt;b>What is a RIC?&lt;/b></item>
+        <item name="whatRIC_text">A RIC is the identification number in the POCSAG world. They can have special meaning like the clock-RIC to set the date and time on your pager. Mostly they identify personally your pager. The assignment between a personal RIC and you is the "Callsign".</item>
+        <item name="addCallSign_title">&lt;b>I cannot add a callsign or a transmitter.&lt;/b></item>
+        <item name="addCallSign_text">Due to abuse reasons, only admins can add callsigns or transmitters. Please contact rwth-afu [at] online.de. Once your callsign or transmitter is assigned to you, you can edit it by yourself.</item>
+        <item name="addTransmitter_title">&lt;b>I want to add a transmitter to the network.&lt;/b></item>
+        <item name="addTransmitter_text">"Very nice. We like the network growing. Please send an email to rwth-afu [at] online.de and give the following information:
+
+    Callsign of the transmitter
+    Location Latitude and Longitude (Please in decimal form, e.g. 50.12345)
+    Type of transmitter: Widerange (> 1 watt) oder Personal (≤1 watt, e.g. RasPager)
+    Transmitter output power in watt
+    Antenna type (omni or directional)
+    Height of the antenna above ground (!), not above sea level
+    Gain of the antenna minus cable losses in dBi
+    Desired time slots (Please have a look here http://www.hampager.de/#/transmitters/map and find out, which timeslots in your neighborhood are already used.) If you are unsure, just let us know and we will find a suitable solution."</item>
+        <item name="addNode_title">&lt;b>I want to add a node to the network.&lt;/b></item>
+        <item name="addNode_text">Please send an email to rwth-afu [at] online.de and give the following information:
+
+    Amateur radio callsign.
+    Location Latitude and Longitude (Please in decimal form, e.g. 50.12345)
+    Some reason, why it makes sense to add your node.
+
+Keep in mind that you need a stable HAMNET connection (44.0.0.0/8) to join the cluster network.</item>
+        <item name="noRubrics_title">&lt;b>I do not receive the rubrics on my skyper.&lt;/b></item>
+        <item name="noRubrics_text">Please activate your skyper on http://www.hampager.de/#/rubrics using the "Activate Rubrics" function. You have to provide your pager ID (RIC).</item>
+        <item name="addRubric_title">&lt;b>I want to add a rubric to the network.&lt;/b></item>
+        <item name="addRubric_text">Please send an email to rwth-afu [at] online.de and give the following information:
+
+    The desired name
+    The content you want to provide
+    The transmitter group on which you want to send out your data</item>
+        <item name="sendingAuto_title">&lt;b>I want to send automated messages from third party sources.&lt;/b></item>
+        <item name="sendingAuto_text">You can use the REST API to do so. Description here: https://github.com/DecentralizedAmateurPagingNetwork/Core/wiki/Beschreibung-der-REST-API. Please be aware that the traffic capability is limited on the air interface. So make fair use and use a transmitter group that fits to your needs. Nobody wants in transmitter group "all" the information that someone has phoned you or your washing machine is done.</item>
+        <item name="whatTimeSlot_title">&lt;b>What is a timeslot?&lt;/b></item>
+        <item name="whatTimeSlot_text">As all transmitters work on the same frequency (TDMA), only one transmitter can be active at a time to avoid interference. This is why there are 16 timeslots (0 to F) assigned to each transmitter. If you operate a transmitter it is mandatory to have your clock synced by NTP. Otherwise you will destroy the network.</item>
+        <item name="whichTimeSlot_title">&lt;b>How do I know which timeslots to use on a transmitter?&lt;/b></item>
+        <item name="whichTimeSlot_text">Please have a look here http://www.hampager.de/#/transmitters/map and find out, which timeslots in your neighborhood are already used.)</item>
+        <item name="whereHardware_title">&lt;b>I want to get a plug-and-play hardware for a new transmitter site. Where can I get it from?&lt;/b></item>
+        <item name="whereHardware_text">There is an easy solution with GM1200 and a RasPi. If you like to get a 19 Inch Rack, please send an email to dbwr [at] darc.de. An example can be found here https://www.afu.rwth-aachen.de/projekte/funkruf-pager-pocsag/funkrufsender-19-zoll-mit-gm1200.</item>
+        <item name="whereSkyper_title">&lt;b>Where can I get a Skyper?&lt;/b></item>
+        <item name="whereSkyper_text">Please help yourself. There is a possibility to buy at www.funkhandel.com.</item>
+        <item name="whySkyper_title">&lt;b>Why is the time displayed on my Skyper wrong?&lt;/b></item>
+        <item name="whySkyper_text">It is not wrong, it\'s UTC. We know, there are pros and cons of using UTC, but this is the most common understanding.</item>
+        <item name="someRubrics_title">&lt;b>Some rubics are not transmitted on my transmitter.&lt;/b></item>
+        <item name="someRubrics_text">Please check, if your transmitter is in a member of all desired transmitter groups that are assigned to a rubric. Especially for the DX-Cluster messages, there were complains about heavy load on some transmitters. So we added another transmitter group of the DX-Cluster messages. If you want to transmit those messages, have your transmitter added to the group.</item>
+        <item name="longTransmitBug_title">&lt;b>Sometimes my transmitter transmits longer than the assigned timeslots.&lt;/b></item>
+        <item name="longTransmitBug_text">We are aware of this bug. It is tracked in this issue: https://github.com/rwth-afu/UniPager/issues/66 and will be hopefully solved soon.</item>
+        <item name="SMTPSend_title">&lt;b>Is there an SMTP-Interface to DAPNET, so I can send calls with my email program?&lt;/b></item>
+        <item name="SMTPSend_text">Not yet. Feel free to contribute. Use the open documented REST-API and write a simple SMTP server generating REST calls to the API.&lt;/b></item>
+    </string-array>
+</resources>

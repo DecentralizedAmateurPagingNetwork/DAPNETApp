@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +45,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     String user;
     String password;
     private TextInputEditText message;
-    private EditText transmitterGroupNames;
+    //private EditText transmitterGroupNames
     private Boolean emergencyBool = false;
     private List<String> csnl = new ArrayList<>();
     private List<String> tgnl = new ArrayList<>();
@@ -67,11 +66,12 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     }
 
     private void defineObjects() {
-        Log.i("TEST","TEST");
+        Log.i("TEST", "TEST");
         message = (TextInputEditText) findViewById(R.id.post_call_text);
         Switch emergency = (Switch) findViewById(R.id.post_call_emergencyswitch);
-
-        message.setText(user.toUpperCase()+": ");
+        String m = user.toUpperCase();
+        m += ": ";
+        message.setText(m);
         message.requestFocus();
         emergency.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

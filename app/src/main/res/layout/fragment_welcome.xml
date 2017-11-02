@@ -81,7 +81,8 @@
             android:adjustViewBounds="true"
             android:cropToPadding="true"
             android:padding="4dp"
-            app:srcCompat="@mipmap/ic_afu_dapnet_logo" />
+            app:srcCompat="@mipmap/ic_afu_dapnet_logo"
+            android:contentDescription="@string/statistics_for_dapnet" />
 
     </LinearLayout>
 </ScrollView>
