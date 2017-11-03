@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources tools:ignore="MissingTranslation" xmlns:tools="http://schemas.android.com/tools">
     <string-array name="faq">
         <item name="getAccount_title">&lt;b>I do not have an account. How do I get one?&lt;/b></item>
         <item name="getAccount_text">Due to the reason that you can trigger amateur radio transmissions with your account, please apply for an account by emailing to rwth-afu [at] online.de and provide some prove that you are a licensed amateur radio operator. Also give your Pager ID (RIC) as you can see here: </item>
