@@ -74,7 +74,8 @@
     <string name="email_prompt">enter a name or email address</string>
 
     <string name="hello_blank_fragment">Help is on the way!\n This page will shortly be filled.</string>
-<string name="map">Map</string>
+
+    <string name="map">Map</string>
     <string name="online_filter" translatable="false">Online</string>
     <string name="offline_filter" translatable="false">Offline</string>
     <string name="widerange_filter" translatable="false">Widerange</string>
@@ -90,4 +91,5 @@
     <string name="name">NAME</string>
     <string name="description">Description</string>
     <string name="miniature_logo">Miniature Logo</string>
+    <string name="DAPscription" translatable="false">&lt;p style="text-align:center">DAPNET is an international amateur radio paging network developed by the Amateur Radio Group at the RWTH Aachen University. In order to participate and use this app, you need to be a valid amateur radio operator and have an account at &lt;a href="http://www.hampager.de">hampager.de&lt;/a>. If you do not have a an account yet, visit our Website now and follow the instructions for subscription. You should also check out our Help/FAQ.&lt;br> This App has been created by &lt;a href=https://github.com/IHFSchwarz>IHFSchwarz&lt;/a> under supervision of &lt;a href=https://github.com/dh3wr>DH3WR&lt;/a>&lt;/p></string>
 </resources>

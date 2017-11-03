@@ -13,7 +13,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="4dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="64dp">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -24,16 +28,6 @@
             android:padding="8dp" />
 
         <TextView
-            android:id="@+id/welcome"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="@string/hello_welcome_fragment"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="36sp" />
-
-        <TextView
             android:id="@+id/loggedinmessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,31 +35,11 @@
             android:visibility="gone" />
 
         <TextView
-            android:id="@+id/infoTextView"
+            android:padding="4dp"
+            android:id="@+id/DAPscription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/linkView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/github_dh3wr"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/textViewAnd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/and"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/linkView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:text="@string/plchldr" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/welcome_statslist"

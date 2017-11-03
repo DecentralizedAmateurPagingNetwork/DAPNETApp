@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -125,11 +126,9 @@ public class WelcomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_welcome, container, false);
 
         //Implement arguments and bundle checks
-        TextView mLinkView1 = (TextView) v.findViewById(R.id.linkView1);
-        mLinkView1.setMovementMethod(LinkMovementMethod.getInstance());
-        TextView mLinkView2 = (TextView) v.findViewById(R.id.linkView2);
-        mLinkView2.setMovementMethod(LinkMovementMethod.getInstance());
-
+        TextView description = (TextView) v.findViewById(R.id.DAPscription);
+        description.setText( Html.fromHtml(getResources().getString(R.string.DAPscription)));
+        description.setMovementMethod(LinkMovementMethod.getInstance());
         initViews(v);
         return v;
     }

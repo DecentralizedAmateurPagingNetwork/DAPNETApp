@@ -236,10 +236,10 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
     private void sendCall() {
         String msg = message.getText().toString();
-        //List<String> tgnl = Arrays.asList(transmitterGroupNames.getText().toString().split(" "));
         if (callSignsCompletion != null) {
             if (msg.length() != 0 && msg.length() <= 80 && callSignsCompletion.getText().toString().length() != 0) {
                 Log.i(TAG, "CSNL,sendcall" + csnl.toString());
+                //Forcing completion by focus change to prevent Issue #45
                 callSignsCompletion.onFocusChanged(false,View.FOCUS_FORWARD,null);
                 transmitterGroupCompletion.onFocusChanged(false,View.FOCUS_FORWARD,null);
                 sendCallMethod(msg, csnl, tgnl, emergencyBool, server, user, password);
