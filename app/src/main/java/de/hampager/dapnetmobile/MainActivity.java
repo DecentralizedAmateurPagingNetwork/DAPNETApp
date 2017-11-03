@@ -252,4 +252,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mNavHeadVersions.setText(s);
 
     }
+
+    public void onNavHeaderSelected(View view) {
+        onNavHeaderSelected();
+    }
 }
