@@ -205,6 +205,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         transmitterGroupCompletion.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
         transmitterGroupCompletion.allowDuplicates(false);
         transmitterGroupCompletion.setThreshold(0);
+        transmitterGroupCompletion.addObject(new TransmitterGroupResource("ALL"));
     }
 
     private FilteredArrayAdapter<TransmitterGroupResource> generateAdapter(TransmitterGroupResource[] transmittergroups) {

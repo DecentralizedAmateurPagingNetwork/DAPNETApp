@@ -59,13 +59,13 @@
             android:maxLines="1" />-->
 
     <de.hampager.dapnetmobile.tokenautocomplete.TransmitterGroupCompletionView
-            android:id="@+id/transmittergroupSearchView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        android:id="@+id/transmittergroupSearchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/callSignSearchView"
-            android:focusableInTouchMode="true"
-            android:hint="@string/transmittergroup_prompt"
-            android:inputType="text|textNoSuggestions|textMultiLine" />
+        android:focusableInTouchMode="true"
+        android:hint="@string/transmittergroup_prompt"
+        android:inputType="text|textNoSuggestions|textMultiLine" />
 
     <Switch
         android:id="@+id/post_call_emergencyswitch"

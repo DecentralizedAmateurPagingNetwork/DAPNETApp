@@ -2,6 +2,7 @@ package de.hampager.dapnetmobile.tokenautocomplete;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,5 +44,15 @@ public class TransmitterGroupCompletionView extends TokenCompleteTextView<Transm
         } else {
             return new TransmitterGroupResource(completionText.substring(0, index));
         }
+    }
+    @Override
+    public void onFocusChanged(boolean hasFocus, int direction, Rect previous){
+        super.onFocusChanged(hasFocus,direction,previous);
+        if (hasFocus&&getObjects().size()==1&&getObjects().get(0).getName().toUpperCase().equals("ALL")){
+            removeObject(getObjects().get(0));
+        }
+    }
+    private void displayList(){
+
     }
 }
