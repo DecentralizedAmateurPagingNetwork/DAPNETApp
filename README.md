@@ -7,7 +7,10 @@
     <a href="https://f-droid.org/app/de.hampager.dapnetmobile">
         <img src="https://f-droid.org/badge/get-it-on.png" alt="F-Droid" height="80">
     </a>
+    
 </p>
+
+<img src="https://raw.githubusercontent.com/DecentralizedAmateurPagingNetwork/DAPNETApp/master/screenshots.png" alt="Screenshots height=310">
 
 ## Features
 - Send calls
