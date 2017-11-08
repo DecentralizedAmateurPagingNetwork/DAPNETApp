@@ -63,22 +63,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.container);
-        if (((ViewGroup.MarginLayoutParams) frameLayout.getLayoutParams()).leftMargin == (int) getResources().getDimension(R.dimen.drawer_size)) {
-            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
-            drawer.setScrimColor(Color.TRANSPARENT);
-            isDrawerLocked = true;
-            Log.i(TAG, "LockLock");
-        }
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        if (!isDrawerLocked) {
-            drawer.addDrawerListener(toggle);
-            // getActionBar().setDisplayHomeAsUpEnabled(true)
-        }
-        toggle.syncState();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -88,13 +76,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn));
             ft.commit();
         }
+        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.content_frame);
+        Log.i(TAG,"LOCK: "+((ViewGroup.MarginLayoutParams)frameLayout.getLayoutParams()).leftMargin +" S: "+getResources().getDimension(R.dimen.drawer_size));
+        if (((ViewGroup.MarginLayoutParams)frameLayout.getLayoutParams()).leftMargin == (int) getResources().getDimension(R.dimen.drawer_size)) {
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+            drawer.setScrimColor(Color.TRANSPARENT);
+            isDrawerLocked = true;
+            Log.i(TAG, "LockLock");
+        }
+        if (!isDrawerLocked) {
+
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+        }
+
+
 
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer.isDrawerOpen(GravityCompat.START)&&isDrawerLocked) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
 
@@ -192,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         // item.setChecked(true)
+        if(!isDrawerLocked)
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -205,6 +211,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //TODO: Find which item is checked and uncheck it
         navigationView.getMenu().findItem(R.id.nav_calls).setChecked(false);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if(!isDrawerLocked)
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
