@@ -77,12 +77,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.commit();
         }
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        Log.i(TAG,"LOCK: "+((ViewGroup.MarginLayoutParams)frameLayout.getLayoutParams()).leftMargin +" S: "+getResources().getDimension(R.dimen.drawer_size));
         if (((ViewGroup.MarginLayoutParams)frameLayout.getLayoutParams()).leftMargin == (int) getResources().getDimension(R.dimen.drawer_size)) {
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
             drawer.setScrimColor(Color.TRANSPARENT);
             isDrawerLocked = true;
-            Log.i(TAG, "LockLock");
+            Log.d(TAG, "Drawer locked");
         }
         if (!isDrawerLocked) {
 

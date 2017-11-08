@@ -260,8 +260,6 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
     private void sendCallMethod(String msg, List<String> csnl, List<String> tgnl, boolean e, String server, String user, String password) {
         HamnetCall sendvalue = new HamnetCall(msg, csnl, tgnl, e);
-        Log.i(TAG, csnl.toString());
-
         try {
             ServiceGenerator.changeApiBaseUrl(server);
         } catch (NullPointerException err) {
