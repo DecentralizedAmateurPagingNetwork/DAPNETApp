@@ -20,9 +20,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.tokenautocomplete.FilteredArrayAdapter;
 import com.tokenautocomplete.TokenCompleteTextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +52,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     private List<String> csnl = new ArrayList<>();
     private List<String> tgnl = new ArrayList<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,11 +61,20 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         server = sharedPref.getString("server", "http://www.hampager.de:8080");
         user = sharedPref.getString("user", "invalid");
         password = sharedPref.getString("pass", "invalid");
+        Gson gson = new Gson();
+        String callsignJson = sharedPref.getString("callsigns", "");
+        CallSignResource[] callSignResources=gson.fromJson(callsignJson,CallSignResource[].class);
+        if (callSignResources!=null){
+            Log.i(TAG,callSignResources.toString());
+            setCallsigns(callSignResources);
+        }
+        String transmitterJson = sharedPref.getString("transmitters","");
+        TransmitterGroupResource[] transmitterGroupResources= gson.fromJson(transmitterJson,TransmitterGroupResource[].class);
+        if (transmitterGroupResources!=null)
+        setTransmittergroups(transmitterGroupResources);
         defineObjects();
         getCallsigns();
         getTransmitterGroups();
-
-
     }
 
     private void defineObjects() {
@@ -97,7 +109,9 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     Log.i(TAG, "Connection getting Callsigns was successful");
                     // tasks available
                     ArrayList<CallSignResource> data = response.body();
-                    setCallsigns(data);
+                    CallSignResource[] dataArray = data.toArray(new CallSignResource[data.size()]);
+                    saveData(dataArray);
+                    setCallsigns(dataArray);
                     //adapter = new CallAdapter(data);
                 } else {
                     //APIError error = ErrorUtils.parseError(response);
@@ -120,16 +134,30 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         });
     }
 
-    private void setCallsigns(ArrayList<CallSignResource> data) {
-        CallSignResource[] cs = data.toArray(new CallSignResource[data.size()]);
+    private void setCallsigns(CallSignResource[] data) {
         callSignsCompletion = (CallsignsCompletionView) findViewById(R.id.callSignSearchView);
-        callSignsCompletion.setAdapter(generateAdapter(cs));
+        callSignsCompletion.setAdapter(generateAdapter(data));
         callSignsCompletion.setTokenListener(this);
         callSignsCompletion.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
         callSignsCompletion.allowDuplicates(false);
         callSignsCompletion.setThreshold(0);
     }
-
+    private void saveData(CallSignResource[] input){
+        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(input);
+        prefsEditor.putString("callsigns", json);
+        prefsEditor.apply();
+    }
+    private void saveData(TransmitterGroupResource[] input){
+        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        SharedPreferences.Editor prefsEditor = sharedPref.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(input);
+        prefsEditor.putString("transmitters", json);
+        prefsEditor.apply();
+    }
     private FilteredArrayAdapter<CallSignResource> generateAdapter(CallSignResource[] callsigns) {
         return new FilteredArrayAdapter<CallSignResource>(this, R.layout.callsign_layout, callsigns) {
 
@@ -174,8 +202,9 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     Log.i(TAG, "Connection getting transmittergroups was successful");
                     // tasks available
                     ArrayList<TransmitterGroupResource> data = response.body();
-                    setTransmittergroups(data);
-                    //adapter = new CallAdapter(data);
+                    TransmitterGroupResource[] transmitterGroupResources =data.toArray(new TransmitterGroupResource[data.size()]);
+                    saveData(transmitterGroupResources);
+                    setTransmittergroups(transmitterGroupResources);
                 } else {
                     //APIError error = ErrorUtils.parseError(response);
                     Log.e(TAG, "Error " + response.code());
@@ -197,10 +226,9 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         });
     }
 
-    private void setTransmittergroups(ArrayList<TransmitterGroupResource> data) {
-        TransmitterGroupResource[] tgrs = data.toArray(new TransmitterGroupResource[data.size()]);
+    private void setTransmittergroups(TransmitterGroupResource[] data) {
         transmitterGroupCompletion = (TransmitterGroupCompletionView) findViewById(R.id.transmittergroupSearchView);
-        transmitterGroupCompletion.setAdapter(generateAdapter(tgrs));
+        transmitterGroupCompletion.setAdapter(generateAdapter(data));
         transmitterGroupCompletion.setTokenListener(new tokenTransmitter());
         transmitterGroupCompletion.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
         transmitterGroupCompletion.allowDuplicates(false);
@@ -343,4 +371,5 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
             tgnl.remove(token.getName());
         }
     }
+
 }
