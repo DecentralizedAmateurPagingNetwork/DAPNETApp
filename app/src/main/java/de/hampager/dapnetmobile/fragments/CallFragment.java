@@ -38,6 +38,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
     private String user;
     private String password;
     private Boolean admin;
+    private SearchView searchView;
     public CallFragment() {
         // Required empty public constructor
     }
@@ -48,12 +49,15 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
 
 
     private void initViews(View v) {
+        adapter=new CallAdapter(new ArrayList<HamnetCall>());
         recyclerView = (RecyclerView) v.findViewById(R.id.item_recycler_view);
+        recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(mLayoutManager);
+
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         server = sharedPref.getString("server", "http://www.hampager.de:8080");
         user = sharedPref.getString("user", "invalid");
@@ -85,8 +89,8 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
                     Log.i(TAG, "Connection was successful");
                     // tasks available
                     ArrayList<HamnetCall> data = response.body();
-                    adapter = new CallAdapter(data);
-                    recyclerView.setAdapter(adapter);
+                    adapter.setmValues(data);
+                    adapter.notifyDataSetChanged();
                     mSwipe.setRefreshing(false);
                 } else {
                     Log.e(TAG, "Error " + response.code());
@@ -143,12 +147,12 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        //Log.i(TAG, "Creating menu...");
-        //inflater.inflate(R.menu.main_menu, menu);
+        Log.i(TAG, "Creating menu...");
+        inflater.inflate(R.menu.main_menu, menu);
 
-        //final MenuItem searchItem = menu.findItem(R.id.action_search);
-        //final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        //searchView.setOnQueryTextListener(this);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(this);
 
 
     }
@@ -156,6 +160,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
     @Override
     public boolean onQueryTextChange(String query) {
         // Here is where we are going to implement the filter logic
+        adapter.getFilter().filter(query);
         return false;
     }
 
