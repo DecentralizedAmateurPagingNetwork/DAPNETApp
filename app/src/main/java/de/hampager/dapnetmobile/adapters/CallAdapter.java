@@ -37,14 +37,14 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
         boolean first = true;
         for (String s : hamnetCall.getTransmitterGroupNames()){
             stringBuilder.append(s);
-            stringBuilder.append(", ");
+            stringBuilder.append("; ");
         }
         viewHolder.mCallTransmitterGroup.setText(stringBuilder.toString());
         stringBuilder=new StringBuilder();
         stringBuilder.append("To: ");
         for(String s :hamnetCall.getCallSignNames()){
             stringBuilder.append(s);
-            stringBuilder.append(", ");
+            stringBuilder.append("; ");
         }
         viewHolder.mCallCallSign.setText(stringBuilder);
         viewHolder.mCallMsgContent.setText(hamnetCall.getText());
