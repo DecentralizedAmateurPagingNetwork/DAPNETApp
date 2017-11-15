@@ -38,6 +38,37 @@ public class HamnetCall {
         return callSignNames;
     }
 
+    public void setCallSignNames(List<String> callSignNames) {
+        this.callSignNames = callSignNames;
+    }
+
+    public void setTransmitterGroupNames(List<String> transmitterGroupNames) {
+        this.transmitterGroupNames = transmitterGroupNames;
+    }
+
+    public Boolean getEmergency() {
+        return emergency;
+    }
+
+    public void setEmergency(Boolean emergency) {
+        this.emergency = emergency;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
+    }
 
     public List<String> getTransmitterGroupNames() {
         return transmitterGroupNames;
