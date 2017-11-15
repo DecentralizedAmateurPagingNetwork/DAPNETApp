@@ -13,40 +13,32 @@
 
         <TextView
             android:id="@+id/call_call_sign"
-            android:layout_width="85dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:maxLength="8"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginEnd="4dp"
             android:maxLines="1"
-            android:text="@string/plchldr"
+            android:text="To: DH3WR,PLCHDR"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Button"
-            android:textSize="16sp"
             android:typeface="monospace" />
 
         <TextView
-            android:id="@+id/call_transmitter_groups"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerVertical="false"
-            android:layout_marginTop="4dp"
-            android:layout_toEndOf="@+id/call_call_sign"
-            android:layout_toRightOf="@+id/call_call_sign"
-            android:text="@string/all" />
-
-        <TextView
             android:id="@+id/call_msg_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginEnd="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/call_transmitter_groups"
-            android:layout_alignStart="@+id/call_transmitter_groups"
-            android:layout_below="@+id/call_transmitter_groups"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="4dp"
-            android:layout_marginRight="4dp"
+            android:layout_below="@+id/call_call_sign"
+            android:layout_toEndOf="@+id/call_owner"
+            android:layout_toRightOf="@+id/call_owner"
             android:text="@string/msg_placeceholder"
             android:textAppearance="?attr/textAppearanceListItem" />
 
@@ -61,8 +53,50 @@
             android:layout_marginTop="8dp"
             android:text="@string/dotdotdot"
             android:textAlignment="center"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
+        <TextView
+            android:id="@+id/timeStamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/call_msg_content"
+            android:text="Jul 30, 2015 10:13:37 AM"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Notification.Time" />
+
+        <TextView
+            android:id="@+id/call_transmitter_groups"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/call_more_calls"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/call_msg_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:maxLines="1"
+            android:text="Groups: All" />
+
+        <TextView
+            android:id="@+id/call_owner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/call_call_sign"
+            android:layout_marginEnd="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginStart="4dp"
+            android:text="OWN3R"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:visibility="gone" />
 
     </RelativeLayout>
+
 </android.support.v7.widget.CardView>
+
+

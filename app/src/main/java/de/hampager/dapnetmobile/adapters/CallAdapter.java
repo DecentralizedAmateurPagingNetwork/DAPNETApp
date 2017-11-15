@@ -1,5 +1,6 @@
 package de.hampager.dapnetmobile.adapters;
 
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,18 +31,45 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
     //Write Content of Call Items for the RecyclerView
     @Override
     public void onBindViewHolder(CallAdapter.CallViewHolder viewHolder, int i) {
-        viewHolder.mCallTransmitterGroup.setText(mValues.get(i).getTransmitterGroupNames().toString());
-        viewHolder.mCallMsgContent.setText(mValues.get(i).getText());
-        viewHolder.mCallCallSign.setText(mValues.get(i).getCallSignNames().get(0));
-        if (mValues.get(i).getCallSignNames().size() > 1) {
-            viewHolder.mCallMoreCalls.setVisibility(View.VISIBLE);
-        } else {
-            viewHolder.mCallMoreCalls.setVisibility(View.INVISIBLE);
+        HamnetCall hamnetCall = mValues.get(i);
+        StringBuilder stringBuilder=new StringBuilder();
+        stringBuilder.append("To: ");
+        boolean first = true;
+        for (String s : hamnetCall.getTransmitterGroupNames()){
+            stringBuilder.append(s);
+            stringBuilder.append(";");
+        }
+        viewHolder.mCallTransmitterGroup.setText(stringBuilder.toString());
+        stringBuilder=new StringBuilder();
+        stringBuilder.append("Groups: ");
+        for(String s :hamnetCall.getCallSignNames()){
+            stringBuilder.append(s);
+            stringBuilder.append(";");
+        }
+        viewHolder.mCallCallSign.setText(stringBuilder);
+        viewHolder.mCallMsgContent.setText(hamnetCall.getText());
+        viewHolder.mTimestamp.setText(hamnetCall.getTimestamp());
+        boolean showOwner=true;
+        if (showOwner) {
+            viewHolder.mOwner.setText(hamnetCall.getOwnerName());
+            viewHolder.mOwner.setVisibility(View.VISIBLE);
+
         }
         viewHolder.setItemClickListener(new ItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
-                Log.d("CallAdapter","Item clicked");
+                if(Build.VERSION.SDK_INT>15){
+                    if(viewHolder.mCallCallSign.getMaxLines()==1){
+                        viewHolder.mCallCallSign.setMaxLines(0);
+                        viewHolder.mCallTransmitterGroup.setMaxLines(0);
+                        viewHolder.mOwner.setVisibility(View.VISIBLE);
+                    }else {
+                        viewHolder.mCallCallSign.setMaxLines(1);
+                        viewHolder.mCallTransmitterGroup.setMaxLines(1);
+                        if(!showOwner)
+                            viewHolder.mOwner.setVisibility(View.GONE);
+                    }
+                }
             }
         });
     }
@@ -61,6 +89,8 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
         private TextView mCallTransmitterGroup;
         private TextView mCallMsgContent;
         private TextView mCallMoreCalls;
+        private TextView mTimestamp;
+        private TextView mOwner;
         private ItemClickListener itemClickListener;
         public CallViewHolder(View view) {
             super(view);
@@ -68,9 +98,12 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
             mCallTransmitterGroup = (TextView) view.findViewById(R.id.call_transmitter_groups);
             mCallMsgContent = (TextView) view.findViewById(R.id.call_msg_content);
             mCallMoreCalls = (TextView) view.findViewById(R.id.call_more_calls);
+            mTimestamp = (TextView) view.findViewById(R.id.timeStamp);
+            mOwner = (TextView) view.findViewById(R.id.call_owner);
         }
         @Override
         public void onClick(View v) {
+
             this.itemClickListener.onItemClick(v,getLayoutPosition());
         }
         public void setItemClickListener(ItemClickListener itemClickListener){
