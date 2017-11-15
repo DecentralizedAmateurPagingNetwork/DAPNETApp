@@ -11,7 +11,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import java.util.List;
 
-import de.hampager.dapnetmobile.ItemClickListener;
+
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.api.HamnetCall;
 
@@ -33,45 +33,28 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
     public void onBindViewHolder(CallAdapter.CallViewHolder viewHolder, int i) {
         HamnetCall hamnetCall = mValues.get(i);
         StringBuilder stringBuilder=new StringBuilder();
-        stringBuilder.append("To: ");
+        stringBuilder.append("Groups: ");
         boolean first = true;
         for (String s : hamnetCall.getTransmitterGroupNames()){
             stringBuilder.append(s);
-            stringBuilder.append(";");
+            stringBuilder.append(", ");
         }
         viewHolder.mCallTransmitterGroup.setText(stringBuilder.toString());
         stringBuilder=new StringBuilder();
-        stringBuilder.append("Groups: ");
+        stringBuilder.append("To: ");
         for(String s :hamnetCall.getCallSignNames()){
             stringBuilder.append(s);
-            stringBuilder.append(";");
+            stringBuilder.append(", ");
         }
         viewHolder.mCallCallSign.setText(stringBuilder);
         viewHolder.mCallMsgContent.setText(hamnetCall.getText());
         viewHolder.mTimestamp.setText(hamnetCall.getTimestamp());
         boolean showOwner=true;
         if (showOwner) {
-            viewHolder.mOwner.setText(hamnetCall.getOwnerName());
+            viewHolder.mOwner.setText(hamnetCall.getOwnerName()+":");
             viewHolder.mOwner.setVisibility(View.VISIBLE);
 
         }
-        viewHolder.setItemClickListener(new ItemClickListener() {
-            @Override
-            public void onItemClick(View v, int pos) {
-                if(Build.VERSION.SDK_INT>15){
-                    if(viewHolder.mCallCallSign.getMaxLines()==1){
-                        viewHolder.mCallCallSign.setMaxLines(0);
-                        viewHolder.mCallTransmitterGroup.setMaxLines(0);
-                        viewHolder.mOwner.setVisibility(View.VISIBLE);
-                    }else {
-                        viewHolder.mCallCallSign.setMaxLines(1);
-                        viewHolder.mCallTransmitterGroup.setMaxLines(1);
-                        if(!showOwner)
-                            viewHolder.mOwner.setVisibility(View.GONE);
-                    }
-                }
-            }
-        });
     }
 
     @Override
@@ -84,14 +67,33 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
         return customFilter;
     }
     //Holds relevant parts of one Call Item
-    public class CallViewHolder extends RecyclerView.ViewHolder  implements View.OnClickListener {
+    public class CallViewHolder extends RecyclerView.ViewHolder {
         private TextView mCallCallSign;
         private TextView mCallTransmitterGroup;
         private TextView mCallMsgContent;
         private TextView mCallMoreCalls;
         private TextView mTimestamp;
         private TextView mOwner;
-        private ItemClickListener itemClickListener;
+        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("CallAdapter","CLICK");
+                if (Build.VERSION.SDK_INT>15){
+                    if(mCallCallSign.getMaxLines()==1){
+                        mCallCallSign.setMaxLines(10);
+                        mCallTransmitterGroup.setMaxLines(10);
+                        mOwner.setVisibility(View.VISIBLE);
+                    }else{
+                        mCallCallSign.setMaxLines(1);
+                        mCallTransmitterGroup.setMaxLines(1);
+                        boolean showOwner=true;
+                        if(!showOwner){
+                            mOwner.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            }
+        };
         public CallViewHolder(View view) {
             super(view);
             mCallCallSign = (TextView) view.findViewById(R.id.call_call_sign);
@@ -100,14 +102,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
             mCallMoreCalls = (TextView) view.findViewById(R.id.call_more_calls);
             mTimestamp = (TextView) view.findViewById(R.id.timeStamp);
             mOwner = (TextView) view.findViewById(R.id.call_owner);
-        }
-        @Override
-        public void onClick(View v) {
-
-            this.itemClickListener.onItemClick(v,getLayoutPosition());
-        }
-        public void setItemClickListener(ItemClickListener itemClickListener){
-            this.itemClickListener=itemClickListener;
+            view.setOnClickListener(mOnClickListener);
         }
     }
 

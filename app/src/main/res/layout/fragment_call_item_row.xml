@@ -25,8 +25,7 @@
             android:layout_marginEnd="4dp"
             android:maxLines="1"
             android:text="To: DH3WR,PLCHDR"
-            android:textAlignment="center"
-            android:typeface="monospace" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Notification.Info"/>
 
         <TextView
             android:id="@+id/call_msg_content"
@@ -65,19 +64,23 @@
             android:text="Jul 30, 2015 10:13:37 AM"
             android:layout_marginEnd="4dp"
             android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Notification.Time" />
 
         <TextView
             android:id="@+id/call_transmitter_groups"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/call_more_calls"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@id/call_msg_content"
             android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
+            android:layout_toLeftOf="@+id/timeStamp"
+            android:layout_toStartOf="@+id/timeStamp"
             android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Notification.Info"
             android:text="Groups: All" />
 
         <TextView
@@ -86,14 +89,15 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:layout_below="@+id/call_call_sign"
+            android:layout_marginTop="2dp"
             android:layout_marginEnd="4dp"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
             android:layout_marginStart="4dp"
             android:text="OWN3R"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
     </RelativeLayout>
 

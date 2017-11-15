@@ -18,7 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.adapters.CallAdapter;
@@ -49,7 +51,26 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
 
 
     private void initViews(View v) {
-        adapter=new CallAdapter(new ArrayList<HamnetCall>());
+        List<HamnetCall> arr = new ArrayList<HamnetCall>();
+        //String text, List<String> callSignNames, List<String> transmitterGroupNames, Boolean emergency, String timestamp, String ownerName
+        List<String> callSignNames=new ArrayList<String>();
+        callSignNames.add("DH3WR");
+        List<String> transmitterGroupNames=new ArrayList<String>();
+        for(int i=0;i<21;i++){
+            transmitterGroupNames.add("All");
+        }
+        for(int i=0;i<21;i++){
+            callSignNames.add("DH3WR");
+        }
+        boolean emergency=false;
+        String timestamp="Jul 30, 2015 10:13:37 AM";
+        String ownerName="DH3WR";
+        HamnetCall hamnetCall=new HamnetCall("Text",callSignNames,transmitterGroupNames,emergency,timestamp,ownerName);
+        arr.add(hamnetCall);
+        //hamnetCall=new HamnetCall("Text",callSignNames,transmitterGroupNames,emergency);
+        arr.add(hamnetCall);
+        adapter=new CallAdapter(arr);
+
         recyclerView = (RecyclerView) v.findViewById(R.id.item_recycler_view);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
@@ -64,6 +85,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
         password = sharedPref.getString("pass", "invalid");
         admin = sharedPref.getBoolean("admin", true);
         fetchJSON(server, user, password, admin);
+
     }
 
     private void fetchJSON(String server, String user, String password, boolean admin) {
