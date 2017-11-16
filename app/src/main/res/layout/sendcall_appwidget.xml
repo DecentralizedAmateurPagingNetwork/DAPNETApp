@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/widget_margin">
+
+    <EditText
+        android:id="@+id/scw_et1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/imageButton"
+        android:layout_toStartOf="@+id/imageButton"
+        android:text="Text" />
+
+    <EditText
+        android:id="@+id/scw_et2"
+        android:layout_width="match_parent"
+        android:layout_below="@id/scw_et1"
+        android:layout_height="wrap_content"
+        android:text="Callsigns" />
+
+    <EditText
+        android:id="@+id/scw_et3"
+        android:layout_below="@id/scw_et2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Transmittergroups" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        app:srcCompat="@drawable/ic_menu_send_blue" />
+</RelativeLayout>
