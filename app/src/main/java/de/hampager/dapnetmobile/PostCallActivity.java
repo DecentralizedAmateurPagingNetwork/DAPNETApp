@@ -61,11 +61,12 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         server = sharedPref.getString("server", "http://www.hampager.de:8080");
         user = sharedPref.getString("user", "invalid");
         password = sharedPref.getString("pass", "invalid");
+        if (user.equals("invalid")&&password.equals("invalid")&&server.equals("http://www.hampager.de:8080"))
+            Snackbar.make(findViewById(R.id.postcallactivityid), "You don't seem to be logged in.", Snackbar.LENGTH_LONG).show();
         Gson gson = new Gson();
         String callsignJson = sharedPref.getString("callsigns", "");
         CallSignResource[] callSignResources=gson.fromJson(callsignJson,CallSignResource[].class);
         if (callSignResources!=null){
-            Log.i(TAG,callSignResources.toString());
             setCallsigns(callSignResources);
         }
         String transmitterJson = sharedPref.getString("transmitters","");
