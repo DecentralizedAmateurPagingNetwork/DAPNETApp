@@ -3,7 +3,7 @@
     <shortcut
         android:shortcutId="sendCall"
         android:enabled="true"
-        android:icon="@drawable/ic_menu_send"
+        android:icon="@drawable/ic_menu_send_blue"
         android:shortcutShortLabel="@string/compose_shortcut_short_label1"
         android:shortcutLongLabel="@string/compose_shortcut_long_label1"
         android:shortcutDisabledMessage="@string/compose_disabled_message1">
