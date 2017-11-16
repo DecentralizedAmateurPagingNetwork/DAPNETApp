@@ -18,7 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.adapters.CallAdapter;
@@ -64,6 +66,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
         password = sharedPref.getString("pass", "invalid");
         admin = sharedPref.getBoolean("admin", true);
         fetchJSON(server, user, password, admin);
+
     }
 
     private void fetchJSON(String server, String user, String password, boolean admin) {
