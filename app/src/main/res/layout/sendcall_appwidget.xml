@@ -36,5 +36,6 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:backgroundTint="@android:color/transparent"
         app:srcCompat="@drawable/ic_menu_send_blue" />
 </RelativeLayout>
