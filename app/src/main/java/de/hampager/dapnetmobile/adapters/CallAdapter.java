@@ -34,27 +34,23 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
         HamnetCall hamnetCall = mValues.get(i);
         StringBuilder stringBuilder=new StringBuilder();
         stringBuilder.append("Groups: ");
-        boolean first = true;
-        for (String s : hamnetCall.getTransmitterGroupNames()){
-            stringBuilder.append(s);
-            stringBuilder.append("; ");
+        stringBuilder.append(hamnetCall.getTransmitterGroupNames().get(0));
+        for(int j=1;j<hamnetCall.getTransmitterGroupNames().size();j++){
+            stringBuilder.append(", ");
+            stringBuilder.append(hamnetCall.getTransmitterGroupNames().get(j));
         }
         viewHolder.mCallTransmitterGroup.setText(stringBuilder.toString());
         stringBuilder=new StringBuilder();
         stringBuilder.append("To: ");
-        for(String s :hamnetCall.getCallSignNames()){
-            stringBuilder.append(s);
-            stringBuilder.append("; ");
+        stringBuilder.append(hamnetCall.getCallSignNames().get(0).toUpperCase());
+        for(int j=1;j<hamnetCall.getCallSignNames().size();j++){
+            stringBuilder.append(", ");
+            stringBuilder.append(hamnetCall.getCallSignNames().get(j).toUpperCase());
         }
         viewHolder.mCallCallSign.setText(stringBuilder);
         viewHolder.mCallMsgContent.setText(hamnetCall.getText());
         viewHolder.mTimestamp.setText(hamnetCall.getTimestamp());
-        boolean showOwner=true;
-        if (showOwner) {
-            viewHolder.mOwner.setText(hamnetCall.getOwnerName()+":");
-            viewHolder.mOwner.setVisibility(View.VISIBLE);
-
-        }
+        viewHolder.mOwner.setText(hamnetCall.getOwnerName()+":");
     }
 
     @Override
@@ -86,10 +82,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
                     }else{
                         mCallCallSign.setMaxLines(1);
                         mCallTransmitterGroup.setMaxLines(1);
-                        boolean showOwner=true;
-                        if(!showOwner){
-                            mOwner.setVisibility(View.GONE);
-                        }
+                        mOwner.setVisibility(View.GONE);
                     }
                 }
             }

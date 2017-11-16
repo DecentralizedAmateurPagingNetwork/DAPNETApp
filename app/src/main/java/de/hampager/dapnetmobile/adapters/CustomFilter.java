@@ -34,8 +34,13 @@ public class CustomFilter extends Filter {
                 List<String> callSignNames = hamnetCall.getCallSignNames();
                 List<String> transmitterGroupNames = hamnetCall.getTransmitterGroupNames();
                 String ownerName = hamnetCall.getOwnerName();
-
-                if(text.contains(constraint)||ownerName.contains(constraint)||callSignNames.contains(constraint.toString())||transmitterGroupNames.contains(constraint.toString()))
+                for(int i=0;i<callSignNames.size();i++){
+                    callSignNames.set(i,callSignNames.get(i).toUpperCase());
+                }
+                for(int i=0;i<transmitterGroupNames.size();i++){
+                    transmitterGroupNames.set(i,transmitterGroupNames.get(i).toUpperCase());
+                }
+                if(text.contains(constraint)||ownerName.contains(constraint)||callSignNames.contains(constraint.toString()))
                 {
                     //ADD CALL TO FILTERED
                     filteredHamnetCalls.add(hamnetCall);
