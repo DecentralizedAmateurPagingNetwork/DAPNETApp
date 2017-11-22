@@ -64,7 +64,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         user = sharedPref.getString("user", "invalid");
         password = sharedPref.getString("pass", "invalid");
         if (user.equals("invalid")&&password.equals("invalid")&&server.equals("http://www.hampager.de:8080"))
-            Snackbar.make(findViewById(R.id.postcallactivityid), "You don't seem to be logged in.", Snackbar.LENGTH_LONG).show();
+            Snackbar.make(findViewById(R.id.postcallcoordinator), "You don't seem to be logged in.", Snackbar.LENGTH_LONG).show();
         Gson gson = new Gson();
         String callsignJson = sharedPref.getString("callsigns", "");
         CallSignResource[] callSignResources=gson.fromJson(callsignJson,CallSignResource[].class);
@@ -311,7 +311,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     }
 
     private void genericSnackbar(String s) {
-        Snackbar.make(findViewById(R.id.postcallactivityid), s, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+        Snackbar.make(findViewById(R.id.postcallcoordinator), s, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
     private void sendCallMethod(String msg, List<String> csnl, List<String> tgnl, boolean e, String server, String user, String password) {
@@ -350,7 +350,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                 // something went completely south (like no internet connection)
                 Log.e(TAG, "Sending call seems to have failed");
                 Log.e(TAG, t.toString());
-                Snackbar.make(getWindow().getDecorView().getRootView(), getString(R.string.error_no_internet), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(findViewById(R.id.postcallcoordinator), getString(R.string.error_no_internet), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
     }
