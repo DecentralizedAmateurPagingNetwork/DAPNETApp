@@ -37,12 +37,7 @@ public class CallsignsCompletionView extends TokenCompleteTextView<CallSignResou
 
     @Override
     protected CallSignResource defaultObject(String completionText) {
-        //Stupid simple example of guessing if we have an email or not
-        int index = completionText.indexOf('@');
-        if (index == -1) {
-            return new CallSignResource(completionText);
-        } else {
-            return new CallSignResource(completionText.substring(0, index));
-        }
+        //If
+        return null;
     }
 }

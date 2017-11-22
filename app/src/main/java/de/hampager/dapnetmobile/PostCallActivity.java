@@ -26,6 +26,8 @@ import com.tokenautocomplete.TokenCompleteTextView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import de.hampager.dapnetmobile.api.CallSignResource;
@@ -110,6 +112,16 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     Log.i(TAG, "Connection getting Callsigns was successful");
                     // tasks available
                     ArrayList<CallSignResource> data = response.body();
+                    Collections.sort(data, new Comparator<CallSignResource>() {
+                        @Override
+                        public int compare(CallSignResource o1, CallSignResource o2) {
+                            int n = o1.getName().compareTo(o2.getName());
+                            if (n==0)
+                                return o1.getDescription().compareTo(o2.getDescription());
+                            else
+                                return n;
+                        }
+                    });
                     CallSignResource[] dataArray = data.toArray(new CallSignResource[data.size()]);
                     saveData(dataArray);
                     setCallsigns(dataArray);
@@ -142,6 +154,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         callSignsCompletion.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
         callSignsCompletion.allowDuplicates(false);
         callSignsCompletion.setThreshold(0);
+        callSignsCompletion.performBestGuess(true);
     }
     private void saveData(CallSignResource[] input){
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
@@ -203,6 +216,16 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     Log.i(TAG, "Connection getting transmittergroups was successful");
                     // tasks available
                     ArrayList<TransmitterGroupResource> data = response.body();
+                    Collections.sort(data, new Comparator<TransmitterGroupResource>() {
+                        @Override
+                        public int compare(TransmitterGroupResource o1, TransmitterGroupResource o2) {
+                            int n = o1.getName().compareTo(o2.getName());
+                            if (n==0)
+                                return o1.getDescription().compareTo(o2.getDescription());
+                            else
+                                return n;
+                        }
+                    });
                     TransmitterGroupResource[] transmitterGroupResources =data.toArray(new TransmitterGroupResource[data.size()]);
                     saveData(transmitterGroupResources);
                     setTransmittergroups(transmitterGroupResources);
@@ -233,7 +256,8 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         transmitterGroupCompletion.setTokenListener(new tokenTransmitter());
         transmitterGroupCompletion.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
         transmitterGroupCompletion.allowDuplicates(false);
-        transmitterGroupCompletion.setThreshold(0);
+        transmitterGroupCompletion.performBestGuess(true);
+        transmitterGroupCompletion.setThreshold(1);
         if (transmitterGroupCompletion.getObjects()==null||transmitterGroupCompletion.getObjects().size()==0){
             transmitterGroupCompletion.addObject(new TransmitterGroupResource("ALL"));
         }
