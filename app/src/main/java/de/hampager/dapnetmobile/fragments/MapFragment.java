@@ -332,6 +332,9 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         item.setChecked(!item.isChecked());
+        if (ewOverlay==null||dwOverlay==null||epOverlay==null||dpOverlay==null){
+            config();
+        }
         if(menu.getItem(2).isChecked()){
             ewOverlay.setEnabled(menu.getItem(0).isChecked());
             ewOverlay.setFocusItemsOnTap(menu.getItem(0).isChecked());
