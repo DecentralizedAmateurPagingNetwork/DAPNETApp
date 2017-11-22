@@ -248,7 +248,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onFailure(Call<Versions> call, Throwable t) {
                 // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG, t.getMessage());
+                Log.e(TAG, "Fatal connection error.. "+t.getMessage());
+                Snackbar.make(findViewById(R.id.container), "Fatal connection error.. "+t.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
         TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
