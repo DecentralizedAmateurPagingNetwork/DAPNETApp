@@ -1,10 +1,11 @@
 
 package de.hampager.dapnetmobile.api;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Pager {
+public class Pager implements Serializable {
 
     private Integer number;
     private String name;

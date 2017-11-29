@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -154,6 +155,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         callSignsCompletion.setTokenClickStyle(TokenCompleteTextView.TokenClickStyle.Select);
         callSignsCompletion.allowDuplicates(false);
         callSignsCompletion.setThreshold(0);
+        callSignsCompletion.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_FILTER|InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         callSignsCompletion.performBestGuess(true);
     }
     private void saveData(CallSignResource[] input){
@@ -258,6 +260,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         transmitterGroupCompletion.allowDuplicates(false);
         transmitterGroupCompletion.performBestGuess(true);
         transmitterGroupCompletion.setThreshold(1);
+        transmitterGroupCompletion.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_FILTER|InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         if (transmitterGroupCompletion.getObjects()==null||transmitterGroupCompletion.getObjects().size()==0){
             transmitterGroupCompletion.addObject(new TransmitterGroupResource("ALL"));
         }
