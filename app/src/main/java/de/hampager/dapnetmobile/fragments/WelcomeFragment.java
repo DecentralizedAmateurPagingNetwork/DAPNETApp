@@ -115,7 +115,9 @@ public class WelcomeFragment extends Fragment {
             public void onFailure(Call<StatsResource> call, Throwable t) {
                 // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, "Fatal connection error.. "+t.getMessage());
-                Snackbar.make(getActivity().findViewById(R.id.container), "Fatal connection error.. "+t.getMessage(), Snackbar.LENGTH_LONG).show();
+                if(getActivity()!=null&&getActivity().findViewById(R.id.container)!=null) {
+                    Snackbar.make(getActivity().findViewById(R.id.container), "Fatal connection error.. " + t.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
             }
         });
     }

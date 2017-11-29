@@ -82,7 +82,6 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     }
 
     private void defineObjects() {
-        Log.i("TEST", "TEST");
         message = (TextInputEditText) findViewById(R.id.post_call_text);
         Switch emergency = (Switch) findViewById(R.id.post_call_emergencyswitch);
         String m = user.toUpperCase();
@@ -143,7 +142,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
             @Override
             public void onFailure(Call<ArrayList<CallSignResource>> call, Throwable t) {
                 // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG, t.getMessage());
+                Log.e(TAG, "Error... Do you have internet? "+ t.getMessage());
             }
         });
     }
@@ -247,7 +246,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
             @Override
             public void onFailure(Call<ArrayList<TransmitterGroupResource>> call, Throwable t) {
                 // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG, t.getMessage());
+                Log.e(TAG, "Error... Do you have internet? "+ t.getMessage());
             }
         });
     }

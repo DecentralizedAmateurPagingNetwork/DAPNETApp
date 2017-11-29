@@ -256,8 +256,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String s = "";
         s += "App v";
         s += BuildConfig.VERSION_NAME;
-        mNavHeadVersions.setText(s);
-
+        if(mNavHeadVersions!=null)
+            mNavHeadVersions.setText(s);
     }
 
     public void onNavHeaderSelected(View view) {
