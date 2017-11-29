@@ -8,8 +8,8 @@ android {
         minSdkVersion 15
         //noinspection OldTargetApi
         targetSdkVersion 25
-        versionCode 18
-        versionName "1.0.14.1"
+        versionCode 19
+        versionName "1.0.14.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

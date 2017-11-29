@@ -53,7 +53,7 @@
         android:layout_below="@+id/til_postcalltext"
         android:focusableInTouchMode="true"
         android:hint="@string/callsign_prompt"
-        android:inputType="text|textNoSuggestions|textMultiLine" />
+        android:inputType="textFilter|textNoSuggestions" />
 
     <!--
         <EditText
@@ -71,7 +71,7 @@
         android:layout_below="@+id/callSignSearchView"
         android:focusableInTouchMode="true"
         android:hint="@string/transmittergroup_prompt"
-        android:inputType="text|textNoSuggestions|textMultiLine" />
+        android:inputType="text|textNoSuggestions" />
 
     <Switch
         android:id="@+id/post_call_emergencyswitch"
