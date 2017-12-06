@@ -283,29 +283,29 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     }
 
     private String getDesc(TransmitterResource TrRe) {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         String dot = ": ";
-        Context res = getActivity();
-        s += res.getString(R.string.type);
-        s += dot;
-        s += TrRe.getUsage();
-        s += "\n";
-        s += res.getString(R.string.transmission_power);
-        s += dot;
-        s += Double.toString(TrRe.getPower());
-        s += "\n";
-        if (TrRe.getTimeSlot().length() > 1) s += res.getString(R.string.timeslots);
-        else s += res.getString(R.string.timeslot);
-        s += dot;
-        s += TrRe.getTimeSlot();
-        s += "\n";
-        if (TrRe.getOwnerNames().size() > 1) s += res.getString(R.string.owners);
-        else s += res.getString(R.string.owner);
-        s += dot;
+        Context res = getContext();
+        s.append(res.getString(R.string.type));
+        s.append(dot);
+        s.append(TrRe.getUsage());
+        s.append("\n");
+        s.append(res.getString(R.string.transmission_power));
+        s.append(dot);
+        s.append(Double.toString(TrRe.getPower()));
+        s.append("\n");
+        if (TrRe.getTimeSlot().length() > 1) s.append(res.getString(R.string.timeslots));
+        else s.append(res.getString(R.string.timeslot));
+        s.append(dot);
+        s.append(TrRe.getTimeSlot());
+        s.append("\n");
+        if (TrRe.getOwnerNames().size() > 1) s.append(res.getString(R.string.owners));
+        else s.append(res.getString(R.string.owner));
+        s.append(dot);
         for (String temp : TrRe.getOwnerNames()) {
-            s += temp + " ";
+            s.append(temp).append(" ");
         }
-        return s;
+        return s.toString();
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
