@@ -77,7 +77,10 @@ public class WelcomeFragment extends Fragment {
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         String server = sharedPref.getString("server", "http://www.hampager.de:8080");
         muninImageView = (ImageView) v.findViewById(R.id.statsImage);
-        Picasso.with(muninImageView.getContext()).load("https://www.afu.rwth-aachen.de/munin/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png").into(muninImageView);
+        if (server.contains("ampr.org"))
+            Picasso.with(muninImageView.getContext()).load("http://db0sda.ampr.org/munin-cgi/munin-cgi-graph/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png").into(muninImageView);
+        else
+            Picasso.with(muninImageView.getContext()).load("https://www.afu.rwth-aachen.de/munin-cgi/munin-cgi-graph/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png").into(muninImageView);
         fetchJSON(server);
     }
 
