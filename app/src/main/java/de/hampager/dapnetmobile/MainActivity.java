@@ -25,16 +25,13 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import de.hampager.dapnetmobile.api.HamPagerService;
-import de.hampager.dapnetmobile.api.ServiceGenerator;
-import de.hampager.dapnetmobile.api.Versions;
+import de.hampager.dap4j.*;
+import de.hampager.dap4j.callbacks.DapnetCallback;
+import de.hampager.dap4j.models.Version;
 import de.hampager.dapnetmobile.fragments.CallFragment;
 import de.hampager.dapnetmobile.fragments.HelpFragment;
 import de.hampager.dapnetmobile.fragments.MapFragment;
 import de.hampager.dapnetmobile.fragments.WelcomeFragment;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";
@@ -225,12 +222,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void setVersion(String server) {
         final String inServer = server;
-        ServiceGenerator.changeApiBaseUrl(inServer);
-        HamPagerService service = ServiceGenerator.createService(HamPagerService.class);
-        Call<Versions> call = service.getVersions();
-        call.enqueue(new Callback<Versions>() {
+        //ServiceGenerator.changeApiBaseUrl(inServer);
+        DAPNET dapnet= DAPNET.getInstance();
+        dapnet.setUrl(server);
+        DAPNETAPI da=dapnet.getDapnetapi();
+        Call<Version> version = da.getVersion();
+        version.enqueue(new Callback<Version>(){
             @Override
-            public void onResponse(Call<Versions> call, Response<Versions> response) {
+            public void onResponse(Call<Version> call, Response<Version> response) {
                 if (response.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     setServer(inServer);
@@ -246,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
 
             @Override
-            public void onFailure(Call<Versions> call, Throwable t) {
+            public void onFailure(Call<Version> call, Throwable t) {
                 // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, "Fatal connection error.. "+t.getMessage());
                 Snackbar.make(findViewById(R.id.container), "Fatal connection error.. "+t.getMessage(), Snackbar.LENGTH_LONG).show();

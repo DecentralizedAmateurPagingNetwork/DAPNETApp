@@ -87,6 +87,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public UserResource getUser(final String user, final String password, final String server) {
+
         UserResource returnValue = null;
         Log.i(TAG, "Server to be used: " + server);
         ServiceGenerator.changeApiBaseUrl(server);
