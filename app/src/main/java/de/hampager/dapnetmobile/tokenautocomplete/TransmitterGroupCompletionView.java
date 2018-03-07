@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.tokenautocomplete.TokenCompleteTextView;
 
+import java.util.ArrayList;
+
 import de.hampager.dapnetmobile.R;
 import de.hampager.dap4j.models.TransmitterGroup;
 
@@ -38,12 +40,12 @@ public class TransmitterGroupCompletionView extends TokenCompleteTextView<Transm
     @Override
     protected TransmitterGroup defaultObject(String completionText) {
         //Stupid simple example of guessing if we have an email or not
-        int index = completionText.indexOf('@');
-        if (index == -1) {
-            return new TransmitterGroup(completionText,"");
-        } else {
+        /*int index = completionText.indexOf('@');
+        if (index == -1) {*/
+            return new TransmitterGroup(completionText,"",new ArrayList<>(),new ArrayList<>());
+        /*} else {
             return new TransmitterGroup(completionText.substring(0, index),"");
-        }
+        }*/
     }
     @Override
     public void onFocusChanged(boolean hasFocus, int direction, Rect previous){

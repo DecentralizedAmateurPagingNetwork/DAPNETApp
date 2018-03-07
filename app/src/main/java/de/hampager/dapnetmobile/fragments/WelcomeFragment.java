@@ -42,7 +42,7 @@ import retrofit2.Response;
 public class WelcomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String TAG = "WelcomeFragment";
-    ArrayList<CardView> listItems = new ArrayList<>();
+    List<CardView> listItems = new ArrayList<>();
     ImageView muninImageView;
     private RecyclerView recyclerView;
     private StatsAdapter adapter;
