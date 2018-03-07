@@ -13,12 +13,12 @@ import java.util.List;
 
 
 import de.hampager.dapnetmobile.R;
-import de.hampager.dapnetmobile.api.HamnetCall;
+import de.hampager.dap4j.models.CallResource;
 
 public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder> implements Filterable{
-    private List<HamnetCall> mValues,filterValues;
+    private List<CallResource> mValues,filterValues;
     private CustomFilter customFilter;
-    public CallAdapter(List<HamnetCall> mValues) {
+    public CallAdapter(List<CallResource> mValues) {
         this.mValues = mValues;
     }
 
@@ -31,7 +31,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
     //Write Content of Call Items for the RecyclerView
     @Override
     public void onBindViewHolder(CallAdapter.CallViewHolder viewHolder, int i) {
-        HamnetCall hamnetCall = mValues.get(i);
+        CallResource hamnetCall = mValues.get(i);
         StringBuilder stringBuilder=new StringBuilder();
         stringBuilder.append("Groups: ");
         stringBuilder.append(hamnetCall.getTransmitterGroupNames().get(0));
@@ -99,19 +99,19 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
         }
     }
 
-    public List<HamnetCall> getmValues() {
+    public List<CallResource> getmValues() {
         return mValues;
     }
 
-    public void setmValues(List<HamnetCall> mValues) {
+    public void setmValues(List<CallResource> mValues) {
         this.mValues = mValues;
     }
 
-    public List<HamnetCall> getFilterValues() {
+    public List<CallResource> getFilterValues() {
         return filterValues;
     }
 
-    public void setFilterValues(List<HamnetCall> filterValues) {
+    public void setFilterValues(List<CallResource> filterValues) {
         this.filterValues = filterValues;
     }
 

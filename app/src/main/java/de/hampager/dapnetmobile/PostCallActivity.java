@@ -31,11 +31,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import de.hampager.dapnetmobile.api.CallSignResource;
-import de.hampager.dapnetmobile.api.HamPagerService;
-import de.hampager.dapnetmobile.api.HamnetCall;
-import de.hampager.dapnetmobile.api.ServiceGenerator;
-import de.hampager.dapnetmobile.api.TransmitterGroupResource;
+import de.hampager.dap4j.models.CallSignResource;
+import de.hampager.dap4j.models.HamPagerService;
+import de.hampager.dap4j.models.HamnetCall;
+import de.hampager.dap4j.models.ServiceGenerator;
+import de.hampager.dap4j.models.TransmitterGroupResource;
 import de.hampager.dapnetmobile.tokenautocomplete.CallsignsCompletionView;
 import de.hampager.dapnetmobile.tokenautocomplete.TransmitterGroupCompletionView;
 import retrofit2.Call;

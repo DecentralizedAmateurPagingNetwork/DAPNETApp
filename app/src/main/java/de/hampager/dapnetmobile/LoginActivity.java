@@ -21,9 +21,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import de.hampager.dapnetmobile.api.HamPagerService;
-import de.hampager.dapnetmobile.api.ServiceGenerator;
-import de.hampager.dapnetmobile.api.UserResource;
+import de.hampager.dap4j.models.HamPagerService;
+import de.hampager.dap4j.models.ServiceGenerator;
+import de.hampager.dap4j.models.UserResource;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

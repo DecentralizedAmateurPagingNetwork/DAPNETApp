@@ -24,9 +24,9 @@ import java.util.List;
 
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.adapters.CallAdapter;
-import de.hampager.dapnetmobile.api.HamPagerService;
-import de.hampager.dapnetmobile.api.HamnetCall;
-import de.hampager.dapnetmobile.api.ServiceGenerator;
+import de.hampager.dap4j.DAPNETAPI;
+import de.hampager.dap4j.models.CallResource;
+import de.hampager.dap4j.ServiceGenerator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,7 +51,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
 
 
     private void initViews(View v) {
-        adapter=new CallAdapter(new ArrayList<HamnetCall>());
+        adapter=new CallAdapter(new ArrayList<CallResource>());
         recyclerView = (RecyclerView) v.findViewById(R.id.item_recycler_view);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
@@ -75,23 +75,23 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
         } catch (java.lang.NullPointerException e) {
             ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
         }
-        HamPagerService service = ServiceGenerator.createService(HamPagerService.class, user, password);
-        Call<ArrayList<HamnetCall>> call;
+        DAPNETAPI service = ServiceGenerator.createService(DAPNETAPI.class, user, password);
+        Call<List<CallResource>> call;
         Log.i(TAG, "fetchJSON, admin: " + admin);
         if (admin) {
             Log.i(TAG, "Admin access granted. Fetching All Calls...");
-            call = service.getAllHamnetCalls();
+            call = service.getCalls("");
         } else {
             Log.i(TAG, "Admin access not granted. Fetching own Calls...");
-            call = service.getOwnerHamnetCalls(user);
+            call = service.getCalls(user);
         }
-        call.enqueue(new Callback<ArrayList<HamnetCall>>() {
+        call.enqueue(new Callback<List<CallResource>>() {
             @Override
-            public void onResponse(Call<ArrayList<HamnetCall>> call, Response<ArrayList<HamnetCall>> response) {
+            public void onResponse(Call<List<CallResource>> call, Response<List<CallResource>> response) {
                 if (response.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                    ArrayList<HamnetCall> data = response.body();
+                    List<CallResource> data = response.body();
                     adapter.setmValues(data);
                     adapter.notifyDataSetChanged();
                     mSwipe.setRefreshing(false);
@@ -109,7 +109,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
             }
 
             @Override
-            public void onFailure(Call<ArrayList<HamnetCall>> call, Throwable t) {
+            public void onFailure(Call<List<CallResource>> call, Throwable t) {
                 // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, t.getMessage());
             }

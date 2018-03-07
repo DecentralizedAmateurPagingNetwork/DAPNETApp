@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.tokenautocomplete.TokenCompleteTextView;
 
 import de.hampager.dapnetmobile.R;
-import de.hampager.dapnetmobile.api.CallSignResource;
+import de.hampager.dap4j.models.CallSignResource;
 
 
 public class CallsignsCompletionView extends TokenCompleteTextView<CallSignResource> {

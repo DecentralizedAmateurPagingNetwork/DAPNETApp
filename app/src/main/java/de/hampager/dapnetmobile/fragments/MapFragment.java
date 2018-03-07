@@ -31,13 +31,13 @@ import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import de.hampager.dapnetmobile.BuildConfig;
 import de.hampager.dapnetmobile.R;
-import de.hampager.dapnetmobile.api.HamPagerService;
-import de.hampager.dapnetmobile.api.TransmitterResource;
-import de.hampager.dapnetmobile.api.ServiceGenerator;
+import de.hampager.dap4j.DAPNETAPI;
+import de.hampager.dap4j.models.Transmitter;
+import de.hampager.dap4j.ServiceGenerator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,10 +56,10 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE=1;
     private static final String TAG = "MapFragment";
     //Items for our Overlays
-    ArrayList<OverlayItem> onlineWide = new ArrayList<>();
-    ArrayList<OverlayItem> offlineWide = new ArrayList<>();
-    ArrayList<OverlayItem> onlinePers = new ArrayList<>();
-    ArrayList<OverlayItem> offlinePers = new ArrayList<>();
+    List<OverlayItem> onlineWide = new ArrayList<>();
+    List<OverlayItem> offlineWide = new ArrayList<>();
+    List<OverlayItem> onlinePers = new ArrayList<>();
+    List<OverlayItem> offlinePers = new ArrayList<>();
     ItemizedOverlayWithFocus<OverlayItem> ewOverlay;
     ItemizedOverlayWithFocus<OverlayItem> dwOverlay;
     ItemizedOverlayWithFocus<OverlayItem> epOverlay;
@@ -235,17 +235,17 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         } catch (java.lang.NullPointerException e) {
             ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
         }
-        HamPagerService service = ServiceGenerator.createService(HamPagerService.class, user, password);
-        Call<ArrayList<TransmitterResource>> call;
-        call=service.getAllTransmitter();
-        call.enqueue(new Callback<ArrayList<TransmitterResource>>() {
+        DAPNETAPI service = ServiceGenerator.createService(DAPNETAPI.class, user, password);
+        Call<List<Transmitter>> call;
+        call=service.getTransmitter("");
+        call.enqueue(new Callback<List<Transmitter>>() {
             @Override
-            public void onResponse(Call<ArrayList<TransmitterResource>> call, Response<ArrayList<TransmitterResource>> response) {
+            public void onResponse(Call<List<Transmitter>> call, Response<List<Transmitter>> response) {
                 if (response.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                    ArrayList<TransmitterResource> data = response.body();
-                    for(TransmitterResource t: data){
+                    List<Transmitter> data = response.body();
+                    for(Transmitter t: data){
                         OverlayItem temp = new OverlayItem(t.getName(), getDesc(t), new GeoPoint(t.getLatitude(), t.getLongitude()));
                         if (t.getUsage().equals("WIDERANGE")){
                             if(t.getStatus().equals("ONLINE")){
@@ -275,14 +275,14 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
             }
 
             @Override
-            public void onFailure(Call<ArrayList<TransmitterResource>> call, Throwable t) {
+            public void onFailure(Call<List<Transmitter>> call, Throwable t) {
                 // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, t.getMessage());
             }
         });
     }
 
-    private String getDesc(TransmitterResource TrRe) {
+    private String getDesc(Transmitter TrRe) {
         StringBuilder s = new StringBuilder();
         String dot = ": ";
         Context res = getContext();

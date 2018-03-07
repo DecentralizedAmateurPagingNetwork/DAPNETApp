@@ -23,11 +23,11 @@ import java.util.ArrayList;
 
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.adapters.StatsAdapter;
-import de.hampager.dapnetmobile.api.HamPagerService;
-import de.hampager.dapnetmobile.api.ServiceGenerator;
-import de.hampager.dapnetmobile.api.StatsResource;
-import de.hampager.dapnetmobile.api.error.APIError;
-import de.hampager.dapnetmobile.api.error.ErrorUtils;
+import de.hampager.dap4j.models.HamPagerService;
+import de.hampager.dap4j.models.ServiceGenerator;
+import de.hampager.dap4j.models.StatsResource;
+import de.hampager.dap4j.models.error.APIError;
+import de.hampager.dap4j.models.error.ErrorUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

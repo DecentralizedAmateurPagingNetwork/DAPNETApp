@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import com.tokenautocomplete.TokenCompleteTextView;
 
 import de.hampager.dapnetmobile.R;
-import de.hampager.dapnetmobile.api.TransmitterGroupResource;
+import de.hampager.dap4j.models.TransmitterGroupResource;
 
 public class TransmitterGroupCompletionView extends TokenCompleteTextView<TransmitterGroupResource> {
 

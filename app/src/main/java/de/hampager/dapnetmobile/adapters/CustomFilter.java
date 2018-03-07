@@ -5,12 +5,12 @@ import android.widget.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hampager.dapnetmobile.api.HamnetCall;
+import de.hampager.dap4j.models.CallResource;
 
 public class CustomFilter extends Filter {
     private CallAdapter adapter;
-    private List<HamnetCall> filterList;
-    public CustomFilter(List<HamnetCall> filterList,CallAdapter adapter)
+    private List<CallResource> filterList;
+    public CustomFilter(List<CallResource> filterList,CallAdapter adapter)
     {
         this.adapter=adapter;
         this.filterList=filterList;
@@ -25,8 +25,8 @@ public class CustomFilter extends Filter {
             //CHANGE TO UPPER
             constraint=constraint.toString().toUpperCase();
             //STORE OUR FILTERED PLAYERS
-            ArrayList<HamnetCall> filteredHamnetCalls=new ArrayList<>();
-            for (HamnetCall hamnetCall:filterList)
+            ArrayList<CallResource> filteredCallResources=new ArrayList<>();
+            for (CallResource hamnetCall:filterList)
             {
                 //CHECK
 
@@ -43,11 +43,11 @@ public class CustomFilter extends Filter {
                 if(text.contains(constraint)||ownerName.contains(constraint)||callSignNames.contains(constraint.toString()))
                 {
                     //ADD CALL TO FILTERED
-                    filteredHamnetCalls.add(hamnetCall);
+                    filteredCallResources.add(hamnetCall);
                 }
             }
-            results.count=filteredHamnetCalls.size();
-            results.values=filteredHamnetCalls;
+            results.count=filteredCallResources.size();
+            results.values=filteredCallResources;
         }else
         {
             results.count=filterList.size();
@@ -57,7 +57,7 @@ public class CustomFilter extends Filter {
     }
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-        adapter.setmValues((ArrayList<HamnetCall>) results.values);
+        adapter.setmValues((ArrayList<CallResource>) results.values);
         //REFRESH
         adapter.notifyDataSetChanged();
     }
