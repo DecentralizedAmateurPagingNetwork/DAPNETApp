@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import com.tokenautocomplete.TokenCompleteTextView;
 
 import de.hampager.dapnetmobile.R;
-import de.hampager.dap4j.models.TransmitterGroupResource;
+import de.hampager.dap4j.models.TransmitterGroup;
 
-public class TransmitterGroupCompletionView extends TokenCompleteTextView<TransmitterGroupResource> {
+public class TransmitterGroupCompletionView extends TokenCompleteTextView<TransmitterGroup> {
 
     public TransmitterGroupCompletionView(Context context) {
         super(context);
@@ -28,7 +28,7 @@ public class TransmitterGroupCompletionView extends TokenCompleteTextView<Transm
     }
 
     @Override
-    protected View getViewForObject(TransmitterGroupResource transmittergroup) {
+    protected View getViewForObject(TransmitterGroup transmittergroup) {
         LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         TokenTextView token = (TokenTextView) l.inflate(R.layout.callsign_token, (ViewGroup) getParent(), false);
         token.setText(transmittergroup.getName());
@@ -36,13 +36,13 @@ public class TransmitterGroupCompletionView extends TokenCompleteTextView<Transm
     }
 
     @Override
-    protected TransmitterGroupResource defaultObject(String completionText) {
+    protected TransmitterGroup defaultObject(String completionText) {
         //Stupid simple example of guessing if we have an email or not
         int index = completionText.indexOf('@');
         if (index == -1) {
-            return new TransmitterGroupResource(completionText);
+            return new TransmitterGroup(completionText,"");
         } else {
-            return new TransmitterGroupResource(completionText.substring(0, index));
+            return new TransmitterGroup(completionText.substring(0, index),"");
         }
     }
     @Override

@@ -21,9 +21,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import de.hampager.dap4j.models.HamPagerService;
-import de.hampager.dap4j.models.ServiceGenerator;
-import de.hampager.dap4j.models.UserResource;
+import de.hampager.dap4j.DAPNETAPI;
+import de.hampager.dap4j.ServiceGenerator;
+import de.hampager.dap4j.models.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -86,19 +86,19 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public UserResource getUser(final String user, final String password, final String server) {
+    public User getUser(final String user, final String password, final String server) {
 
-        UserResource returnValue = null;
+        User returnValue = null;
         Log.i(TAG, "Server to be used: " + server);
         ServiceGenerator.changeApiBaseUrl(server);
-        HamPagerService service = ServiceGenerator.createService(HamPagerService.class, user, password);
+        DAPNETAPI service = ServiceGenerator.createService(DAPNETAPI.class, user, password);
 
-        Call<UserResource> call = service.getUserResource(user);
-        call.enqueue(new Callback<UserResource>() {
+        Call<User> call = service.getUser(user);
+        call.enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<UserResource> UserResource, Response<UserResource> response) {
+            public void onResponse(Call<User> User, Response<User> response) {
                 if (response.isSuccessful()) {
-                    UserResource returnValue = response.body();
+                    User returnValue = response.body();
                     saveData(server, user, password, returnValue.admin());
                     Log.i(TAG, "getUser, admin: " + returnValue.admin());
                     showProgress(false);
@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<UserResource> userRessource, Throwable t) {
+            public void onFailure(Call<User> userRessource, Throwable t) {
                 Log.e(TAG, "Call failed. Do you have Internet access?");
                 showProgress(false);
                 View focusView = mUsernameView;

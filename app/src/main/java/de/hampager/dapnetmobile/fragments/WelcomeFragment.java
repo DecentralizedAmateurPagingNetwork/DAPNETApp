@@ -23,11 +23,11 @@ import java.util.ArrayList;
 
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.adapters.StatsAdapter;
-import de.hampager.dap4j.models.HamPagerService;
-import de.hampager.dap4j.models.ServiceGenerator;
-import de.hampager.dap4j.models.StatsResource;
-import de.hampager.dap4j.models.error.APIError;
-import de.hampager.dap4j.models.error.ErrorUtils;
+import de.hampager.dap4j.DAPNETAPI;
+import de.hampager.dap4j.ServiceGenerator;
+import de.hampager.dap4j.models.Stats;
+import de.hampager.dap4j.APIError;
+import de.hampager.dap4j.ErrorUtils;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -93,15 +93,15 @@ public class WelcomeFragment extends Fragment {
         } catch (java.lang.NullPointerException e) {
             ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
         }
-        HamPagerService service = ServiceGenerator.createService(HamPagerService.class);
-        Call<StatsResource> call = service.getStats();
-        call.enqueue(new Callback<StatsResource>() {
+        DAPNETAPI service = ServiceGenerator.createService(DAPNETAPI.class);
+        Call<Stats> call = service.getStats();
+        call.enqueue(new Callback<Stats>() {
             @Override
-            public void onResponse(Call<StatsResource> call, Response<StatsResource> response) {
+            public void onResponse(Call<Stats> call, Response<Stats> response) {
                 if (response.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                    StatsResource data = response.body();
+                    Stats data = response.body();
                     adapter = new StatsAdapter(data);
                     recyclerView.setAdapter(adapter);
 
@@ -115,7 +115,7 @@ public class WelcomeFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<StatsResource> call, Throwable t) {
+            public void onFailure(Call<Stats> call, Throwable t) {
                 // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, "Fatal connection error.. "+t.getMessage());
                 if(getActivity()!=null&&getActivity().findViewById(R.id.container)!=null) {

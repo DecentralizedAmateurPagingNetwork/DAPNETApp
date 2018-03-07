@@ -31,6 +31,7 @@ import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hampager.dapnetmobile.BuildConfig;
@@ -246,7 +247,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                     // tasks available
                     List<Transmitter> data = response.body();
                     for(Transmitter t: data){
-                        OverlayItem temp = new OverlayItem(t.getName(), getDesc(t), new GeoPoint(t.getLatitude(), t.getLongitude()));
+                        OverlayItem temp = new OverlayItem(t.getName(), getDesc(t), new GeoPoint(Double.parseDouble(t.getLatitude()), Double.parseDouble(t.getLongitude())));
                         if (t.getUsage().equals("WIDERANGE")){
                             if(t.getStatus().equals("ONLINE")){
                                 onlineWide.add(onlineWide.size(),temp);
@@ -292,7 +293,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         s.append("\n");
         s.append(res.getString(R.string.transmission_power));
         s.append(dot);
-        s.append(Double.toString(TrRe.getPower()));
+        s.append(Double.toString(Double.parseDouble(TrRe.getPower())));
         s.append("\n");
         if (TrRe.getTimeSlot().length() > 1) s.append(res.getString(R.string.timeslots));
         else s.append(res.getString(R.string.timeslot));
