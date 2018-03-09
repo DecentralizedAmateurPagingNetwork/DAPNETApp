@@ -25,13 +25,17 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import de.hampager.dap4j.*;
-import de.hampager.dap4j.callbacks.DapnetCallback;
+import de.hampager.dap4j.DAPNETAPI;
+import de.hampager.dap4j.DapnetSingleton;
 import de.hampager.dap4j.models.Version;
 import de.hampager.dapnetmobile.fragments.CallFragment;
 import de.hampager.dapnetmobile.fragments.HelpFragment;
 import de.hampager.dapnetmobile.fragments.MapFragment;
 import de.hampager.dapnetmobile.fragments.WelcomeFragment;
+
+2.Call;
+        2.Callback;
+        2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";
@@ -112,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MenuItem mloginstatus = nv.findItem(R.id.nav_loginstatus);
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
-        mServer = sharedPref.getString("server", null);
+        mServer = DapnetSingleton.getInstance().getUrl();
 
         if (loggedIn) {
             mloginstatus.setTitle(R.string.nav_logout);
@@ -121,17 +125,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mloginstatus.setTitle(R.string.nav_login);
             Log.i(TAG, "User is not logged in!");
         }
-        if (mServer != null) {
-            setVersion(mServer);
+        if (!mServer.equals("http://hampager.de/api/") || !mServer.equals("http://dapnet.db0sda.ampr.org:8080/")) {
+
         } else {
-            setVersion("http://hampager.de:8080");
-            //if mServer == null
-            // setVersion("http://dapnet.db0sda.ampr.org:8080")
+            boolean clearNet = checkAvailable("http://hampager.de/api/");
+            boolean dapNet = checkAvailable("http://dapnet.db0sda.ampr.org:8080/");
+            if (clearNet || !dapNet) {
+                setIntentServer("http://hampager.de/api/");
+            }
         }
 
         return true;
     }
 
+    private void checkServers(String custom) {
+        String clear = "http://hampager.de/api/";
+        String dap = "http://dapnet.db0sda.ampr.org:8080/";
+
+        if ((!mServer.equals(clear) || !mServer.equals(dap)) && checkAvailable(custom)) {
+            setIntentServer(custom);
+        } else {
+            if (checkAvailable(dap)) {
+                setIntentServer(dap);
+            } else {
+                setIntentServer(clear);
+            }
+
+        }
+    }
+
+    private boolean checkAvailable(String server) {
+        return true;
+    }
+
+    private void setIntentServer(String server) {
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -220,21 +249,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         edit.apply();
     }
 
-    private void setVersion(String server) {
-        final String inServer = server;
-        //ServiceGenerator.changeApiBaseUrl(inServer);
-        DAPNET dapnet= DAPNET.getInstance();
-        dapnet.setUrl(server);
-        DAPNETAPI da=dapnet.getDapnetapi();
+    private void setVersion() {
+        DAPNETAPI da = DapnetSingleton.getInstance().getService();
         Call<Version> version = da.getVersion();
         version.enqueue(new Callback<Version>(){
             @Override
             public void onResponse(Call<Version> call, Response<Version> response) {
                 if (response.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
-                    setServer(inServer);
                     TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
-                    String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + response.body().getCore() + ", API v" + response.body().getApi() + ", " + inServer;
+                    String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + response.body().getCore() + ", API v" + response.body().getApi() + ", ";
                     mNavHeadVersions.setText(tmp);
                 } else {
                     // APIError error = ErrorUtils.parseError(response)

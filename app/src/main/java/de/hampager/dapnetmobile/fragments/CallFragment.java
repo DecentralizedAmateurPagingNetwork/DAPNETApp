@@ -18,28 +18,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hampager.dap4j.DAPNETAPI;
+import de.hampager.dap4j.DapnetSingleton;
+import de.hampager.dap4j.models.CallResource;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.adapters.CallAdapter;
-import de.hampager.dap4j.DAPNETAPI;
-import de.hampager.dap4j.models.CallResource;
-import de.hampager.dap4j.ServiceGenerator;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
+2.Call;
+        2.Callback;
+        2.Response;
 
 public class CallFragment extends Fragment implements SearchView.OnQueryTextListener {
     private static final String TAG = "CallFragment";
     private RecyclerView recyclerView;
     private CallAdapter adapter;
     private SwipeRefreshLayout mSwipe;
-    private String server;
-    private String user;
-    private String password;
-    private Boolean admin;
     private SearchView searchView;
     public CallFragment() {
         // Required empty public constructor
@@ -59,32 +55,21 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(mLayoutManager);
-
-        SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        server = sharedPref.getString("server", "http://www.hampager.de:8080");
-        user = sharedPref.getString("user", "invalid");
-        password = sharedPref.getString("pass", "invalid");
-        admin = sharedPref.getBoolean("admin", true);
-        fetchJSON(server, user, password, admin);
+        fetchJSON();
 
     }
 
-    private void fetchJSON(String server, String user, String password, boolean admin) {
-        try {
-            ServiceGenerator.changeApiBaseUrl(server);
-        } catch (java.lang.NullPointerException e) {
-            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
-        }
-        DAPNETAPI service = ServiceGenerator.createService(DAPNETAPI.class, user, password);
+    private void fetchJSON() {
+        DAPNETAPI service = DapnetSingleton.getInstance().getService();
         Call<List<CallResource>> call;
-        Log.i(TAG, "fetchJSON, admin: " + admin);
-        if (admin) {
-            Log.i(TAG, "Admin access granted. Fetching All Calls...");
+        //Log.i(TAG, "fetchJSON, admin: " + admin);
+        //if (admin) {
+        //  Log.i(TAG, "Admin access granted. Fetching All Calls...");
             call = service.getCalls("");
-        } else {
+        /*} else {
             Log.i(TAG, "Admin access not granted. Fetching own Calls...");
             call = service.getCalls(user);
-        }
+        }*/
         call.enqueue(new Callback<List<CallResource>>() {
             @Override
             public void onResponse(Call<List<CallResource>> call, Response<List<CallResource>> response) {
@@ -140,7 +125,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
 
                 // once the network request has completed successfully.
 
-                fetchJSON(server, user, password, admin);
+                fetchJSON();
 
             }
 

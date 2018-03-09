@@ -3,10 +3,8 @@ package de.hampager.dapnetmobile;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -15,18 +13,16 @@ import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import de.hampager.dap4j.DAPNETAPI;
-import de.hampager.dap4j.ServiceGenerator;
+import de.hampager.dap4j.DapnetSingleton;
 import de.hampager.dap4j.models.User;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
+2.Call;
+        2.Callback;
+        2.Response;
 
 /**
  * A login screen that offers login via username/password.
@@ -90,9 +86,9 @@ public class LoginActivity extends AppCompatActivity {
 
         User returnValue = null;
         Log.i(TAG, "Server to be used: " + server);
-        ServiceGenerator.changeApiBaseUrl(server);
-        DAPNETAPI service = ServiceGenerator.createService(DAPNETAPI.class, user, password);
-
+        DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
+        dapnetSingleton.
+/*
         Call<User> call = service.getUser(user);
         call.enqueue(new Callback<User>() {
             @Override
@@ -129,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 Snackbar.make(findViewById(R.id.loginactivityid), getString(R.string.error_no_internet), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
-
+*/
         return returnValue;
     }
 

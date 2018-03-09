@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
@@ -34,14 +35,15 @@ import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hampager.dap4j.DAPNETAPI;
+import de.hampager.dap4j.DapnetSingleton;
+import de.hampager.dap4j.models.Transmitter;
 import de.hampager.dapnetmobile.BuildConfig;
 import de.hampager.dapnetmobile.R;
-import de.hampager.dap4j.DAPNETAPI;
-import de.hampager.dap4j.models.Transmitter;
-import de.hampager.dap4j.ServiceGenerator;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
+2.Call;
+        2.Callback;
+        2.Response;
 
 
 
@@ -140,13 +142,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         mapController.setZoom(6);
         GeoPoint startPoint = new GeoPoint(50.77623, 6.06937);
         mapController.setCenter(startPoint);
-
-        SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        String server = sharedPref.getString("server", "http://www.hampager.de:8080");
-        String user = sharedPref.getString("user", "invalid");
-        String password = sharedPref.getString("pass", "invalid");
-
-        fetchJSON(server,user,password);
+        fetchJSON();
     }
     private void config(){
 
@@ -230,13 +226,9 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         //DO NOTHING FOR NOW:
         return false;
     }
-    private void fetchJSON(String server, String user, String password) {
-        try {
-            ServiceGenerator.changeApiBaseUrl(server);
-        } catch (java.lang.NullPointerException e) {
-            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
-        }
-        DAPNETAPI service = ServiceGenerator.createService(DAPNETAPI.class, user, password);
+
+    private void fetchJSON() {
+        DAPNETAPI service = DapnetSingleton.getInstance().getService();
         Call<List<Transmitter>> call;
         call=service.getTransmitter("");
         call.enqueue(new Callback<List<Transmitter>>() {

@@ -25,31 +25,27 @@ import com.google.gson.Gson;
 import com.tokenautocomplete.FilteredArrayAdapter;
 import com.tokenautocomplete.TokenCompleteTextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import de.hampager.dap4j.models.CallSign;
 import de.hampager.dap4j.DAPNETAPI;
+import de.hampager.dap4j.DapnetSingleton;
 import de.hampager.dap4j.models.CallResource;
-import de.hampager.dap4j.ServiceGenerator;
+import de.hampager.dap4j.models.CallSign;
 import de.hampager.dap4j.models.TransmitterGroup;
 import de.hampager.dapnetmobile.tokenautocomplete.CallsignsCompletionView;
 import de.hampager.dapnetmobile.tokenautocomplete.TransmitterGroupCompletionView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
+2.Call;
+        2.Callback;
+        2.Response;
 
 public class PostCallActivity extends AppCompatActivity implements TokenCompleteTextView.TokenListener<CallSign> {
     private static final String TAG = "PostCallActivity";
     CallsignsCompletionView callSignsCompletion;
     TransmitterGroupCompletionView transmitterGroupCompletion;
-    String server;
-    String user;
-    String password;
     private TextInputEditText message;
     //private EditText transmitterGroupNames
     private Boolean emergencyBool = false;
@@ -61,13 +57,11 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_call);
-        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        server = sharedPref.getString("server", "http://www.hampager.de:8080");
-        user = sharedPref.getString("user", "invalid");
-        password = sharedPref.getString("pass", "invalid");
-        if (user.equals("invalid")&&password.equals("invalid")&&server.equals("http://www.hampager.de:8080"))
+        //TODO implement loggedin HERE
+        if (true)
             Snackbar.make(findViewById(R.id.postcallcoordinator), "You don't seem to be logged in.", Snackbar.LENGTH_LONG).show();
         Gson gson = new Gson();
+        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         String callsignJson = sharedPref.getString("callsigns", "");
         CallSign[] callSignResources=gson.fromJson(callsignJson,CallSign[].class);
         if (callSignResources!=null){
@@ -85,7 +79,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     private void defineObjects() {
         message = (TextInputEditText) findViewById(R.id.post_call_text);
         Switch emergency = (Switch) findViewById(R.id.post_call_emergencyswitch);
-        String m = user.toUpperCase();
+        String m = DapnetSingleton.getInstance().getUser().toUpperCase();
         m += ": ";
         message.setText(m);
         message.requestFocus();
@@ -98,12 +92,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     }
 
     private void getCallsigns() {
-        try {
-            ServiceGenerator.changeApiBaseUrl(server);
-        } catch (java.lang.NullPointerException e) {
-            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
-        }
-        DAPNETAPI service = ServiceGenerator.createService(DAPNETAPI.class, user, password);
+        DAPNETAPI service = DapnetSingleton.getInstance().getService();
         Call<List<CallSign>> call;
         call = service.getCallSign("");
         call.enqueue(new Callback<List<CallSign>>() {
@@ -203,12 +192,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
 
     private void getTransmitterGroups() {
-        try {
-            ServiceGenerator.changeApiBaseUrl(server);
-        } catch (java.lang.NullPointerException e) {
-            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
-        }
-        DAPNETAPI service = ServiceGenerator.createService(DAPNETAPI.class, user, password);
+        DAPNETAPI service = DapnetSingleton.getInstance().getService();
         Call<List<TransmitterGroup>> call;
         call = service.getTransmitterGroup("");
         call.enqueue(new Callback<List<TransmitterGroup>>() {
@@ -262,7 +246,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         transmitterGroupCompletion.setThreshold(1);
         transmitterGroupCompletion.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_FILTER|InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         if (transmitterGroupCompletion.getObjects()==null||transmitterGroupCompletion.getObjects().size()==0){
-            transmitterGroupCompletion.addObject(new TransmitterGroup("ALL"));
+            transmitterGroupCompletion.addObject(new TransmitterGroup("ALL", "", new ArrayList<>(), new ArrayList<>()));
         }
     }
 
@@ -301,7 +285,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                 //Forcing completion by focus change to prevent Issue #45
                 callSignsCompletion.onFocusChanged(false,View.FOCUS_FORWARD,null);
                 transmitterGroupCompletion.onFocusChanged(false,View.FOCUS_FORWARD,null);
-                sendCallMethod(msg, csnl, tgnl, emergencyBool, server, user, password);
+                sendCallMethod(msg, csnl, tgnl, emergencyBool);
             } else if (msg.length() == 0)
                 genericSnackbar(getString(R.string.error_empty_msg));
             else if (msg.length() > 79)
@@ -317,14 +301,9 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         Snackbar.make(findViewById(R.id.postcallcoordinator), s, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
-    private void sendCallMethod(String msg, List<String> csnl, List<String> tgnl, boolean e, String server, String user, String password) {
+    private void sendCallMethod(String msg, List<String> csnl, List<String> tgnl, boolean e) {
         CallResource sendvalue = new CallResource(msg, csnl, tgnl, e);
-        try {
-            ServiceGenerator.changeApiBaseUrl(server);
-        } catch (NullPointerException err) {
-            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
-        }
-        DAPNETAPI service = ServiceGenerator.createService(DAPNETAPI.class, user, password);
+        DAPNETAPI service = DapnetSingleton.getInstance().getService();
         Call<CallResource> call = service.postCall(sendvalue);
         call.enqueue(new Callback<CallResource>() {
             @Override

@@ -20,17 +20,19 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import de.hampager.dap4j.APIError;
+import de.hampager.dap4j.DAPNETAPI;
+import de.hampager.dap4j.DapnetSingleton;
+import de.hampager.dap4j.ErrorUtils;
+import de.hampager.dap4j.models.Stats;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.adapters.StatsAdapter;
-import de.hampager.dap4j.DAPNETAPI;
-import de.hampager.dap4j.ServiceGenerator;
-import de.hampager.dap4j.models.Stats;
-import de.hampager.dap4j.APIError;
-import de.hampager.dap4j.ErrorUtils;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
+2.Call;
+        2.Callback;
+        2.Response;
 
 
 
@@ -87,13 +89,7 @@ public class WelcomeFragment extends Fragment {
 
 
     private void fetchJSON(String server) {
-
-        try {
-            ServiceGenerator.changeApiBaseUrl(server);
-        } catch (java.lang.NullPointerException e) {
-            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
-        }
-        DAPNETAPI service = ServiceGenerator.createService(DAPNETAPI.class);
+        DAPNETAPI service = DapnetSingleton.getInstance().getService();
         Call<Stats> call = service.getStats();
         call.enqueue(new Callback<Stats>() {
             @Override

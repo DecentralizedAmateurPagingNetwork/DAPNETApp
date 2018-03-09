@@ -1,8 +1,12 @@
 package de.hampager.dapnetmobile;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.squareup.leakcanary.LeakCanary;
+
+import de.hampager.dap4j.DapnetSingleton;
 
 
 public class DAPNETApp extends Application {
@@ -15,5 +19,13 @@ public class DAPNETApp extends Application {
         }
         LeakCanary.install(this);
         // Normal app init code...
+        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        String url = sharedPref.getString("server", "http://hampager.de/api/");
+        String user = sharedPref.getString("user", "");
+        String pass = sharedPref.getString("pass", "");
+        sharedPref.getBoolean("admin", false);
+
+        DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
+        dapnetSingleton.init(url, user, pass);
     }
 }
