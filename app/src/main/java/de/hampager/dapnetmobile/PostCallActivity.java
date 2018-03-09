@@ -30,17 +30,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import de.hampager.dap4j.DAPNETAPI;
+import de.hampager.dap4j.DAPNET;
 import de.hampager.dap4j.DapnetSingleton;
+import de.hampager.dap4j.callbacks.DapnetListener;
+import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.CallResource;
 import de.hampager.dap4j.models.CallSign;
 import de.hampager.dap4j.models.TransmitterGroup;
 import de.hampager.dapnetmobile.tokenautocomplete.CallsignsCompletionView;
 import de.hampager.dapnetmobile.tokenautocomplete.TransmitterGroupCompletionView;
 
-2.Call;
-        2.Callback;
-        2.Response;
 
 public class PostCallActivity extends AppCompatActivity implements TokenCompleteTextView.TokenListener<CallSign> {
     private static final String TAG = "PostCallActivity";
@@ -92,16 +91,16 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     }
 
     private void getCallsigns() {
-        DAPNETAPI service = DapnetSingleton.getInstance().getService();
-        Call<List<CallSign>> call;
-        call = service.getCallSign("");
-        call.enqueue(new Callback<List<CallSign>>() {
+        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        dapnet.getAllCallSigns(new DapnetListener<List<CallSign>>() {
             @Override
-            public void onResponse(Call<List<CallSign>> call, Response<List<CallSign>> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(DapnetResponse<List<CallSign>> dapnetResponse) {
+                //TODO: implement isSuccessful()
+
+                //if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection getting Callsigns was successful");
                     // tasks available
-                    List<CallSign> data = response.body();
+                List<CallSign> data = dapnetResponse.body();
                     Collections.sort(data, new Comparator<CallSign>() {
                         @Override
                         public int compare(CallSign o1, CallSign o2) {
@@ -116,9 +115,9 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     saveData(dataArray);
                     setCallsigns(dataArray);
                     //adapter = new CallAdapter(data);
-                } else {
+                //} else {
                     //APIError error = ErrorUtils.parseError(response);
-                    Log.e(TAG, "Error " + response.code());
+                    /*Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
                     if (response.code() == 401) {
                         SharedPreferences sharedPref = PostCallActivity.this.getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
@@ -126,15 +125,17 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                         editor.clear();
                         editor.apply();
                     }
-                }
+                }*/
             }
 
             @Override
-            public void onFailure(Call<List<CallSign>> call, Throwable t) {
+            public void onFailure(Throwable throwable) {
                 // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG, "Error... Do you have internet? "+ t.getMessage());
+                Log.e(TAG, "Error... Do you have internet? " + throwable.getMessage());
+
             }
         });
+
     }
 
     private void setCallsigns(CallSign[] data) {
@@ -192,16 +193,15 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
 
     private void getTransmitterGroups() {
-        DAPNETAPI service = DapnetSingleton.getInstance().getService();
-        Call<List<TransmitterGroup>> call;
-        call = service.getTransmitterGroup("");
-        call.enqueue(new Callback<List<TransmitterGroup>>() {
+        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        dapnet.getAllTransmitterGroups(new DapnetListener<List<TransmitterGroup>>() {
             @Override
-            public void onResponse(Call<List<TransmitterGroup>> call, Response<List<TransmitterGroup>> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(DapnetResponse<List<TransmitterGroup>> dapnetResponse) {
+                //TODO: implement response.isSuccessful()
+                //if (response.isSuccessful()) {
                     Log.i(TAG, "Connection getting transmittergroups was successful");
                     // tasks available
-                    List<TransmitterGroup> data = response.body();
+                List<TransmitterGroup> data = dapnetResponse.body();
                     Collections.sort(data, new Comparator<TransmitterGroup>() {
                         @Override
                         public int compare(TransmitterGroup o1, TransmitterGroup o2) {
@@ -215,7 +215,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     TransmitterGroup[] transmitterGroupResources =data.toArray(new TransmitterGroup[data.size()]);
                     saveData(transmitterGroupResources);
                     setTransmittergroups(transmitterGroupResources);
-                } else {
+                /*} else {
                     //APIError error = ErrorUtils.parseError(response);
                     Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
@@ -225,13 +225,14 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                         editor.clear();
                         editor.apply();
                     }
-                }
+                }*/
             }
 
             @Override
-            public void onFailure(Call<List<TransmitterGroup>> call, Throwable t) {
+            public void onFailure(Throwable throwable) {
+
                 // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG, "Error... Do you have internet? "+ t.getMessage());
+                Log.e(TAG, "Error... Do you have internet? " + throwable.getMessage());
             }
         });
     }
@@ -303,35 +304,34 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
     private void sendCallMethod(String msg, List<String> csnl, List<String> tgnl, boolean e) {
         CallResource sendvalue = new CallResource(msg, csnl, tgnl, e);
-        DAPNETAPI service = DapnetSingleton.getInstance().getService();
-        Call<CallResource> call = service.postCall(sendvalue);
-        call.enqueue(new Callback<CallResource>() {
+        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        dapnet.postCall(sendvalue, new DapnetListener<CallResource>() {
             @Override
-            public void onResponse(Call<CallResource> call, Response<CallResource> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(DapnetResponse<CallResource> dapnetResponse) {
+                //if (dapnetResponse.isSuccessful()) {
                     // tasks available
                     //CallResource returnValue = response.body();
                     Log.i(TAG, "Sending call worked with successful response");
                     Toast.makeText(PostCallActivity.this, getString(R.string.successfully_sent_message), Toast.LENGTH_SHORT).show();
                     finish();
-                } else {
+                /*} else {
                     //APIError error = ErrorUtils.parseError(response);
-                    Log.e(TAG, "Post Call Error: " + response.code());
-                    genericSnackbar("Error:" + response.code() + "Msg: " + response.message());
-                    if (response.code() == 401) {
+                    Log.e(TAG, "Post Call Error: " + dapnetResponse.code());
+                    genericSnackbar("Error:" + dapnetResponse.code() + "Msg: " + dapnetResponse.message());
+                    if (dapnetResponse.code() == 401) {
                         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.clear();
                         editor.apply();
                     }
-                }
+                }*/
             }
 
             @Override
-            public void onFailure(Call<CallResource> call, Throwable t) {
-                // something went completely south (like no internet connection)
+            public void onFailure(Throwable throwable) {
+// something went completely south (like no internet connection)
                 Log.e(TAG, "Sending call seems to have failed");
-                Log.e(TAG, t.toString());
+                Log.e(TAG, throwable.toString());
                 Snackbar.make(findViewById(R.id.postcallcoordinator), getString(R.string.error_no_internet), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });

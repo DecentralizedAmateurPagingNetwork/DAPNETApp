@@ -3,8 +3,10 @@ package de.hampager.dapnetmobile;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -16,13 +18,15 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import de.hampager.dap4j.DAPNET;
 import de.hampager.dap4j.DapnetSingleton;
+import de.hampager.dap4j.callbacks.DapnetListener;
+import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.User;
 
-2.Call;
-        2.Callback;
-        2.Response;
+
 
 /**
  * A login screen that offers login via username/password.
@@ -83,20 +87,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public User getUser(final String user, final String password, final String server) {
-
-        User returnValue = null;
-        Log.i(TAG, "Server to be used: " + server);
-        DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
-        dapnetSingleton.
-/*
-        Call<User> call = service.getUser(user);
-        call.enqueue(new Callback<User>() {
+        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        String name = "";
+        dapnet.getUser(name, new DapnetListener<User>() {
             @Override
-            public void onResponse(Call<User> User, Response<User> response) {
-                if (response.isSuccessful()) {
-                    User returnValue = response.body();
-                    saveData(server, user, password, returnValue.admin());
-                    Log.i(TAG, "getUser, admin: " + returnValue.admin());
+            public void onResponse(DapnetResponse<User> dapnetResponse) {
+                //TODO: isSuccessful
+                //if (response.isSuccessful()) {
+                User returnValue = dapnetResponse.body();
+                saveData(server, user, password, returnValue.getAdmin());
+                Log.i(TAG, "getUser, admin: " + returnValue.getAdmin());
                     showProgress(false);
                     Log.i(TAG, "Login was successful!");
                     Toast.makeText(LoginActivity.this, getString(R.string.success_welcome) + user, Toast.LENGTH_SHORT).show();
@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                     LoginActivity.this.startActivity(myIntent);
                     finish();
 
-                } else {
+                /*} else {
                     Log.e(TAG, "Error: " + response.code());
                     //Should Use APIError
 
@@ -113,11 +113,11 @@ public class LoginActivity extends AppCompatActivity {
                     View focusView = mUsernameView;
                     focusView.requestFocus();
                     Snackbar.make(findViewById(R.id.loginactivityid), getString(R.string.error_credentials), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }
+                }*/
             }
 
             @Override
-            public void onFailure(Call<User> userRessource, Throwable t) {
+            public void onFailure(Throwable throwable) {
                 Log.e(TAG, "Call failed. Do you have Internet access?");
                 showProgress(false);
                 View focusView = mUsernameView;
@@ -125,8 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 Snackbar.make(findViewById(R.id.loginactivityid), getString(R.string.error_no_internet), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
-*/
-        return returnValue;
+        return null;
     }
 
     private void attemptLogin() {

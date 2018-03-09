@@ -25,17 +25,16 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import de.hampager.dap4j.DAPNETAPI;
+import de.hampager.dap4j.DAPNET;
 import de.hampager.dap4j.DapnetSingleton;
+import de.hampager.dap4j.callbacks.DapnetListener;
+import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.Version;
 import de.hampager.dapnetmobile.fragments.CallFragment;
 import de.hampager.dapnetmobile.fragments.HelpFragment;
 import de.hampager.dapnetmobile.fragments.MapFragment;
 import de.hampager.dapnetmobile.fragments.WelcomeFragment;
 
-2.Call;
-        2.Callback;
-        2.Response;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";
@@ -250,29 +249,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void setVersion() {
-        DAPNETAPI da = DapnetSingleton.getInstance().getService();
-        Call<Version> version = da.getVersion();
-        version.enqueue(new Callback<Version>(){
+        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        dapnet.getVersion(new DapnetListener<Version>() {
             @Override
-            public void onResponse(Call<Version> call, Response<Version> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(DapnetResponse<Version> dapnetResponse) {
+                //TODO: implement isSuccessful()
+                //if (response.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
-                    String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + response.body().getCore() + ", API v" + response.body().getApi() + ", ";
+                String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + dapnetResponse.body().getCore() + ", API v" + dapnetResponse.body().getApi() + ", ";
                     mNavHeadVersions.setText(tmp);
-                } else {
+                /*} else {
                     // APIError error = ErrorUtils.parseError(response)
                     Log.e(TAG, "Error getting versions" + response.code());
                     Log.e(TAG, response.message());
                     Snackbar.make(findViewById(R.id.container), getString(R.string.error_get_versions) + " " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }
+                }*/
             }
 
             @Override
-            public void onFailure(Call<Version> call, Throwable t) {
-                // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG, "Fatal connection error.. "+t.getMessage());
-                Snackbar.make(findViewById(R.id.container), "Fatal connection error.. "+t.getMessage(), Snackbar.LENGTH_LONG).show();
+            public void onFailure(Throwable throwable) {
+// something went completely wrong (e.g. no internet connection)
+                Log.e(TAG, "Fatal connection error.. " + throwable.getMessage());
+                Snackbar.make(findViewById(R.id.container), "Fatal connection error.. " + throwable.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
         TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);

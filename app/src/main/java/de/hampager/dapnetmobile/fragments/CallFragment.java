@@ -1,9 +1,6 @@
 package de.hampager.dapnetmobile.fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,15 +18,14 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hampager.dap4j.DAPNETAPI;
+import de.hampager.dap4j.DAPNET;
 import de.hampager.dap4j.DapnetSingleton;
+import de.hampager.dap4j.callbacks.DapnetListener;
+import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.CallResource;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.adapters.CallAdapter;
 
-2.Call;
-        2.Callback;
-        2.Response;
 
 public class CallFragment extends Fragment implements SearchView.OnQueryTextListener {
     private static final String TAG = "CallFragment";
@@ -60,27 +56,22 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
     }
 
     private void fetchJSON() {
-        DAPNETAPI service = DapnetSingleton.getInstance().getService();
-        Call<List<CallResource>> call;
+        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        //TODO: Implement non-admin
         //Log.i(TAG, "fetchJSON, admin: " + admin);
         //if (admin) {
         //  Log.i(TAG, "Admin access granted. Fetching All Calls...");
-            call = service.getCalls("");
-        /*} else {
-            Log.i(TAG, "Admin access not granted. Fetching own Calls...");
-            call = service.getCalls(user);
-        }*/
-        call.enqueue(new Callback<List<CallResource>>() {
+        dapnet.getCalls("", new DapnetListener<List<CallResource>>() {
             @Override
-            public void onResponse(Call<List<CallResource>> call, Response<List<CallResource>> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(DapnetResponse<List<CallResource>> dapnetResponse) {
+                //if (response.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                    List<CallResource> data = response.body();
+                List<CallResource> data = dapnetResponse.body();
                     adapter.setmValues(data);
                     adapter.notifyDataSetChanged();
                     mSwipe.setRefreshing(false);
-                } else {
+                /*} else {
                     Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
                     Snackbar.make(recyclerView, "Error! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
@@ -90,15 +81,16 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
                         editor.clear();
                         editor.apply();
                     }
-                }
+                }*/
             }
 
             @Override
-            public void onFailure(Call<List<CallResource>> call, Throwable t) {
+            public void onFailure(Throwable throwable) {
                 // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG, t.getMessage());
+                Log.e(TAG, throwable.getMessage());
             }
         });
+
     }
 
     @Override

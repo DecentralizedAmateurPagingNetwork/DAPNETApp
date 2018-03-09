@@ -22,18 +22,13 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hampager.dap4j.APIError;
-import de.hampager.dap4j.DAPNETAPI;
+import de.hampager.dap4j.DAPNET;
 import de.hampager.dap4j.DapnetSingleton;
-import de.hampager.dap4j.ErrorUtils;
+import de.hampager.dap4j.callbacks.DapnetListener;
+import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.Stats;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.adapters.StatsAdapter;
-
-2.Call;
-        2.Callback;
-        2.Response;
-
 
 
 /**
@@ -89,33 +84,32 @@ public class WelcomeFragment extends Fragment {
 
 
     private void fetchJSON(String server) {
-        DAPNETAPI service = DapnetSingleton.getInstance().getService();
-        Call<Stats> call = service.getStats();
-        call.enqueue(new Callback<Stats>() {
+        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        dapnet.getStats(new DapnetListener<Stats>() {
             @Override
-            public void onResponse(Call<Stats> call, Response<Stats> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(DapnetResponse<Stats> dapnetResponse) {
+                //if (response.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                    Stats data = response.body();
+                Stats data = dapnetResponse.body();
                     adapter = new StatsAdapter(data);
                     recyclerView.setAdapter(adapter);
 
-                } else {
+                /*} else {
                     APIError error = ErrorUtils.parseError(response);
                     Log.e(TAG,error.toString());
                     Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
                     Snackbar.make(recyclerView, "Error! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }
+                }*/
             }
 
             @Override
-            public void onFailure(Call<Stats> call, Throwable t) {
+            public void onFailure(Throwable throwable) {
                 // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG, "Fatal connection error.. "+t.getMessage());
+                Log.e(TAG, "Fatal connection error.. " + throwable.getMessage());
                 if(getActivity()!=null&&getActivity().findViewById(R.id.container)!=null) {
-                    Snackbar.make(getActivity().findViewById(R.id.container), "Fatal connection error.. " + t.getMessage(), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(getActivity().findViewById(R.id.container), "Fatal connection error.. " + throwable.getMessage(), Snackbar.LENGTH_LONG).show();
                 }
             }
         });

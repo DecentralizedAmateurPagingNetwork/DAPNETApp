@@ -2,7 +2,6 @@ package de.hampager.dapnetmobile.fragments;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -35,16 +34,13 @@ import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hampager.dap4j.DAPNETAPI;
+import de.hampager.dap4j.DAPNET;
 import de.hampager.dap4j.DapnetSingleton;
+import de.hampager.dap4j.callbacks.DapnetListener;
+import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.Transmitter;
 import de.hampager.dapnetmobile.BuildConfig;
 import de.hampager.dapnetmobile.R;
-
-2.Call;
-        2.Callback;
-        2.Response;
-
 
 
 /**
@@ -228,16 +224,15 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     }
 
     private void fetchJSON() {
-        DAPNETAPI service = DapnetSingleton.getInstance().getService();
-        Call<List<Transmitter>> call;
-        call=service.getTransmitter("");
-        call.enqueue(new Callback<List<Transmitter>>() {
+        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        dapnet.getAllTransmitters(new DapnetListener<List<Transmitter>>() {
             @Override
-            public void onResponse(Call<List<Transmitter>> call, Response<List<Transmitter>> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(DapnetResponse<List<Transmitter>> dapnetResponse) {
+                //TODO: isSuccessful
+                //if (response.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                    List<Transmitter> data = response.body();
+                List<Transmitter> data = dapnetResponse.body();
                     for(Transmitter t: data){
                         OverlayItem temp = new OverlayItem(t.getName(), getDesc(t), new GeoPoint(Double.parseDouble(t.getLatitude()), Double.parseDouble(t.getLongitude())));
                         if (t.getUsage().equals("WIDERANGE")){
@@ -255,7 +250,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                         }
                     }
                     config();
-                } else {
+               /* } else {
                     Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
                     if (response.code() == 401) {
@@ -264,14 +259,15 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                         editor.clear();
                         editor.apply();
                     }
-                }
+                }*/
             }
 
             @Override
-            public void onFailure(Call<List<Transmitter>> call, Throwable t) {
+            public void onFailure(Throwable throwable) {
                 // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG, t.getMessage());
+                Log.e(TAG, throwable.getMessage());
             }
+
         });
     }
 
