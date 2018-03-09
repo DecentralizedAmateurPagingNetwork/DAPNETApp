@@ -87,16 +87,19 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public User getUser(final String user, final String password, final String server) {
-        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
-        String name = "";
+        DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
+        dapnetSingleton.init("http://hampager.de/api/", user, password);
+        DAPNET dapnet = dapnetSingleton.getDapnet();
+        String name = user;
+        User returnValue;
         dapnet.getUser(name, new DapnetListener<User>() {
             @Override
             public void onResponse(DapnetResponse<User> dapnetResponse) {
-                //TODO: isSuccessful
-                //if (response.isSuccessful()) {
+
+                if (dapnetResponse.isSuccessful()) {
                 User returnValue = dapnetResponse.body();
-                saveData(server, user, password, returnValue.getAdmin());
-                Log.i(TAG, "getUser, admin: " + returnValue.getAdmin());
+                    saveData(server, user, password, true);
+                    Log.i(TAG, "getUser, admin: " + true);
                     showProgress(false);
                     Log.i(TAG, "Login was successful!");
                     Toast.makeText(LoginActivity.this, getString(R.string.success_welcome) + user, Toast.LENGTH_SHORT).show();
@@ -104,8 +107,11 @@ public class LoginActivity extends AppCompatActivity {
                     LoginActivity.this.startActivity(myIntent);
                     finish();
 
-                /*} else {
-                    Log.e(TAG, "Error: " + response.code());
+                } else {
+
+                    Log.e(TAG, "Error: ");
+                    //TODO: implement .code
+                    //Log.e(TAG, "Error: " + dapnetResponse().code);
                     //Should Use APIError
 
                     //Log.e(TAG, error.message());
@@ -113,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                     View focusView = mUsernameView;
                     focusView.requestFocus();
                     Snackbar.make(findViewById(R.id.loginactivityid), getString(R.string.error_credentials), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }*/
+                }
             }
 
             @Override

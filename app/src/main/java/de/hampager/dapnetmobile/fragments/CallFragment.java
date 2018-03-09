@@ -64,24 +64,26 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
         dapnet.getCalls("", new DapnetListener<List<CallResource>>() {
             @Override
             public void onResponse(DapnetResponse<List<CallResource>> dapnetResponse) {
-                //if (response.isSuccessful()) {
+                if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
                 List<CallResource> data = dapnetResponse.body();
                     adapter.setmValues(data);
                     adapter.notifyDataSetChanged();
                     mSwipe.setRefreshing(false);
-                /*} else {
-                    Log.e(TAG, "Error " + response.code());
-                    Log.e(TAG, response.message());
-                    Snackbar.make(recyclerView, "Error! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    if (response.code() == 401) {
+                } else {
+                    Log.e(TAG, "Error");
+                    //TODO: .code,.message etc
+                    /*Log.e(TAG, "Error " + dapnetResponse.code());
+                    Log.e(TAG, dapnetResponse.message());
+                    Snackbar.make(recyclerView, "Error! " + dapnetResponse.code() + " " + dapnetResponse.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    if (dapnetResponse.code() == 401) {
                         SharedPreferences sharedPref = getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.clear();
                         editor.apply();
-                    }
-                }*/
+                    }*/
+                }
             }
 
             @Override

@@ -253,18 +253,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         dapnet.getVersion(new DapnetListener<Version>() {
             @Override
             public void onResponse(DapnetResponse<Version> dapnetResponse) {
-                //TODO: implement isSuccessful()
-                //if (response.isSuccessful()) {
+
+                if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
                 String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + dapnetResponse.body().getCore() + ", API v" + dapnetResponse.body().getApi() + ", ";
                     mNavHeadVersions.setText(tmp);
-                /*} else {
+                } else {
+                    //TODO: implement .code,.message
+                    Log.e(TAG, "Error.");
                     // APIError error = ErrorUtils.parseError(response)
-                    Log.e(TAG, "Error getting versions" + response.code());
-                    Log.e(TAG, response.message());
-                    Snackbar.make(findViewById(R.id.container), getString(R.string.error_get_versions) + " " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }*/
+                    /*Log.e(TAG, "Error getting versions" + dapnetResponse.code());
+                    Log.e(TAG, dapnetResponse.message());
+                    Snackbar.make(findViewById(R.id.container), getString(R.string.error_get_versions) + " " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();*/
+                }
             }
 
             @Override

@@ -97,7 +97,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
             public void onResponse(DapnetResponse<List<CallSign>> dapnetResponse) {
                 //TODO: implement isSuccessful()
 
-                //if (dapnetResponse.isSuccessful()) {
+                if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection getting Callsigns was successful");
                     // tasks available
                 List<CallSign> data = dapnetResponse.body();
@@ -115,7 +115,9 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     saveData(dataArray);
                     setCallsigns(dataArray);
                     //adapter = new CallAdapter(data);
-                //} else {
+                } else {
+                    Log.e(TAG, "Error");
+                    //TODO: .code,.message
                     //APIError error = ErrorUtils.parseError(response);
                     /*Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
@@ -124,8 +126,8 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.clear();
                         editor.apply();
-                    }
-                }*/
+                    }*/
+                }
             }
 
             @Override
@@ -198,7 +200,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
             @Override
             public void onResponse(DapnetResponse<List<TransmitterGroup>> dapnetResponse) {
                 //TODO: implement response.isSuccessful()
-                //if (response.isSuccessful()) {
+                if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection getting transmittergroups was successful");
                     // tasks available
                 List<TransmitterGroup> data = dapnetResponse.body();
@@ -215,17 +217,19 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     TransmitterGroup[] transmitterGroupResources =data.toArray(new TransmitterGroup[data.size()]);
                     saveData(transmitterGroupResources);
                     setTransmittergroups(transmitterGroupResources);
-                /*} else {
+                } else {
+                    //TODO: implement .code,message
+                    Log.e(TAG, "Error.");
                     //APIError error = ErrorUtils.parseError(response);
-                    Log.e(TAG, "Error " + response.code());
+                    /*Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
                     if (response.code() == 401) {
                         SharedPreferences sharedPref = PostCallActivity.this.getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.clear();
                         editor.apply();
-                    }
-                }*/
+                    }*/
+                }
             }
 
             @Override
@@ -308,23 +312,25 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         dapnet.postCall(sendvalue, new DapnetListener<CallResource>() {
             @Override
             public void onResponse(DapnetResponse<CallResource> dapnetResponse) {
-                //if (dapnetResponse.isSuccessful()) {
+                if (dapnetResponse.isSuccessful()) {
                     // tasks available
                     //CallResource returnValue = response.body();
                     Log.i(TAG, "Sending call worked with successful response");
                     Toast.makeText(PostCallActivity.this, getString(R.string.successfully_sent_message), Toast.LENGTH_SHORT).show();
                     finish();
-                /*} else {
-                    //APIError error = ErrorUtils.parseError(response);
-                    Log.e(TAG, "Post Call Error: " + dapnetResponse.code());
+                } else {
+                    Log.e(TAG, "Error.");
+                    //TODO: implement .code,.message
+                    //APIError error = ErrorUtils.parseError(response)
+                    /*Log.e(TAG, "Post Call Error: " + dapnetResponse.code());
                     genericSnackbar("Error:" + dapnetResponse.code() + "Msg: " + dapnetResponse.message());
                     if (dapnetResponse.code() == 401) {
                         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.clear();
                         editor.apply();
-                    }
-                }*/
+                    }*/
+                }
             }
 
             @Override

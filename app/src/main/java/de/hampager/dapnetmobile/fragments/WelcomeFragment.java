@@ -88,20 +88,24 @@ public class WelcomeFragment extends Fragment {
         dapnet.getStats(new DapnetListener<Stats>() {
             @Override
             public void onResponse(DapnetResponse<Stats> dapnetResponse) {
-                //if (response.isSuccessful()) {
+                if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
                 Stats data = dapnetResponse.body();
                     adapter = new StatsAdapter(data);
                     recyclerView.setAdapter(adapter);
 
-                /*} else {
+                } else {
+                    Log.e(TAG, "Error.");
+                    //TODO: implement .code, .message
+
+                    /*
                     APIError error = ErrorUtils.parseError(response);
                     Log.e(TAG,error.toString());
                     Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
-                    Snackbar.make(recyclerView, "Error! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }*/
+                    Snackbar.make(recyclerView, "Error! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();*/
+                }
             }
 
             @Override

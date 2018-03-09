@@ -228,8 +228,8 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         dapnet.getAllTransmitters(new DapnetListener<List<Transmitter>>() {
             @Override
             public void onResponse(DapnetResponse<List<Transmitter>> dapnetResponse) {
-                //TODO: isSuccessful
-                //if (response.isSuccessful()) {
+
+                if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
                 List<Transmitter> data = dapnetResponse.body();
@@ -250,16 +250,18 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                         }
                     }
                     config();
-               /* } else {
-                    Log.e(TAG, "Error " + response.code());
+                } else {
+                    Log.e(TAG, "Error.");
+                    //TODO: implement .code,.message
+                    /*Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
                     if (response.code() == 401) {
                         SharedPreferences sharedPref = getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.clear();
                         editor.apply();
-                    }
-                }*/
+                    }*/
+                }
             }
 
             @Override

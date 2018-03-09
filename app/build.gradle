@@ -44,7 +44,7 @@ dependencies {
     compile 'com.splitwise:tokenautocomplete:2.0.8@aar'
     compile 'com.android.support:support-v4:25.4.0'
 
-    compile 'com.github.DecentralizedAmateurPagingNetwork:DAP4J:1.0.0'
+    compile 'com.github.DecentralizedAmateurPagingNetwork:DAP4J:1.0.1'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }
