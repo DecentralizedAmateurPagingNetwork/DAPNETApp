@@ -43,7 +43,7 @@ public class WelcomeFragment extends Fragment {
     ImageView muninImageView;
     private RecyclerView recyclerView;
     private StatsAdapter adapter;
-
+    private DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
 
     public WelcomeFragment() {
         // Required empty public constructor
@@ -72,7 +72,7 @@ public class WelcomeFragment extends Fragment {
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        String server = sharedPref.getString("server", "http://www.hampager.de:8080");
+        String server = sharedPref.getString("server", getResources().getString(R.string.ClearNetURL));
         muninImageView = (ImageView) v.findViewById(R.id.statsImage);
         if (server.contains("ampr.org"))
             Picasso.with(muninImageView.getContext()).load("http://db0sda.ampr.org/munin-cgi/munin-cgi-graph/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png").into(muninImageView);
@@ -84,7 +84,7 @@ public class WelcomeFragment extends Fragment {
 
 
     private void fetchJSON(String server) {
-        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+
         dapnet.getStats(new DapnetListener<Stats>() {
             @Override
             public void onResponse(DapnetResponse<Stats> dapnetResponse) {

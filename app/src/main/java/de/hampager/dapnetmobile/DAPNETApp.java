@@ -20,7 +20,7 @@ public class DAPNETApp extends Application {
         LeakCanary.install(this);
         // Normal app init code...
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        String url = sharedPref.getString("server", "http://hampager.de/api/");
+        String url = sharedPref.getString("server", getResources().getString(R.string.ClearNetURL));
         String user = sharedPref.getString("user", "");
         String pass = sharedPref.getString("pass", "");
         sharedPref.getBoolean("admin", false);

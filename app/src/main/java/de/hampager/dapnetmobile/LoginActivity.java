@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
 
         String defServer = getIntent().getStringExtra("defServer");
 
-        if (defServer != null && !(defServer.equals("http://hampager.de:8080"))) {
+        if (defServer != null && !(defServer.equals(getResources().getString(R.string.ClearNetURL)))) {
             spinner.setSelection(1);
         }
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -88,7 +88,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public User getUser(final String user, final String password, final String server) {
         DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
-        dapnetSingleton.init("http://hampager.de/api/", user, password);
+        dapnetSingleton.init(getResources().getString(R.string.ClearNetURL), user, password);
+        Log.d(TAG, dapnetSingleton.getUrl() + "; " + dapnetSingleton.getUser() + "; " + dapnetSingleton.getPass());
         DAPNET dapnet = dapnetSingleton.getDapnet();
         String name = user;
         User returnValue;
@@ -155,9 +156,9 @@ public class LoginActivity extends AppCompatActivity {
                 cancel = true;
             }
         } else if (spinner.getSelectedItemPosition() == 1) {
-            server = "http://dapnet.db0sda.ampr.org:8080";
+            server = getResources().getString(R.string.DapNetURL);
         } else {
-            server = "http://www.hampager.de:8080";
+            server = getResources().getString(R.string.ClearNetURL);
         }
         String user = mUsernameView.getText().toString().trim();
         String password = mPasswordView.getText().toString();
