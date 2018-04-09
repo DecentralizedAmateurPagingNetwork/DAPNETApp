@@ -14,8 +14,9 @@ android {
     }
     buildTypes {
         release {
-            shrinkResources true
-            minifyEnabled true
+            shrinkResources false
+            minifyEnabled false
+            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'),
                     'proguard-rules.pro'
         }
@@ -34,17 +35,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'org.osmdroid:osmdroid-android:5.6.5'
-    compile 'com.android.support:appcompat-v7:25.4.0'
-    compile 'com.android.support:recyclerview-v7:25.4.0'
-    compile 'com.android.support:design:25.4.0'
-    compile 'com.android.support:cardview-v7:25.4.0'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.splitwise:tokenautocomplete:2.0.8@aar'
-    compile 'com.android.support:support-v4:25.4.0'
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'org.osmdroid:osmdroid-android:5.6.5'
+    implementation 'com.android.support:appcompat-v7:25.4.0'
+    implementation 'com.android.support:recyclerview-v7:25.4.0'
+    implementation 'com.android.support:design:25.4.0'
+    implementation 'com.android.support:cardview-v7:25.4.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.1.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.splitwise:tokenautocomplete:2.0.8@aar'
+    implementation 'com.android.support:support-v4:25.4.0'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }
