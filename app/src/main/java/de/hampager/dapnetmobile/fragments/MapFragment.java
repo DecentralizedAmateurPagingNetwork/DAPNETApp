@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +20,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
@@ -26,18 +30,20 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.FolderOverlay;
-import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
-import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
+import org.osmdroid.views.overlay.simplefastpoint.LabelledGeoPoint;
+import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlay;
+import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlayOptions;
+import org.osmdroid.views.overlay.simplefastpoint.SimplePointTheme;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hampager.dapnetmobile.BuildConfig;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.api.HamPagerService;
-import de.hampager.dapnetmobile.api.TransmitterResource;
 import de.hampager.dapnetmobile.api.ServiceGenerator;
+import de.hampager.dapnetmobile.api.TransmitterResource;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,17 +61,7 @@ import retrofit2.Response;
 public class MapFragment extends Fragment implements MapEventsReceiver {
     static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE=1;
     private static final String TAG = "MapFragment";
-    //Items for our Overlays
-    ArrayList<OverlayItem> onlineWide = new ArrayList<>();
-    ArrayList<OverlayItem> offlineWide = new ArrayList<>();
-    ArrayList<OverlayItem> onlinePers = new ArrayList<>();
-    ArrayList<OverlayItem> offlinePers = new ArrayList<>();
-    ItemizedOverlayWithFocus<OverlayItem> ewOverlay;
-    ItemizedOverlayWithFocus<OverlayItem> dwOverlay;
-    ItemizedOverlayWithFocus<OverlayItem> epOverlay;
-    ItemizedOverlayWithFocus<OverlayItem> dpOverlay;
     Menu menu;
-    FolderOverlay fo;
     private MapView map;
     public MapFragment() {
         // Required empty public constructor
@@ -132,8 +128,6 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     private void configMap(){
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
-
-
         map.setFlingEnabled(true);
         IMapController mapController = map.getController();
         mapController.setZoom(6);
@@ -151,77 +145,60 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
 
         Drawable onlineMarker=getResources().getDrawable(R.mipmap.ic_radiotower_green);
         Drawable offlineMarker=getResources().getDrawable(R.mipmap.ic_radiotower_red);
+        FolderOverlay onlineWideRangeFolder = new FolderOverlay();
+        FolderOverlay onlinePersonalFolder = new FolderOverlay();
+        FolderOverlay offlineWideRangeFolder = new FolderOverlay();
+        FolderOverlay offlinePersonalFolder = new FolderOverlay();
 
-        int backgroundColor=Color.parseColor("#ffffff");
-        ewOverlay=new ItemizedOverlayWithFocus<>(onlineWide,onlineMarker,onlineMarker, backgroundColor,
-                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-                    @Override
-                    public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-                        //do something
-                        return true;
-                    }
-                    @Override
-                    public boolean onItemLongPress(final int index, final OverlayItem item) {
-                        return false;
-                    }
-                },getContext());
-        dwOverlay=new ItemizedOverlayWithFocus<>(offlineWide,offlineMarker,offlineMarker, backgroundColor,
-                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-                    @Override
-                    public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-                        //do something
-                        return true;
-                    }
-                    @Override
-                    public boolean onItemLongPress(final int index, final OverlayItem item) {
-                        return false;
-                    }
-                },getContext());
-        epOverlay=new ItemizedOverlayWithFocus<>(onlinePers,onlineMarker,onlineMarker, backgroundColor,
-                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-                    @Override
-                    public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-                        //do something
-                        return true;
-                    }
-                    @Override
-                    public boolean onItemLongPress(final int index, final OverlayItem item) {
-                        return false;
-                    }
-                },getContext());
-        dpOverlay=new ItemizedOverlayWithFocus<>(offlinePers,offlineMarker,offlineMarker, backgroundColor,
-                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-                    @Override
-                    public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-                        //do something
-                        return true;
-                    }
-                    @Override
-                    public boolean onItemLongPress(final int index, final OverlayItem item) {
-                        return false;
-                    }
-                },getContext());
-        dwOverlay.setEnabled(false);
-        epOverlay.setEnabled(false);
-        dpOverlay.setEnabled(false);
-        ewOverlay.setFocusItemsOnTap(true);
-        ItemizedOverlayWithFocus[] ovList={ewOverlay,dwOverlay,epOverlay,dpOverlay};
-        fo = new FolderOverlay();
-        for(ItemizedOverlayWithFocus t : ovList){
-            //t.setDescriptionBoxCornerWidth(32);
-            //t.setDescriptionBoxPadding(6);
-            //t.setDescriptionMaxWidth(200);
 
-            fo.add(t);
-        }
+        map.getOverlays().add(onlineWideRangeFolder);
 
-        map.getOverlays().add(fo);
-
-        ewOverlay.setFocusItemsOnTap(true);
     }
 
+    private void fastOverlay() {
+        // create 10k labelled points
+        // in most cases, there will be no problems of displaying >100k points, feel free to try
+        List<IGeoPoint> points = new ArrayList<>();
+        for (int i = 0; i < 10000; i++) {
+            points.add(new LabelledGeoPoint(37 + Math.random() * 5, -8 + Math.random() * 5
+                    , "Point #" + i));
+        }
+
+        // wrap them in a theme
+        SimplePointTheme pt = new SimplePointTheme(points, true);
+
+        // create label style
+        Paint textStyle = new Paint();
+        textStyle.setStyle(Paint.Style.FILL);
+        textStyle.setColor(Color.parseColor("#0000ff"));
+        textStyle.setTextAlign(Paint.Align.CENTER);
+        textStyle.setTextSize(24);
+
+        // set some visual options for the overlay
+        // we use here MAXIMUM_OPTIMIZATION algorithm, which works well with >100k points
+        SimpleFastPointOverlayOptions opt = SimpleFastPointOverlayOptions.getDefaultStyle()
+                .setAlgorithm(SimpleFastPointOverlayOptions.RenderingAlgorithm.MAXIMUM_OPTIMIZATION)
+                .setRadius(7).setIsClickable(true).setCellSize(15).setTextStyle(textStyle);
+
+        // create the overlay with the theme
+        final SimpleFastPointOverlay sfpo = new SimpleFastPointOverlay(pt, opt);
+
+        // onClick callback
+        sfpo.setOnClickListener(new SimpleFastPointOverlay.OnClickListener() {
+            @Override
+            public void onClick(SimpleFastPointOverlay.PointAdapter points, Integer point) {
+                Toast.makeText(map.getContext()
+                        , "You clicked " + ((LabelledGeoPoint) points.get(point)).getLabel()
+                        , Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // add overlay
+        map.getOverlays().add(sfpo);
+    }
     @Override public boolean singleTapConfirmedHelper(GeoPoint p) {
-        fo.closeAllInfoWindows();
+        //TODO: close Windows?
+        //fo.closeAllInfoWindows();
         return true;
     }
 
@@ -245,22 +222,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
                     ArrayList<TransmitterResource> data = response.body();
-                    for(TransmitterResource t: data){
-                        OverlayItem temp = new OverlayItem(t.getName(), getDesc(t), new GeoPoint(t.getLatitude(), t.getLongitude()));
-                        if (t.getUsage().equals("WIDERANGE")){
-                            if(t.getStatus().equals("ONLINE")){
-                                onlineWide.add(onlineWide.size(),temp);
-                            }else{
-                                offlineWide.add(offlineWide.size(),temp);
-                            }
-                        }else{
-                            if(t.getStatus().equals("ONLINE")){
-                                onlinePers.add(onlinePers.size(),temp);
-                            }else{
-                                offlinePers.add(offlinePers.size(),temp);
-                            }
-                        }
-                    }
+
                     config();
                 } else {
                     Log.e(TAG, "Error " + response.code());
@@ -332,34 +294,6 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         item.setChecked(!item.isChecked());
-        if (ewOverlay==null||dwOverlay==null||epOverlay==null||dpOverlay==null){
-            config();
-        }
-        if(menu.getItem(2).isChecked()){
-            ewOverlay.setEnabled(menu.getItem(0).isChecked());
-            ewOverlay.setFocusItemsOnTap(menu.getItem(0).isChecked());
-
-            dwOverlay.setEnabled(menu.getItem(1).isChecked());
-            ewOverlay.setFocusItemsOnTap(menu.getItem(1).isChecked());
-        }else {
-            //Disable Online&&Offline WiderangeOverlay
-            ewOverlay.setEnabled(false);
-            ewOverlay.setFocusItemsOnTap(false);
-            dwOverlay.setEnabled(false);
-            dwOverlay.setFocusItemsOnTap(false);
-        }
-        if(menu.getItem(3).isChecked()){
-            epOverlay.setEnabled(menu.getItem(0).isChecked());
-            epOverlay.setFocusItemsOnTap(menu.getItem(0).isChecked());
-            dpOverlay.setEnabled(menu.getItem(1).isChecked());
-            epOverlay.setFocusItemsOnTap(menu.getItem(1).isChecked());
-        }else {
-            //Disable Online&&Offline PersOverlay
-            epOverlay.setEnabled(false);
-            epOverlay.setFocusItemsOnTap(false);
-            dpOverlay.setEnabled(false);
-            dpOverlay.setFocusItemsOnTap(false);
-        }
         map.invalidate();
         InfoWindow.closeAllInfoWindowsOn(map);
 
