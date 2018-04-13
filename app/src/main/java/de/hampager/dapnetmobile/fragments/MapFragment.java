@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
@@ -26,18 +26,20 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.FolderOverlay;
-import org.osmdroid.views.overlay.ItemizedIconOverlay;
-import org.osmdroid.views.overlay.ItemizedOverlayWithFocus;
-import org.osmdroid.views.overlay.OverlayItem;
+import org.osmdroid.views.overlay.MapEventsOverlay;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
+import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hampager.dapnetmobile.BuildConfig;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.api.HamPagerService;
-import de.hampager.dapnetmobile.api.TransmitterResource;
 import de.hampager.dapnetmobile.api.ServiceGenerator;
+import de.hampager.dapnetmobile.api.TransmitterResource;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,18 +57,13 @@ import retrofit2.Response;
 public class MapFragment extends Fragment implements MapEventsReceiver {
     static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE=1;
     private static final String TAG = "MapFragment";
-    //Items for our Overlays
-    ArrayList<OverlayItem> onlineWide = new ArrayList<>();
-    ArrayList<OverlayItem> offlineWide = new ArrayList<>();
-    ArrayList<OverlayItem> onlinePers = new ArrayList<>();
-    ArrayList<OverlayItem> offlinePers = new ArrayList<>();
-    ItemizedOverlayWithFocus<OverlayItem> ewOverlay;
-    ItemizedOverlayWithFocus<OverlayItem> dwOverlay;
-    ItemizedOverlayWithFocus<OverlayItem> epOverlay;
-    ItemizedOverlayWithFocus<OverlayItem> dpOverlay;
     Menu menu;
-    FolderOverlay fo;
     private MapView map;
+    private List<TransmitterResource> transmitterList = new ArrayList<>();
+    private FolderOverlay onlineWideRangeFolder = new FolderOverlay();
+    private FolderOverlay onlinePersonalFolder = new FolderOverlay();
+    private FolderOverlay offlineWideRangeFolder = new FolderOverlay();
+    private FolderOverlay offlinePersonalFolder = new FolderOverlay();
     public MapFragment() {
         // Required empty public constructor
     }
@@ -132,8 +129,6 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     private void configMap(){
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
-
-
         map.setFlingEnabled(true);
         IMapController mapController = map.getController();
         mapController.setZoom(6);
@@ -149,79 +144,41 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     }
     private void config(){
 
+        map.getOverlays().add(new MapEventsOverlay(this));
         Drawable onlineMarker=getResources().getDrawable(R.mipmap.ic_radiotower_green);
         Drawable offlineMarker=getResources().getDrawable(R.mipmap.ic_radiotower_red);
 
-        int backgroundColor=Color.parseColor("#ffffff");
-        ewOverlay=new ItemizedOverlayWithFocus<>(onlineWide,onlineMarker,onlineMarker, backgroundColor,
-                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-                    @Override
-                    public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-                        //do something
-                        return true;
-                    }
-                    @Override
-                    public boolean onItemLongPress(final int index, final OverlayItem item) {
-                        return false;
-                    }
-                },getContext());
-        dwOverlay=new ItemizedOverlayWithFocus<>(offlineWide,offlineMarker,offlineMarker, backgroundColor,
-                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-                    @Override
-                    public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-                        //do something
-                        return true;
-                    }
-                    @Override
-                    public boolean onItemLongPress(final int index, final OverlayItem item) {
-                        return false;
-                    }
-                },getContext());
-        epOverlay=new ItemizedOverlayWithFocus<>(onlinePers,onlineMarker,onlineMarker, backgroundColor,
-                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-                    @Override
-                    public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-                        //do something
-                        return true;
-                    }
-                    @Override
-                    public boolean onItemLongPress(final int index, final OverlayItem item) {
-                        return false;
-                    }
-                },getContext());
-        dpOverlay=new ItemizedOverlayWithFocus<>(offlinePers,offlineMarker,offlineMarker, backgroundColor,
-                new ItemizedIconOverlay.OnItemGestureListener<OverlayItem>() {
-                    @Override
-                    public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
-                        //do something
-                        return true;
-                    }
-                    @Override
-                    public boolean onItemLongPress(final int index, final OverlayItem item) {
-                        return false;
-                    }
-                },getContext());
-        dwOverlay.setEnabled(false);
-        epOverlay.setEnabled(false);
-        dpOverlay.setEnabled(false);
-        ewOverlay.setFocusItemsOnTap(true);
-        ItemizedOverlayWithFocus[] ovList={ewOverlay,dwOverlay,epOverlay,dpOverlay};
-        fo = new FolderOverlay();
-        for(ItemizedOverlayWithFocus t : ovList){
-            //t.setDescriptionBoxCornerWidth(32);
-            //t.setDescriptionBoxPadding(6);
-            //t.setDescriptionMaxWidth(200);
-
-            fo.add(t);
+        for (TransmitterResource t : transmitterList) {
+            Marker tempMarker = new Marker(map);
+            tempMarker.setPosition(new GeoPoint(t.getLatitude(), t.getLongitude()));
+            tempMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+            tempMarker.setSnippet(getDesc(t));
+            //map.getOverlays().add(startMarker);
+            tempMarker.setTitle(t.getName());
+            tempMarker.setInfoWindow(new MarkerInfoWindow(R.layout.custom_info_window, map));
+            if (t.getStatus().equals("ONLINE")) {
+                tempMarker.setIcon(onlineMarker);
+                if (t.getUsage().equals("WIDERANGE")) {
+                    onlineWideRangeFolder.add(tempMarker);
+                } else onlinePersonalFolder.add(tempMarker);
+            } else {
+                tempMarker.setIcon(offlineMarker);
+                if (t.getUsage().equals("WIDERANGE")) offlineWideRangeFolder.add(tempMarker);
+                else offlinePersonalFolder.add(tempMarker);
+            }
         }
 
-        map.getOverlays().add(fo);
-
-        ewOverlay.setFocusItemsOnTap(true);
+        //fastOverlay();
+        map.getOverlays().add(onlineWideRangeFolder);
+        List<Overlay> l = onlineWideRangeFolder.getItems();
+        map.invalidate();
     }
 
     @Override public boolean singleTapConfirmedHelper(GeoPoint p) {
-        fo.closeAllInfoWindows();
+        onlineWideRangeFolder.closeAllInfoWindows();
+        offlineWideRangeFolder.closeAllInfoWindows();
+        onlinePersonalFolder.closeAllInfoWindows();
+        offlinePersonalFolder.closeAllInfoWindows();
         return true;
     }
 
@@ -244,23 +201,8 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                 if (response.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                    ArrayList<TransmitterResource> data = response.body();
-                    for(TransmitterResource t: data){
-                        OverlayItem temp = new OverlayItem(t.getName(), getDesc(t), new GeoPoint(t.getLatitude(), t.getLongitude()));
-                        if (t.getUsage().equals("WIDERANGE")){
-                            if(t.getStatus().equals("ONLINE")){
-                                onlineWide.add(onlineWide.size(),temp);
-                            }else{
-                                offlineWide.add(offlineWide.size(),temp);
-                            }
-                        }else{
-                            if(t.getStatus().equals("ONLINE")){
-                                onlinePers.add(onlinePers.size(),temp);
-                            }else{
-                                offlinePers.add(offlinePers.size(),temp);
-                            }
-                        }
-                    }
+                    //List<TransmitterResource> data = response.body();
+                    transmitterList = response.body();
                     config();
                 } else {
                     Log.e(TAG, "Error " + response.code());
@@ -286,25 +228,19 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         StringBuilder s = new StringBuilder();
         String dot = ": ";
         Context res = getContext();
-        s.append(res.getString(R.string.type));
-        s.append(dot);
-        s.append(TrRe.getUsage());
-        s.append("\n");
-        s.append(res.getString(R.string.transmission_power));
-        s.append(dot);
-        s.append(Double.toString(TrRe.getPower()));
-        s.append("\n");
+        s.append(res.getString(R.string.type)).append(dot).append(TrRe.getUsage()).append("<br/>");
+        s.append(res.getString(R.string.transmission_power)).append(dot).append(Double.toString(TrRe.getPower())).append("<br/>");
         if (TrRe.getTimeSlot().length() > 1) s.append(res.getString(R.string.timeslots));
         else s.append(res.getString(R.string.timeslot));
-        s.append(dot);
-        s.append(TrRe.getTimeSlot());
-        s.append("\n");
-        if (TrRe.getOwnerNames().size() > 1) s.append(res.getString(R.string.owners));
-        else s.append(res.getString(R.string.owner));
-        s.append(dot);
-        for (String temp : TrRe.getOwnerNames()) {
-            s.append(temp).append(" ");
-        }
+        s.append(dot).append(TrRe.getTimeSlot()).append("<br/>");
+        if (TrRe.getOwnerNames().size() > 1) {
+            s.append(res.getString(R.string.owners)).append(dot);
+            for (String temp : TrRe.getOwnerNames()) {
+                s.append(temp).append(",");
+            }
+        } else
+            s.append(res.getString(R.string.owner)).append(dot).append(TrRe.getOwnerNames().get(0));
+
         return s.toString();
     }
     @Override
@@ -332,39 +268,47 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         item.setChecked(!item.isChecked());
-        if (ewOverlay==null||dwOverlay==null||epOverlay==null||dpOverlay==null){
-            config();
-        }
-        if(menu.getItem(2).isChecked()){
-            ewOverlay.setEnabled(menu.getItem(0).isChecked());
-            ewOverlay.setFocusItemsOnTap(menu.getItem(0).isChecked());
+        Menu menu = this.menu;
+        boolean onlineEnabled = menu.findItem(R.id.online_filter).isChecked();
+        boolean offlineEnabled = menu.findItem(R.id.offline_filter).isChecked();
+        boolean wideRangeEnabled = menu.findItem(R.id.widerange_filter).isChecked();
+        boolean personalEnabled = menu.findItem(R.id.personal_filter).isChecked();
 
-            dwOverlay.setEnabled(menu.getItem(1).isChecked());
-            ewOverlay.setFocusItemsOnTap(menu.getItem(1).isChecked());
-        }else {
-            //Disable Online&&Offline WiderangeOverlay
-            ewOverlay.setEnabled(false);
-            ewOverlay.setFocusItemsOnTap(false);
-            dwOverlay.setEnabled(false);
-            dwOverlay.setFocusItemsOnTap(false);
+        if (onlineEnabled) {
+            if (wideRangeEnabled) {
+                if (!map.getOverlays().contains(onlineWideRangeFolder)) {
+                    map.getOverlays().add(onlineWideRangeFolder);
+                }
+            } else
+                map.getOverlays().remove(onlineWideRangeFolder);
+            if (personalEnabled) {
+                if (!map.getOverlays().contains(onlinePersonalFolder)) {
+                    map.getOverlays().add(onlinePersonalFolder);
+                }
+            } else
+                map.getOverlays().remove(onlinePersonalFolder);
+        } else {
+            map.getOverlays().remove(onlineWideRangeFolder);
+            map.getOverlays().remove(onlinePersonalFolder);
         }
-        if(menu.getItem(3).isChecked()){
-            epOverlay.setEnabled(menu.getItem(0).isChecked());
-            epOverlay.setFocusItemsOnTap(menu.getItem(0).isChecked());
-            dpOverlay.setEnabled(menu.getItem(1).isChecked());
-            epOverlay.setFocusItemsOnTap(menu.getItem(1).isChecked());
-        }else {
-            //Disable Online&&Offline PersOverlay
-            epOverlay.setEnabled(false);
-            epOverlay.setFocusItemsOnTap(false);
-            dpOverlay.setEnabled(false);
-            dpOverlay.setFocusItemsOnTap(false);
+        if (offlineEnabled) {
+            if (wideRangeEnabled) {
+                if (!map.getOverlays().contains(offlineWideRangeFolder))
+                    map.getOverlays().add(offlineWideRangeFolder);
+            } else
+                map.getOverlays().remove(offlineWideRangeFolder);
+            if (personalEnabled) {
+                if (!map.getOverlays().contains(offlinePersonalFolder))
+                    map.getOverlays().add(offlinePersonalFolder);
+            } else
+                map.getOverlays().remove(offlinePersonalFolder);
+        } else {
+            map.getOverlays().remove(offlineWideRangeFolder);
+            map.getOverlays().remove(offlinePersonalFolder);
         }
         map.invalidate();
         InfoWindow.closeAllInfoWindowsOn(map);
-
         return true;
-
     }
     @Override
     public void onResume(){
