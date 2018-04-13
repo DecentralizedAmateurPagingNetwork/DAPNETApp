@@ -36,7 +36,7 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'org.osmdroid:osmdroid-android:5.6.5'
+    implementation 'org.osmdroid:osmdroid-android:6.0.1'
     implementation 'com.android.support:appcompat-v7:25.4.0'
     implementation 'com.android.support:recyclerview-v7:25.4.0'
     implementation 'com.android.support:design:25.4.0'
