@@ -4,8 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,9 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
@@ -30,11 +26,11 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.FolderOverlay;
+import org.osmdroid.views.overlay.MapEventsOverlay;
+import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
-import org.osmdroid.views.overlay.simplefastpoint.LabelledGeoPoint;
-import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlay;
-import org.osmdroid.views.overlay.simplefastpoint.SimpleFastPointOverlayOptions;
-import org.osmdroid.views.overlay.simplefastpoint.SimplePointTheme;
+import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +59,11 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     private static final String TAG = "MapFragment";
     Menu menu;
     private MapView map;
+    private List<TransmitterResource> transmitterList = new ArrayList<>();
+    private FolderOverlay onlineWideRangeFolder = new FolderOverlay();
+    private FolderOverlay onlinePersonalFolder = new FolderOverlay();
+    private FolderOverlay offlineWideRangeFolder = new FolderOverlay();
+    private FolderOverlay offlinePersonalFolder = new FolderOverlay();
     public MapFragment() {
         // Required empty public constructor
     }
@@ -143,62 +144,41 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     }
     private void config(){
 
+        map.getOverlays().add(new MapEventsOverlay(this));
         Drawable onlineMarker=getResources().getDrawable(R.mipmap.ic_radiotower_green);
         Drawable offlineMarker=getResources().getDrawable(R.mipmap.ic_radiotower_red);
-        FolderOverlay onlineWideRangeFolder = new FolderOverlay();
-        FolderOverlay onlinePersonalFolder = new FolderOverlay();
-        FolderOverlay offlineWideRangeFolder = new FolderOverlay();
-        FolderOverlay offlinePersonalFolder = new FolderOverlay();
 
-
-        map.getOverlays().add(onlineWideRangeFolder);
-
-    }
-
-    private void fastOverlay() {
-        // create 10k labelled points
-        // in most cases, there will be no problems of displaying >100k points, feel free to try
-        List<IGeoPoint> points = new ArrayList<>();
-        for (int i = 0; i < 10000; i++) {
-            points.add(new LabelledGeoPoint(37 + Math.random() * 5, -8 + Math.random() * 5
-                    , "Point #" + i));
+        for (TransmitterResource t : transmitterList) {
+            Marker tempMarker = new Marker(map);
+            tempMarker.setPosition(new GeoPoint(t.getLatitude(), t.getLongitude()));
+            tempMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+            tempMarker.setSnippet(getDesc(t));
+            //map.getOverlays().add(startMarker);
+            tempMarker.setTitle(t.getName());
+            tempMarker.setInfoWindow(new MarkerInfoWindow(R.layout.custom_info_window, map));
+            if (t.getStatus().equals("ONLINE")) {
+                tempMarker.setIcon(onlineMarker);
+                if (t.getUsage().equals("WIDERANGE")) {
+                    onlineWideRangeFolder.add(tempMarker);
+                } else onlinePersonalFolder.add(tempMarker);
+            } else {
+                tempMarker.setIcon(offlineMarker);
+                if (t.getUsage().equals("WIDERANGE")) offlineWideRangeFolder.add(tempMarker);
+                else offlinePersonalFolder.add(tempMarker);
+            }
         }
 
-        // wrap them in a theme
-        SimplePointTheme pt = new SimplePointTheme(points, true);
-
-        // create label style
-        Paint textStyle = new Paint();
-        textStyle.setStyle(Paint.Style.FILL);
-        textStyle.setColor(Color.parseColor("#0000ff"));
-        textStyle.setTextAlign(Paint.Align.CENTER);
-        textStyle.setTextSize(24);
-
-        // set some visual options for the overlay
-        // we use here MAXIMUM_OPTIMIZATION algorithm, which works well with >100k points
-        SimpleFastPointOverlayOptions opt = SimpleFastPointOverlayOptions.getDefaultStyle()
-                .setAlgorithm(SimpleFastPointOverlayOptions.RenderingAlgorithm.MAXIMUM_OPTIMIZATION)
-                .setRadius(7).setIsClickable(true).setCellSize(15).setTextStyle(textStyle);
-
-        // create the overlay with the theme
-        final SimpleFastPointOverlay sfpo = new SimpleFastPointOverlay(pt, opt);
-
-        // onClick callback
-        sfpo.setOnClickListener(new SimpleFastPointOverlay.OnClickListener() {
-            @Override
-            public void onClick(SimpleFastPointOverlay.PointAdapter points, Integer point) {
-                Toast.makeText(map.getContext()
-                        , "You clicked " + ((LabelledGeoPoint) points.get(point)).getLabel()
-                        , Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // add overlay
-        map.getOverlays().add(sfpo);
+        //fastOverlay();
+        map.getOverlays().add(onlineWideRangeFolder);
+        List<Overlay> l = onlineWideRangeFolder.getItems();
+        map.invalidate();
     }
+
     @Override public boolean singleTapConfirmedHelper(GeoPoint p) {
-        //TODO: close Windows?
-        //fo.closeAllInfoWindows();
+        onlineWideRangeFolder.closeAllInfoWindows();
+        offlineWideRangeFolder.closeAllInfoWindows();
+        onlinePersonalFolder.closeAllInfoWindows();
+        offlinePersonalFolder.closeAllInfoWindows();
         return true;
     }
 
@@ -221,8 +201,8 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                 if (response.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                    ArrayList<TransmitterResource> data = response.body();
-
+                    //List<TransmitterResource> data = response.body();
+                    transmitterList = response.body();
                     config();
                 } else {
                     Log.e(TAG, "Error " + response.code());
@@ -248,25 +228,19 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         StringBuilder s = new StringBuilder();
         String dot = ": ";
         Context res = getContext();
-        s.append(res.getString(R.string.type));
-        s.append(dot);
-        s.append(TrRe.getUsage());
-        s.append("\n");
-        s.append(res.getString(R.string.transmission_power));
-        s.append(dot);
-        s.append(Double.toString(TrRe.getPower()));
-        s.append("\n");
+        s.append(res.getString(R.string.type)).append(dot).append(TrRe.getUsage()).append("<br/>");
+        s.append(res.getString(R.string.transmission_power)).append(dot).append(Double.toString(TrRe.getPower())).append("<br/>");
         if (TrRe.getTimeSlot().length() > 1) s.append(res.getString(R.string.timeslots));
         else s.append(res.getString(R.string.timeslot));
-        s.append(dot);
-        s.append(TrRe.getTimeSlot());
-        s.append("\n");
-        if (TrRe.getOwnerNames().size() > 1) s.append(res.getString(R.string.owners));
-        else s.append(res.getString(R.string.owner));
-        s.append(dot);
-        for (String temp : TrRe.getOwnerNames()) {
-            s.append(temp).append(" ");
-        }
+        s.append(dot).append(TrRe.getTimeSlot()).append("<br/>");
+        if (TrRe.getOwnerNames().size() > 1) {
+            s.append(res.getString(R.string.owners)).append(dot);
+            for (String temp : TrRe.getOwnerNames()) {
+                s.append(temp).append(",");
+            }
+        } else
+            s.append(res.getString(R.string.owner)).append(dot).append(TrRe.getOwnerNames().get(0));
+
         return s.toString();
     }
     @Override
@@ -294,11 +268,47 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         item.setChecked(!item.isChecked());
+        Menu menu = this.menu;
+        boolean onlineEnabled = menu.findItem(R.id.online_filter).isChecked();
+        boolean offlineEnabled = menu.findItem(R.id.offline_filter).isChecked();
+        boolean wideRangeEnabled = menu.findItem(R.id.widerange_filter).isChecked();
+        boolean personalEnabled = menu.findItem(R.id.personal_filter).isChecked();
+
+        if (onlineEnabled) {
+            if (wideRangeEnabled) {
+                if (!map.getOverlays().contains(onlineWideRangeFolder)) {
+                    map.getOverlays().add(onlineWideRangeFolder);
+                }
+            } else
+                map.getOverlays().remove(onlineWideRangeFolder);
+            if (personalEnabled) {
+                if (!map.getOverlays().contains(onlinePersonalFolder)) {
+                    map.getOverlays().add(onlinePersonalFolder);
+                }
+            } else
+                map.getOverlays().remove(onlinePersonalFolder);
+        } else {
+            map.getOverlays().remove(onlineWideRangeFolder);
+            map.getOverlays().remove(onlinePersonalFolder);
+        }
+        if (offlineEnabled) {
+            if (wideRangeEnabled) {
+                if (!map.getOverlays().contains(offlineWideRangeFolder))
+                    map.getOverlays().add(offlineWideRangeFolder);
+            } else
+                map.getOverlays().remove(offlineWideRangeFolder);
+            if (personalEnabled) {
+                if (!map.getOverlays().contains(offlinePersonalFolder))
+                    map.getOverlays().add(offlinePersonalFolder);
+            } else
+                map.getOverlays().remove(offlinePersonalFolder);
+        } else {
+            map.getOverlays().remove(offlineWideRangeFolder);
+            map.getOverlays().remove(offlinePersonalFolder);
+        }
         map.invalidate();
         InfoWindow.closeAllInfoWindowsOn(map);
-
         return true;
-
     }
     @Override
     public void onResume(){

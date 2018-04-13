@@ -1,8 +1,6 @@
 
 package de.hampager.dapnetmobile.api;
 
-import android.content.res.Resources;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +37,17 @@ public class TransmitterResource {
      * 
      */
     public TransmitterResource() {
+    }
+
+    public TransmitterResource(String name, double longitude, double latitude, double power, String timeSlot, List<String> ownerNames, String status, String usage) {
+        this.name = name;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.power = power;
+        this.timeSlot = timeSlot;
+        this.ownerNames = ownerNames;
+        this.status = status;
+        this.usage = usage;
     }
 
     public TransmitterResource(String name, String authKey, double longitude, double latitude, double power, String nodeName, Address address, String timeSlot, List<String> ownerNames, String deviceType, String deviceVersion, Integer callCount, String status, Integer antennaAboveGroundLevel, String antennaType, Integer antennaDirection, String antennaGainDbi, Object lastUpdate, String usage, Integer identificationAddress, String lastConnected, Object connectedSince) {
