@@ -64,6 +64,8 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE=1;
     private static final String TAG = "MapFragment";
     Menu menu;
+    //Member variable needed to prevent garbage collection
+    Target target;
     private MapView map;
     private List<TransmitterResource> transmitterList = new ArrayList<>();
     private FolderOverlay onlineWideRangeFolder = new FolderOverlay();
@@ -200,12 +202,13 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         //fastOverlay();
         map.getOverlays().add(onlineWideRangeFolder);
         final GroundOverlay2[] placeholder = new GroundOverlay2[1];
-        Target target = new Target() {
+        target = new Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 map.getOverlays().remove(placeholder[0]);
                 map.invalidate();
                 GroundOverlay2 groundOverlay = new GroundOverlay2();
+                groundOverlay.setTransparency(0.5f);
                 groundOverlay.setImage(bitmap);
                 groundOverlay.setPosition(new GeoPoint(51.6755, 4.64684), new GeoPoint(49.8768, 7.49137));
                 map.getOverlays().add(groundOverlay);
@@ -227,7 +230,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
             }
 
         };
-        Picasso.with(getContext()).load("https://hampager.de/assets/coverage/db0sda.png").resize(1080, 1080).centerCrop().placeholder(R.drawable.autorenew).into(target);
+        Picasso.with(getContext()).load("https://hampager.de/assets/coverage/db0sda.png").resize(2048, 2048).centerCrop().placeholder(R.drawable.loading_coverage).into(target);
         map.invalidate();
     }
 
