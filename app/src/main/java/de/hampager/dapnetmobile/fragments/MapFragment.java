@@ -4,6 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,6 +22,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
 import org.osmdroid.api.IMapController;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
@@ -26,9 +32,9 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.FolderOverlay;
+import org.osmdroid.views.overlay.GroundOverlay2;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
 
@@ -142,6 +148,29 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
 
         fetchJSON(server,user,password);
     }
+
+    private static Bitmap drawableToBitmap(Drawable drawable) {
+        Bitmap bitmap = null;
+
+        if (drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            if (bitmapDrawable.getBitmap() != null) {
+                return bitmapDrawable.getBitmap();
+            }
+        }
+
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        }
+
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
     private void config(){
 
         map.getOverlays().add(new MapEventsOverlay(this));
@@ -170,9 +199,38 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
 
         //fastOverlay();
         map.getOverlays().add(onlineWideRangeFolder);
-        List<Overlay> l = onlineWideRangeFolder.getItems();
+        final GroundOverlay2[] placeholder = new GroundOverlay2[1];
+        Target target = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                map.getOverlays().remove(placeholder[0]);
+                map.invalidate();
+                GroundOverlay2 groundOverlay = new GroundOverlay2();
+                groundOverlay.setImage(bitmap);
+                groundOverlay.setPosition(new GeoPoint(51.6755, 4.64684), new GeoPoint(49.8768, 7.49137));
+                map.getOverlays().add(groundOverlay);
+                map.invalidate();
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                GroundOverlay2 groundOverlayPlaceHolder = new GroundOverlay2();
+                groundOverlayPlaceHolder.setImage(drawableToBitmap(placeHolderDrawable));
+                groundOverlayPlaceHolder.setPosition(new GeoPoint(51.6755, 4.64684), new GeoPoint(49.8768, 7.49137));
+                placeholder[0] = groundOverlayPlaceHolder;
+                map.getOverlays().add(groundOverlayPlaceHolder);
+            }
+
+        };
+        Picasso.with(getContext()).load("https://hampager.de/assets/coverage/db0sda.png").resize(1080, 1080).centerCrop().placeholder(R.drawable.autorenew).into(target);
         map.invalidate();
     }
+
 
     @Override public boolean singleTapConfirmedHelper(GeoPoint p) {
         onlineWideRangeFolder.closeAllInfoWindows();
@@ -321,15 +379,30 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     public void onButtonPressed(Uri uri) {
         //Not yet implemented
     }
+/*
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        map.
+        ImageView bmImage;
 
-    /*
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
+    }*/
 }
