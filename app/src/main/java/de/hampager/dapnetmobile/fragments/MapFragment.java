@@ -35,6 +35,7 @@ import org.osmdroid.views.overlay.FolderOverlay;
 import org.osmdroid.views.overlay.GroundOverlay2;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
+import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
 
@@ -72,6 +73,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     private FolderOverlay onlinePersonalFolder = new FolderOverlay();
     private FolderOverlay offlineWideRangeFolder = new FolderOverlay();
     private FolderOverlay offlinePersonalFolder = new FolderOverlay();
+    private FolderOverlay coverageFolder = new FolderOverlay();
     public MapFragment() {
         // Required empty public constructor
     }
@@ -176,6 +178,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     private void config(){
 
         map.getOverlays().add(new MapEventsOverlay(this));
+        map.getOverlays().add(coverageFolder);
         Drawable onlineMarker=getResources().getDrawable(R.mipmap.ic_radiotower_green);
         Drawable offlineMarker=getResources().getDrawable(R.mipmap.ic_radiotower_red);
 
@@ -187,6 +190,35 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
             //map.getOverlays().add(startMarker);
             tempMarker.setTitle(t.getName());
             tempMarker.setInfoWindow(new MarkerInfoWindow(R.layout.custom_info_window, map));
+            tempMarker.setOnMarkerClickListener(new Marker.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker, MapView mapView) {
+                    Target target = new Target() {
+                        @Override
+                        public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                            GroundOverlay2 groundOverlay = new GroundOverlay2();
+                            groundOverlay.setTransparency(0.4f);
+                            groundOverlay.setImage(bitmap);
+                            groundOverlay.setPosition(new GeoPoint(51.6755, 4.64684), new GeoPoint(49.8768, 7.49137));
+                            if (!coverageFolder.getItems().contains(groundOverlay)) {
+                                coverageFolder.add(groundOverlay);
+                            }
+                        }
+
+                        @Override
+                        public void onBitmapFailed(Drawable errorDrawable) {
+
+                        }
+
+                        @Override
+                        public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                        }
+                    };
+                    Picasso.with(getContext()).load("https://hampager.de/assets/coverage/" + t.getName().toLowerCase()).resize(1024, 1024).centerCrop().placeholder(R.drawable.loading_coverage).into(target);
+                    return false;
+                }
+            });
             if (t.getStatus().equals("ONLINE")) {
                 tempMarker.setIcon(onlineMarker);
                 if (t.getUsage().equals("WIDERANGE")) {
@@ -208,7 +240,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                 map.getOverlays().remove(placeholder[0]);
                 map.invalidate();
                 GroundOverlay2 groundOverlay = new GroundOverlay2();
-                groundOverlay.setTransparency(0.5f);
+                groundOverlay.setTransparency(0.4f);
                 groundOverlay.setImage(bitmap);
                 groundOverlay.setPosition(new GeoPoint(51.6755, 4.64684), new GeoPoint(49.8768, 7.49137));
                 map.getOverlays().add(groundOverlay);
@@ -230,7 +262,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
             }
 
         };
-        Picasso.with(getContext()).load("https://hampager.de/assets/coverage/db0sda.png").resize(2048, 2048).centerCrop().placeholder(R.drawable.loading_coverage).into(target);
+        Picasso.with(getContext()).load("https://hampager.de/assets/coverage/db0sda.png").resize(1024, 1024).centerCrop().placeholder(R.drawable.loading_coverage).into(target);
         map.invalidate();
     }
 
@@ -240,6 +272,9 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         offlineWideRangeFolder.closeAllInfoWindows();
         onlinePersonalFolder.closeAllInfoWindows();
         offlinePersonalFolder.closeAllInfoWindows();
+        for (Overlay o : coverageFolder.getItems()) {
+            coverageFolder.remove(o);
+        }
         return true;
     }
 
