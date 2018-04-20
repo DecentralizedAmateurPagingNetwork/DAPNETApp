@@ -96,4 +96,6 @@
     <string name="compose_shortcut_short_label1" translatable="false">Compose</string>
     <string name="compose_shortcut_long_label1" translatable="false">Compose Call</string>
     <string name="compose_disabled_message1" translatable="false">Compose disabled</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
