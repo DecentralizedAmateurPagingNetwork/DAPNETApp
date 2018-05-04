@@ -3,7 +3,6 @@ package de.hampager.dapnetmobile;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import de.hampager.dap4j.DAPNET;
 import de.hampager.dap4j.DapnetSingleton;
@@ -90,9 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.addDrawerListener(toggle);
             toggle.syncState();
         }
-
-
-
+        setVersion();
     }
 
     @Override
@@ -130,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onResume() {
         super.onResume();
-        checkServers();
     }
 
     @Override
@@ -213,100 +210,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void setServer(String server) {
-        mServer = server;
-        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        SharedPreferences.Editor edit = sharedPref.edit();
-        edit.putString("defServer", server);
-        edit.apply();
-    }
 
-    private void checkServers() {
-        Resources resources = getResources();
-        String clearNetURL = resources.getString(R.string.ClearNetURL);
-        String DAPNetURL = resources.getString(R.string.DapNetURL);
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        String server = sharedPreferences.getString("defServer", clearNetURL);
-        DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
-        dapnetSingleton.init(server, "", "");
-        DAPNET dapnet = dapnetSingleton.getDapnet();
-        switch (server) {
-            case "http://hampager.de/api/":
-                dapnetSingleton.init(DAPNetURL, "", "");
-                DAPNET dapnet1 = dapnetSingleton.getDapnet();
-                dapnet1.getVersion(new DapnetListener<Version>() {
-                    @Override
-                    public void onResponse(DapnetResponse<Version> dapnetResponse) {
-                        setServer(DAPNetURL);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        setServer(clearNetURL);
-                    }
-                });
-                break;
-            case "http://db0sda.ampr.org/api/":
-                dapnet.getVersion(new DapnetListener<Version>() {
-                    @Override
-                    public void onResponse(DapnetResponse<Version> dapnetResponse) {
-                        setServer(server);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        setServer(clearNetURL);
-                    }
-                });
-                break;
-            default:
-                dapnet.getVersion(new DapnetListener<Version>() {
-                    @Override
-                    public void onResponse(DapnetResponse<Version> dapnetResponse) {
-                        setServer(server);
-                    }
-
-                    @Override
-                    public void onFailure(Throwable throwable) {
-                        dapnetSingleton.init(DAPNetURL, "", "");
-                        DAPNET dapnet = dapnetSingleton.getDapnet();
-                        dapnet.getVersion(new DapnetListener<Version>() {
-                            @Override
-                            public void onResponse(DapnetResponse<Version> dapnetResponse) {
-                                setServer(DAPNetURL);
-                            }
-
-                            @Override
-                            public void onFailure(Throwable throwable) {
-                                setServer(clearNetURL);
-                            }
-                        });
-                    }
-                });
-                break;
-        }
-    }
-
-    private boolean checkIndividualServer(String server) {
-        final Boolean[] success = {false};
-        DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
-        dapnetSingleton.init(server, "", "");
-        DAPNET dapnet = dapnetSingleton.getDapnet();
-        dapnet.getVersion(new DapnetListener<Version>() {
-            @Override
-            public void onResponse(DapnetResponse<Version> dapnetResponse) {
-                success[0] = true;
-            }
-
-            @Override
-            public void onFailure(Throwable throwable) {
-
-            }
-        });
-        return success[0];
-    }
-    //String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + dapnetResponse.body().getCore() + ", API v" + dapnetResponse.body().getApi() + ", ";
-    /*
     private void setVersion() {
         DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
         dapnet.getVersion(new DapnetListener<Version>() {
@@ -316,17 +220,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
-
+                    String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + dapnetResponse.body().getCore() + ", API v" + dapnetResponse.body().getApi() + ", ";
                     mNavHeadVersions.setText(tmp);
                 } else {
                     //TODO: implement .code,.message
                     Log.e(TAG, "Error.");
-                    */
+
                     // APIError error = ErrorUtils.parseError(response)
                     /*Log.e(TAG, "Error getting versions" + dapnetResponse.code());
                     Log.e(TAG, dapnetResponse.message());
                     Snackbar.make(findViewById(R.id.container), getString(R.string.error_get_versions) + " " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();*/
-              /*  }
+               }
             }
 
             @Override
@@ -342,7 +246,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         s += BuildConfig.VERSION_NAME;
         if(mNavHeadVersions!=null)
             mNavHeadVersions.setText(s);
-    }*/
+    }
 
     public void onNavHeaderSelected(View view) {
         onNavHeaderSelected();

@@ -248,3 +248,101 @@ public class LoginActivity extends AppCompatActivity {
     }
 }
 
+/*
+*
+    private void setServer(String server) {
+        mServer = server;
+        DapnetSingleton dapnetSingleton=DapnetSingleton.getInstance();
+
+        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        dapnetSingleton.init(server,sharedPref.getString("user",""),sharedPref.getString("pass",""));
+        SharedPreferences.Editor edit = sharedPref.edit();
+        edit.putString("defServer", server);
+        edit.apply();
+    }
+
+    private void checkServers() {
+        Resources resources = getResources();
+        String clearNetURL = resources.getString(R.string.ClearNetURL);
+        String DAPNetURL = resources.getString(R.string.DapNetURL);
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        String server = sharedPreferences.getString("defServer", clearNetURL);
+        DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
+        dapnetSingleton.init(server, "", "");
+        DAPNET dapnet = dapnetSingleton.getDapnet();
+        switch (server) {
+            case "https://hampager.de/api/":
+                dapnetSingleton.init(DAPNetURL, "", "");
+                DAPNET dapnet1 = dapnetSingleton.getDapnet();
+                dapnet1.getVersion(new DapnetListener<Version>() {
+                    @Override
+                    public void onResponse(DapnetResponse<Version> dapnetResponse) {
+                        setServer(DAPNetURL);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        setServer(clearNetURL);
+                    }
+                });
+                break;
+            case "http://db0sda.ampr.org/api/":
+                dapnet.getVersion(new DapnetListener<Version>() {
+                    @Override
+                    public void onResponse(DapnetResponse<Version> dapnetResponse) {
+                        setServer(server);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        setServer(clearNetURL);
+                    }
+                });
+                break;
+            default:
+                dapnet.getVersion(new DapnetListener<Version>() {
+                    @Override
+                    public void onResponse(DapnetResponse<Version> dapnetResponse) {
+                        setServer(server);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        dapnetSingleton.init(DAPNetURL, "", "");
+                        DAPNET dapnet = dapnetSingleton.getDapnet();
+                        dapnet.getVersion(new DapnetListener<Version>() {
+                            @Override
+                            public void onResponse(DapnetResponse<Version> dapnetResponse) {
+                                setServer(DAPNetURL);
+                            }
+
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                setServer(clearNetURL);
+                            }
+                        });
+                    }
+                });
+                break;
+        }
+    }
+
+    private boolean checkIndividualServer(String server) {
+        final Boolean[] success = {false};
+        DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
+        dapnetSingleton.init(server, "", "");
+        DAPNET dapnet = dapnetSingleton.getDapnet();
+        dapnet.getVersion(new DapnetListener<Version>() {
+            @Override
+            public void onResponse(DapnetResponse<Version> dapnetResponse) {
+                success[0] = true;
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+
+            }
+        });
+        return success[0];
+    }
+    */
