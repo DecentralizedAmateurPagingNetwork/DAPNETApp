@@ -156,18 +156,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mPreviousMenuItem.setChecked(false);
         }
         mPreviousMenuItem = item;
+        FrameLayout frameLayout=(FrameLayout) findViewById(R.id.container);
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         if (id == R.id.nav_calls) {
             //Insert Call Fragment with 1 Coloumn
             // ft.replace(R.id.container, HamnetCallFragment.newInstance(1))
             if (loggedIn) {
-                ft.replace(R.id.container, CallFragment.newInstance());
+                ft.replace( R.id.container, new CallFragment() ).addToBackStack( "CALLS" ).commit();
             } else {
                 Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         } else if (id == R.id.nav_map) {
-            ft.replace(R.id.container, MapFragment.newInstance());
+            ft.replace(R.id.container, new MapFragment()).addToBackStack("MAP").commit();
         } else if (id == R.id.nav_githublink) {
             Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork"));
             startActivity(browserIntent);
@@ -185,9 +187,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             myIntent.putExtra("defServer", mServer);
             MainActivity.this.startActivity(myIntent);
         } else if (id == R.id.nav_help) {
-            ft.replace(R.id.container, HelpFragment.newInstance());
+            ft.replace(R.id.container, new HelpFragment()).addToBackStack("HELP").commit();
         }
-        ft.commit();
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         // item.setChecked(true)
