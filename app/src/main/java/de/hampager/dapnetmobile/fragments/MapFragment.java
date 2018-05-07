@@ -139,8 +139,9 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         Drawable onlineMarker=getResources().getDrawable(R.mipmap.ic_radiotower_green);
         Drawable offlineMarker=getResources().getDrawable(R.mipmap.ic_radiotower_red);
 
-        for (TransmitterResource t : transmitterList) {
+        for (Transmitter t : transmitterList) {
             Marker tempMarker = new Marker(map);
+
             tempMarker.setPosition(new GeoPoint(t.getLatitude(), t.getLongitude()));
             tempMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
             tempMarker.setSnippet(getDesc(t));
@@ -187,7 +188,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                 if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                    //List<TransmitterResource> data = response.body();
+                    //List<Transmitter> data = response.body();
                     transmitterList = dapnetResponse.body();
                     config();
                 } else {
@@ -218,7 +219,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         String dot = ": ";
         Context res = getContext();
         s.append(res.getString(R.string.type)).append(dot).append(TrRe.getUsage()).append("<br/>");
-        s.append(res.getString(R.string.transmission_power)).append(dot).append(Double.toString(TrRe.getPower())).append("<br/>");
+        s.append(res.getString(R.string.transmission_power)).append(dot).append(TrRe.getPower()).append("<br/>");
         if (TrRe.getTimeSlot().length() > 1) s.append(res.getString(R.string.timeslots));
         else s.append(res.getString(R.string.timeslot));
         s.append(dot).append(TrRe.getTimeSlot()).append("<br/>");
