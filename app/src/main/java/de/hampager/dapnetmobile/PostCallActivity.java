@@ -57,7 +57,8 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_call);
         //TODO implement loggedin HERE
-        if (true)
+        boolean loggedin=true;
+        if (!loggedin)
             Snackbar.make(findViewById(R.id.postcallcoordinator), "You don't seem to be logged in.", Snackbar.LENGTH_LONG).show();
         Gson gson = new Gson();
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
