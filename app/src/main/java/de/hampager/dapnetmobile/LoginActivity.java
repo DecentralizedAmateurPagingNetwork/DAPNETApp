@@ -15,18 +15,18 @@ import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import de.hampager.dapnetmobile.api.HamPagerService;
-import de.hampager.dapnetmobile.api.ServiceGenerator;
-import de.hampager.dapnetmobile.api.UserResource;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import de.hampager.dap4j.DAPNET;
+import de.hampager.dap4j.DapnetSingleton;
+import de.hampager.dap4j.callbacks.DapnetListener;
+import de.hampager.dap4j.callbacks.DapnetResponse;
+import de.hampager.dap4j.models.User;
+
+
 
 /**
  * A login screen that offers login via username/password.
@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
 
         String defServer = getIntent().getStringExtra("defServer");
 
-        if (defServer != null && !(defServer.equals("http://hampager.de:8080"))) {
+        if (defServer != null && !(defServer.equals(getResources().getString(R.string.ClearNetURL)))) {
             spinner.setSelection(1);
         }
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -86,20 +86,21 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public UserResource getUser(final String user, final String password, final String server) {
-        UserResource returnValue = null;
-        Log.i(TAG, "Server to be used: " + server);
-        ServiceGenerator.changeApiBaseUrl(server);
-        HamPagerService service = ServiceGenerator.createService(HamPagerService.class, user, password);
-
-        Call<UserResource> call = service.getUserResource(user);
-        call.enqueue(new Callback<UserResource>() {
+    public User getUser(final String user, final String password, final String server) {
+        DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
+        dapnetSingleton.init(getResources().getString(R.string.ClearNetURL), user, password);
+        Log.d(TAG, dapnetSingleton.getUrl() + "; " + dapnetSingleton.getUser() + "; " + dapnetSingleton.getPass());
+        DAPNET dapnet = dapnetSingleton.getDapnet();
+        String name = user;
+        User returnValue;
+        dapnet.getUser(name, new DapnetListener<User>() {
             @Override
-            public void onResponse(Call<UserResource> UserResource, Response<UserResource> response) {
-                if (response.isSuccessful()) {
-                    UserResource returnValue = response.body();
-                    saveData(server, user, password, returnValue.admin());
-                    Log.i(TAG, "getUser, admin: " + returnValue.admin());
+            public void onResponse(DapnetResponse<User> dapnetResponse) {
+
+                if (dapnetResponse.isSuccessful()) {
+                User returnValue = dapnetResponse.body();
+                    saveData(server, user, password, true);
+                    Log.i(TAG, "getUser, admin: " + true);
                     showProgress(false);
                     Log.i(TAG, "Login was successful!");
                     Toast.makeText(LoginActivity.this, getString(R.string.success_welcome) + user, Toast.LENGTH_SHORT).show();
@@ -108,7 +109,10 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
 
                 } else {
-                    Log.e(TAG, "Error: " + response.code());
+
+                    Log.e(TAG, "Error: ");
+                    //TODO: implement .code
+                    //Log.e(TAG, "Error: " + dapnetResponse().code);
                     //Should Use APIError
 
                     //Log.e(TAG, error.message());
@@ -120,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<UserResource> userRessource, Throwable t) {
+            public void onFailure(Throwable throwable) {
                 Log.e(TAG, "Call failed. Do you have Internet access?");
                 showProgress(false);
                 View focusView = mUsernameView;
@@ -128,8 +132,7 @@ public class LoginActivity extends AppCompatActivity {
                 Snackbar.make(findViewById(R.id.loginactivityid), getString(R.string.error_no_internet), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
-
-        return returnValue;
+        return null;
     }
 
     private void attemptLogin() {
@@ -153,9 +156,9 @@ public class LoginActivity extends AppCompatActivity {
                 cancel = true;
             }
         } else if (spinner.getSelectedItemPosition() == 1) {
-            server = "http://dapnet.db0sda.ampr.org:8080";
+            server = getResources().getString(R.string.DapNetURL);
         } else {
-            server = "http://www.hampager.de:8080";
+            server = getResources().getString(R.string.ClearNetURL);
         }
         String user = mUsernameView.getText().toString().trim();
         String password = mPasswordView.getText().toString();
@@ -245,3 +248,101 @@ public class LoginActivity extends AppCompatActivity {
     }
 }
 
+/*
+*
+    private void setServer(String server) {
+        mServer = server;
+        DapnetSingleton dapnetSingleton=DapnetSingleton.getInstance();
+
+        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        dapnetSingleton.init(server,sharedPref.getString("user",""),sharedPref.getString("pass",""));
+        SharedPreferences.Editor edit = sharedPref.edit();
+        edit.putString("defServer", server);
+        edit.apply();
+    }
+
+    private void checkServers() {
+        Resources resources = getResources();
+        String clearNetURL = resources.getString(R.string.ClearNetURL);
+        String DAPNetURL = resources.getString(R.string.DapNetURL);
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        String server = sharedPreferences.getString("defServer", clearNetURL);
+        DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
+        dapnetSingleton.init(server, "", "");
+        DAPNET dapnet = dapnetSingleton.getDapnet();
+        switch (server) {
+            case "https://hampager.de/api/":
+                dapnetSingleton.init(DAPNetURL, "", "");
+                DAPNET dapnet1 = dapnetSingleton.getDapnet();
+                dapnet1.getVersion(new DapnetListener<Version>() {
+                    @Override
+                    public void onResponse(DapnetResponse<Version> dapnetResponse) {
+                        setServer(DAPNetURL);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        setServer(clearNetURL);
+                    }
+                });
+                break;
+            case "http://db0sda.ampr.org/api/":
+                dapnet.getVersion(new DapnetListener<Version>() {
+                    @Override
+                    public void onResponse(DapnetResponse<Version> dapnetResponse) {
+                        setServer(server);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        setServer(clearNetURL);
+                    }
+                });
+                break;
+            default:
+                dapnet.getVersion(new DapnetListener<Version>() {
+                    @Override
+                    public void onResponse(DapnetResponse<Version> dapnetResponse) {
+                        setServer(server);
+                    }
+
+                    @Override
+                    public void onFailure(Throwable throwable) {
+                        dapnetSingleton.init(DAPNetURL, "", "");
+                        DAPNET dapnet = dapnetSingleton.getDapnet();
+                        dapnet.getVersion(new DapnetListener<Version>() {
+                            @Override
+                            public void onResponse(DapnetResponse<Version> dapnetResponse) {
+                                setServer(DAPNetURL);
+                            }
+
+                            @Override
+                            public void onFailure(Throwable throwable) {
+                                setServer(clearNetURL);
+                            }
+                        });
+                    }
+                });
+                break;
+        }
+    }
+
+    private boolean checkIndividualServer(String server) {
+        final Boolean[] success = {false};
+        DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
+        dapnetSingleton.init(server, "", "");
+        DAPNET dapnet = dapnetSingleton.getDapnet();
+        dapnet.getVersion(new DapnetListener<Version>() {
+            @Override
+            public void onResponse(DapnetResponse<Version> dapnetResponse) {
+                success[0] = true;
+            }
+
+            @Override
+            public void onFailure(Throwable throwable) {
+
+            }
+        });
+        return success[0];
+    }
+    */

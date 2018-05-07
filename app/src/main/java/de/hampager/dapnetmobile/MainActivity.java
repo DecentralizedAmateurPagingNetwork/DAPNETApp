@@ -25,21 +25,21 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import de.hampager.dapnetmobile.api.HamPagerService;
-import de.hampager.dapnetmobile.api.ServiceGenerator;
-import de.hampager.dapnetmobile.api.Versions;
+import de.hampager.dap4j.DAPNET;
+import de.hampager.dap4j.DapnetSingleton;
+import de.hampager.dap4j.callbacks.DapnetListener;
+import de.hampager.dap4j.callbacks.DapnetResponse;
+import de.hampager.dap4j.models.Version;
 import de.hampager.dapnetmobile.fragments.CallFragment;
 import de.hampager.dapnetmobile.fragments.HelpFragment;
 import de.hampager.dapnetmobile.fragments.MapFragment;
 import de.hampager.dapnetmobile.fragments.WelcomeFragment;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";
     boolean loggedIn = false;
-    String mServer;
+    private String mServer;
     private MenuItem mPreviousMenuItem;
     private boolean isDrawerLocked = false;
 
@@ -90,9 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.addDrawerListener(toggle);
             toggle.syncState();
         }
-
-
-
+        setVersion();
     }
 
     @Override
@@ -115,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MenuItem mloginstatus = nv.findItem(R.id.nav_loginstatus);
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
-        mServer = sharedPref.getString("server", null);
 
         if (loggedIn) {
             mloginstatus.setTitle(R.string.nav_logout);
@@ -124,15 +121,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mloginstatus.setTitle(R.string.nav_login);
             Log.i(TAG, "User is not logged in!");
         }
-        if (mServer != null) {
-            setVersion(mServer);
-        } else {
-            setVersion("http://hampager.de:8080");
-            //if mServer == null
-            // setVersion("http://dapnet.db0sda.ampr.org:8080")
-        }
 
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -215,41 +210,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void setServer(String server) {
-        mServer = server;
-        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        SharedPreferences.Editor edit = sharedPref.edit();
-        edit.putString("defServer", server);
-        edit.apply();
-    }
 
-    private void setVersion(String server) {
-        final String inServer = server;
-        ServiceGenerator.changeApiBaseUrl(inServer);
-        HamPagerService service = ServiceGenerator.createService(HamPagerService.class);
-        Call<Versions> call = service.getVersions();
-        call.enqueue(new Callback<Versions>() {
+    private void setVersion() {
+        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        dapnet.getVersion(new DapnetListener<Version>() {
             @Override
-            public void onResponse(Call<Versions> call, Response<Versions> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(DapnetResponse<Version> dapnetResponse) {
+
+                if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
-                    setServer(inServer);
                     TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
-                    String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + response.body().getCore() + ", API v" + response.body().getApi() + ", " + inServer;
+                    String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + dapnetResponse.body().getCore() + ", API v" + dapnetResponse.body().getApi() + ", ";
                     mNavHeadVersions.setText(tmp);
                 } else {
+                    //TODO: implement .code,.message
+                    Log.e(TAG, "Error.");
+
                     // APIError error = ErrorUtils.parseError(response)
-                    Log.e(TAG, "Error getting versions" + response.code());
-                    Log.e(TAG, response.message());
-                    Snackbar.make(findViewById(R.id.container), getString(R.string.error_get_versions) + " " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }
+                    /*Log.e(TAG, "Error getting versions" + dapnetResponse.code());
+                    Log.e(TAG, dapnetResponse.message());
+                    Snackbar.make(findViewById(R.id.container), getString(R.string.error_get_versions) + " " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();*/
+               }
             }
 
             @Override
-            public void onFailure(Call<Versions> call, Throwable t) {
-                // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG, "Fatal connection error.. "+t.getMessage());
-                Snackbar.make(findViewById(R.id.container), "Fatal connection error.. "+t.getMessage(), Snackbar.LENGTH_LONG).show();
+            public void onFailure(Throwable throwable) {
+// something went completely wrong (e.g. no internet connection)
+                Log.e(TAG, "Fatal connection error.. " + throwable.getMessage());
+                Snackbar.make(findViewById(R.id.container), "Fatal connection error.. " + throwable.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
         TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);

@@ -2,7 +2,6 @@ package de.hampager.dapnetmobile.fragments;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -35,15 +34,13 @@ import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hampager.dap4j.DAPNET;
+import de.hampager.dap4j.DapnetSingleton;
+import de.hampager.dap4j.callbacks.DapnetListener;
+import de.hampager.dap4j.callbacks.DapnetResponse;
+import de.hampager.dap4j.models.Transmitter;
 import de.hampager.dapnetmobile.BuildConfig;
 import de.hampager.dapnetmobile.R;
-import de.hampager.dapnetmobile.api.HamPagerService;
-import de.hampager.dapnetmobile.api.ServiceGenerator;
-import de.hampager.dapnetmobile.api.TransmitterResource;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 
 
 /**
@@ -59,7 +56,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     private static final String TAG = "MapFragment";
     Menu menu;
     private MapView map;
-    private List<TransmitterResource> transmitterList = new ArrayList<>();
+    private List<Transmitter> transmitterList = new ArrayList<>();
     private FolderOverlay onlineWideRangeFolder = new FolderOverlay();
     private FolderOverlay onlinePersonalFolder = new FolderOverlay();
     private FolderOverlay offlineWideRangeFolder = new FolderOverlay();
@@ -134,13 +131,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         mapController.setZoom(6);
         GeoPoint startPoint = new GeoPoint(50.77623, 6.06937);
         mapController.setCenter(startPoint);
-
-        SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        String server = sharedPref.getString("server", "http://www.hampager.de:8080");
-        String user = sharedPref.getString("user", "invalid");
-        String password = sharedPref.getString("pass", "invalid");
-
-        fetchJSON(server,user,password);
+        fetchJSON();
     }
     private void config(){
 
@@ -186,45 +177,43 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         //DO NOTHING FOR NOW:
         return false;
     }
-    private void fetchJSON(String server, String user, String password) {
-        try {
-            ServiceGenerator.changeApiBaseUrl(server);
-        } catch (java.lang.NullPointerException e) {
-            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
-        }
-        HamPagerService service = ServiceGenerator.createService(HamPagerService.class, user, password);
-        Call<ArrayList<TransmitterResource>> call;
-        call=service.getAllTransmitter();
-        call.enqueue(new Callback<ArrayList<TransmitterResource>>() {
+
+    private void fetchJSON() {
+        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        dapnet.getAllTransmitters(new DapnetListener<List<Transmitter>>() {
             @Override
-            public void onResponse(Call<ArrayList<TransmitterResource>> call, Response<ArrayList<TransmitterResource>> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(DapnetResponse<List<Transmitter>> dapnetResponse) {
+
+                if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
                     //List<TransmitterResource> data = response.body();
-                    transmitterList = response.body();
+                    transmitterList = dapnetResponse.body();
                     config();
                 } else {
-                    Log.e(TAG, "Error " + response.code());
+                    Log.e(TAG, "Error.");
+                    //TODO: implement .code,.message
+                    /*Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
                     if (response.code() == 401) {
                         SharedPreferences sharedPref = getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.clear();
                         editor.apply();
-                    }
+                    }*/
                 }
             }
 
             @Override
-            public void onFailure(Call<ArrayList<TransmitterResource>> call, Throwable t) {
+            public void onFailure(Throwable throwable) {
                 // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG, t.getMessage());
+                Log.e(TAG, throwable.getMessage());
             }
+
         });
     }
 
-    private String getDesc(TransmitterResource TrRe) {
+    private String getDesc(Transmitter TrRe) {
         StringBuilder s = new StringBuilder();
         String dot = ": ";
         Context res = getContext();

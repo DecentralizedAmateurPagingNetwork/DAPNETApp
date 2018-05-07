@@ -20,18 +20,15 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import de.hampager.dap4j.DAPNET;
+import de.hampager.dap4j.DapnetSingleton;
+import de.hampager.dap4j.callbacks.DapnetListener;
+import de.hampager.dap4j.callbacks.DapnetResponse;
+import de.hampager.dap4j.models.Stats;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.adapters.StatsAdapter;
-import de.hampager.dapnetmobile.api.HamPagerService;
-import de.hampager.dapnetmobile.api.ServiceGenerator;
-import de.hampager.dapnetmobile.api.StatsResource;
-import de.hampager.dapnetmobile.api.error.APIError;
-import de.hampager.dapnetmobile.api.error.ErrorUtils;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 
 
 /**
@@ -42,11 +39,11 @@ import retrofit2.Response;
 public class WelcomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String TAG = "WelcomeFragment";
-    ArrayList<CardView> listItems = new ArrayList<>();
+    List<CardView> listItems = new ArrayList<>();
     ImageView muninImageView;
     private RecyclerView recyclerView;
     private StatsAdapter adapter;
-
+    private DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
 
     public WelcomeFragment() {
         // Required empty public constructor
@@ -75,7 +72,7 @@ public class WelcomeFragment extends Fragment {
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        String server = sharedPref.getString("server", "http://www.hampager.de:8080");
+        String server = sharedPref.getString("server", getResources().getString(R.string.ClearNetURL));
         muninImageView = (ImageView) v.findViewById(R.id.statsImage);
         if (server.contains("ampr.org"))
             Picasso.with(muninImageView.getContext()).load("http://db0sda.ampr.org/munin-cgi/munin-cgi-graph/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png").into(muninImageView);
@@ -88,38 +85,35 @@ public class WelcomeFragment extends Fragment {
 
     private void fetchJSON(String server) {
 
-        try {
-            ServiceGenerator.changeApiBaseUrl(server);
-        } catch (java.lang.NullPointerException e) {
-            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
-        }
-        HamPagerService service = ServiceGenerator.createService(HamPagerService.class);
-        Call<StatsResource> call = service.getStats();
-        call.enqueue(new Callback<StatsResource>() {
+        dapnet.getStats(new DapnetListener<Stats>() {
             @Override
-            public void onResponse(Call<StatsResource> call, Response<StatsResource> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(DapnetResponse<Stats> dapnetResponse) {
+                if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                    StatsResource data = response.body();
+                Stats data = dapnetResponse.body();
                     adapter = new StatsAdapter(data);
                     recyclerView.setAdapter(adapter);
 
                 } else {
+                    Log.e(TAG, "Error.");
+                    //TODO: implement .code, .message
+
+                    /*
                     APIError error = ErrorUtils.parseError(response);
                     Log.e(TAG,error.toString());
                     Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
-                    Snackbar.make(recyclerView, "Error! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(recyclerView, "Error! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();*/
                 }
             }
 
             @Override
-            public void onFailure(Call<StatsResource> call, Throwable t) {
+            public void onFailure(Throwable throwable) {
                 // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG, "Fatal connection error.. "+t.getMessage());
+                Log.e(TAG, "Fatal connection error.. " + throwable.getMessage());
                 if(getActivity()!=null&&getActivity().findViewById(R.id.container)!=null) {
-                    Snackbar.make(getActivity().findViewById(R.id.container), "Fatal connection error.. " + t.getMessage(), Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(getActivity().findViewById(R.id.container), "Fatal connection error.. " + throwable.getMessage(), Snackbar.LENGTH_LONG).show();
                 }
             }
         });

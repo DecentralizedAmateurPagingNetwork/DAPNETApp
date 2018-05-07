@@ -9,12 +9,12 @@ import android.widget.TextView;
 import java.util.LinkedHashMap;
 
 import de.hampager.dapnetmobile.R;
-import de.hampager.dapnetmobile.api.StatsResource;
+import de.hampager.dap4j.models.Stats;
 
 public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.StatsViewHolder> {
     private LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
 
-    public StatsAdapter(StatsResource stats) {
+    public StatsAdapter(Stats stats) {
         this.map = (LinkedHashMap<String, Integer>) stats.getStats();
     }
 

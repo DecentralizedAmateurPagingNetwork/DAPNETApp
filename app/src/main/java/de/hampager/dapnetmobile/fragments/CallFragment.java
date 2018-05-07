@@ -1,9 +1,6 @@
 package de.hampager.dapnetmobile.fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -18,28 +15,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hampager.dap4j.DAPNET;
+import de.hampager.dap4j.DapnetSingleton;
+import de.hampager.dap4j.callbacks.DapnetListener;
+import de.hampager.dap4j.callbacks.DapnetResponse;
+import de.hampager.dap4j.models.CallResource;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.adapters.CallAdapter;
-import de.hampager.dapnetmobile.api.HamPagerService;
-import de.hampager.dapnetmobile.api.HamnetCall;
-import de.hampager.dapnetmobile.api.ServiceGenerator;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 public class CallFragment extends Fragment implements SearchView.OnQueryTextListener {
     private static final String TAG = "CallFragment";
     private RecyclerView recyclerView;
     private CallAdapter adapter;
     private SwipeRefreshLayout mSwipe;
-    private String server;
-    private String user;
-    private String password;
-    private Boolean admin;
     private SearchView searchView;
     public CallFragment() {
         // Required empty public constructor
@@ -51,7 +43,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
 
 
     private void initViews(View v) {
-        adapter=new CallAdapter(new ArrayList<HamnetCall>());
+        adapter=new CallAdapter(new ArrayList<CallResource>());
         recyclerView = (RecyclerView) v.findViewById(R.id.item_recycler_view);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
@@ -59,61 +51,48 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(mLayoutManager);
-
-        SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        server = sharedPref.getString("server", "http://www.hampager.de:8080");
-        user = sharedPref.getString("user", "invalid");
-        password = sharedPref.getString("pass", "invalid");
-        admin = sharedPref.getBoolean("admin", true);
-        fetchJSON(server, user, password, admin);
+        fetchJSON();
 
     }
 
-    private void fetchJSON(String server, String user, String password, boolean admin) {
-        try {
-            ServiceGenerator.changeApiBaseUrl(server);
-        } catch (java.lang.NullPointerException e) {
-            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
-        }
-        HamPagerService service = ServiceGenerator.createService(HamPagerService.class, user, password);
-        Call<ArrayList<HamnetCall>> call;
-        Log.i(TAG, "fetchJSON, admin: " + admin);
-        if (admin) {
-            Log.i(TAG, "Admin access granted. Fetching All Calls...");
-            call = service.getAllHamnetCalls();
-        } else {
-            Log.i(TAG, "Admin access not granted. Fetching own Calls...");
-            call = service.getOwnerHamnetCalls(user);
-        }
-        call.enqueue(new Callback<ArrayList<HamnetCall>>() {
+    private void fetchJSON() {
+        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        //TODO: Implement non-admin
+        //Log.i(TAG, "fetchJSON, admin: " + admin);
+        //if (admin) {
+        //  Log.i(TAG, "Admin access granted. Fetching All Calls...");
+        dapnet.getCalls("", new DapnetListener<List<CallResource>>() {
             @Override
-            public void onResponse(Call<ArrayList<HamnetCall>> call, Response<ArrayList<HamnetCall>> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(DapnetResponse<List<CallResource>> dapnetResponse) {
+                if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                    ArrayList<HamnetCall> data = response.body();
+                List<CallResource> data = dapnetResponse.body();
                     adapter.setmValues(data);
                     adapter.notifyDataSetChanged();
                     mSwipe.setRefreshing(false);
                 } else {
-                    Log.e(TAG, "Error " + response.code());
-                    Log.e(TAG, response.message());
-                    Snackbar.make(recyclerView, "Error! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    if (response.code() == 401) {
+                    Log.e(TAG, "Error");
+                    //TODO: .code,.message etc
+                    /*Log.e(TAG, "Error " + dapnetResponse.code());
+                    Log.e(TAG, dapnetResponse.message());
+                    Snackbar.make(recyclerView, "Error! " + dapnetResponse.code() + " " + dapnetResponse.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    if (dapnetResponse.code() == 401) {
                         SharedPreferences sharedPref = getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.clear();
                         editor.apply();
-                    }
+                    }*/
                 }
             }
 
             @Override
-            public void onFailure(Call<ArrayList<HamnetCall>> call, Throwable t) {
+            public void onFailure(Throwable throwable) {
                 // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG, t.getMessage());
+                Log.e(TAG, throwable.getMessage());
             }
         });
+
     }
 
     @Override
@@ -140,7 +119,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
 
                 // once the network request has completed successfully.
 
-                fetchJSON(server, user, password, admin);
+                fetchJSON();
 
             }
 

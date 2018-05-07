@@ -25,30 +25,26 @@ import com.google.gson.Gson;
 import com.tokenautocomplete.FilteredArrayAdapter;
 import com.tokenautocomplete.TokenCompleteTextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import de.hampager.dapnetmobile.api.CallSignResource;
-import de.hampager.dapnetmobile.api.HamPagerService;
-import de.hampager.dapnetmobile.api.HamnetCall;
-import de.hampager.dapnetmobile.api.ServiceGenerator;
-import de.hampager.dapnetmobile.api.TransmitterGroupResource;
+import de.hampager.dap4j.DAPNET;
+import de.hampager.dap4j.DapnetSingleton;
+import de.hampager.dap4j.callbacks.DapnetListener;
+import de.hampager.dap4j.callbacks.DapnetResponse;
+import de.hampager.dap4j.models.CallResource;
+import de.hampager.dap4j.models.CallSign;
+import de.hampager.dap4j.models.TransmitterGroup;
 import de.hampager.dapnetmobile.tokenautocomplete.CallsignsCompletionView;
 import de.hampager.dapnetmobile.tokenautocomplete.TransmitterGroupCompletionView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class PostCallActivity extends AppCompatActivity implements TokenCompleteTextView.TokenListener<CallSignResource> {
+
+public class PostCallActivity extends AppCompatActivity implements TokenCompleteTextView.TokenListener<CallSign> {
     private static final String TAG = "PostCallActivity";
     CallsignsCompletionView callSignsCompletion;
     TransmitterGroupCompletionView transmitterGroupCompletion;
-    String server;
-    String user;
-    String password;
     private TextInputEditText message;
     //private EditText transmitterGroupNames
     private Boolean emergencyBool = false;
@@ -60,20 +56,19 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_call);
-        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        server = sharedPref.getString("server", "http://www.hampager.de:8080");
-        user = sharedPref.getString("user", "invalid");
-        password = sharedPref.getString("pass", "invalid");
-        if (user.equals("invalid")&&password.equals("invalid")&&server.equals("http://www.hampager.de:8080"))
+        //TODO implement loggedin HERE
+        boolean loggedin=true;
+        if (!loggedin)
             Snackbar.make(findViewById(R.id.postcallcoordinator), "You don't seem to be logged in.", Snackbar.LENGTH_LONG).show();
         Gson gson = new Gson();
+        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         String callsignJson = sharedPref.getString("callsigns", "");
-        CallSignResource[] callSignResources=gson.fromJson(callsignJson,CallSignResource[].class);
+        CallSign[] callSignResources=gson.fromJson(callsignJson,CallSign[].class);
         if (callSignResources!=null){
             setCallsigns(callSignResources);
         }
         String transmitterJson = sharedPref.getString("transmitters","");
-        TransmitterGroupResource[] transmitterGroupResources= gson.fromJson(transmitterJson,TransmitterGroupResource[].class);
+        TransmitterGroup[] transmitterGroupResources= gson.fromJson(transmitterJson,TransmitterGroup[].class);
         if (transmitterGroupResources!=null)
         setTransmittergroups(transmitterGroupResources);
         defineObjects();
@@ -84,7 +79,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     private void defineObjects() {
         message = (TextInputEditText) findViewById(R.id.post_call_text);
         Switch emergency = (Switch) findViewById(R.id.post_call_emergencyswitch);
-        String m = user.toUpperCase();
+        String m = DapnetSingleton.getInstance().getUser().toUpperCase();
         m += ": ";
         message.setText(m);
         message.requestFocus();
@@ -97,24 +92,19 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     }
 
     private void getCallsigns() {
-        try {
-            ServiceGenerator.changeApiBaseUrl(server);
-        } catch (java.lang.NullPointerException e) {
-            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
-        }
-        HamPagerService service = ServiceGenerator.createService(HamPagerService.class, user, password);
-        Call<ArrayList<CallSignResource>> call;
-        call = service.getAllCallSigns("");
-        call.enqueue(new Callback<ArrayList<CallSignResource>>() {
+        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        dapnet.getAllCallSigns(new DapnetListener<List<CallSign>>() {
             @Override
-            public void onResponse(Call<ArrayList<CallSignResource>> call, Response<ArrayList<CallSignResource>> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(DapnetResponse<List<CallSign>> dapnetResponse) {
+                //TODO: implement isSuccessful()
+
+                if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection getting Callsigns was successful");
                     // tasks available
-                    ArrayList<CallSignResource> data = response.body();
-                    Collections.sort(data, new Comparator<CallSignResource>() {
+                List<CallSign> data = dapnetResponse.body();
+                    Collections.sort(data, new Comparator<CallSign>() {
                         @Override
-                        public int compare(CallSignResource o1, CallSignResource o2) {
+                        public int compare(CallSign o1, CallSign o2) {
                             int n = o1.getName().compareTo(o2.getName());
                             if (n==0)
                                 return o1.getDescription().compareTo(o2.getDescription());
@@ -122,32 +112,36 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                                 return n;
                         }
                     });
-                    CallSignResource[] dataArray = data.toArray(new CallSignResource[data.size()]);
+                    CallSign[] dataArray = data.toArray(new CallSign[data.size()]);
                     saveData(dataArray);
                     setCallsigns(dataArray);
                     //adapter = new CallAdapter(data);
                 } else {
+                    Log.e(TAG, "Error");
+                    //TODO: .code,.message
                     //APIError error = ErrorUtils.parseError(response);
-                    Log.e(TAG, "Error " + response.code());
+                    /*Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
                     if (response.code() == 401) {
                         SharedPreferences sharedPref = PostCallActivity.this.getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.clear();
                         editor.apply();
-                    }
+                    }*/
                 }
             }
 
             @Override
-            public void onFailure(Call<ArrayList<CallSignResource>> call, Throwable t) {
+            public void onFailure(Throwable throwable) {
                 // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG, "Error... Do you have internet? "+ t.getMessage());
+                Log.e(TAG, "Error... Do you have internet? " + throwable.getMessage());
+
             }
         });
+
     }
 
-    private void setCallsigns(CallSignResource[] data) {
+    private void setCallsigns(CallSign[] data) {
         callSignsCompletion = (CallsignsCompletionView) findViewById(R.id.callSignSearchView);
         callSignsCompletion.setAdapter(generateAdapter(data));
         callSignsCompletion.setTokenListener(this);
@@ -157,7 +151,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         callSignsCompletion.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_FILTER|InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         callSignsCompletion.performBestGuess(true);
     }
-    private void saveData(CallSignResource[] input){
+    private void saveData(CallSign[] input){
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = sharedPref.edit();
         Gson gson = new Gson();
@@ -165,7 +159,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         prefsEditor.putString("callsigns", json);
         prefsEditor.apply();
     }
-    private void saveData(TransmitterGroupResource[] input){
+    private void saveData(TransmitterGroup[] input){
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = sharedPref.edit();
         Gson gson = new Gson();
@@ -173,8 +167,8 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         prefsEditor.putString("transmitters", json);
         prefsEditor.apply();
     }
-    private FilteredArrayAdapter<CallSignResource> generateAdapter(CallSignResource[] callsigns) {
-        return new FilteredArrayAdapter<CallSignResource>(this, R.layout.callsign_layout, callsigns) {
+    private FilteredArrayAdapter<CallSign> generateAdapter(CallSign[] callsigns) {
+        return new FilteredArrayAdapter<CallSign>(this, R.layout.callsign_layout, callsigns) {
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -184,7 +178,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     convertView = l.inflate(R.layout.callsign_layout, parent, false);
                 }
 
-                CallSignResource p = getItem(position);
+                CallSign p = getItem(position);
                 ((TextView) convertView.findViewById(R.id.name)).setText(p.getName());
                 ((TextView) convertView.findViewById(R.id.token_desc)).setText(p.getDescription());
 
@@ -192,7 +186,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
             }
 
             @Override
-            protected boolean keepObject(CallSignResource callsign, String mask) {
+            protected boolean keepObject(CallSign callsign, String mask) {
                 mask = mask.toLowerCase();
                 //return callsign.getName().toLowerCase().startsWith(mask) || callsign.getEmail().toLowerCase().startsWith(mask);
                 return callsign.getName().toLowerCase().startsWith(mask);
@@ -202,24 +196,18 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
 
     private void getTransmitterGroups() {
-        try {
-            ServiceGenerator.changeApiBaseUrl(server);
-        } catch (java.lang.NullPointerException e) {
-            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
-        }
-        HamPagerService service = ServiceGenerator.createService(HamPagerService.class, user, password);
-        Call<ArrayList<TransmitterGroupResource>> call;
-        call = service.getAllTransmitterGroups();
-        call.enqueue(new Callback<ArrayList<TransmitterGroupResource>>() {
+        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        dapnet.getAllTransmitterGroups(new DapnetListener<List<TransmitterGroup>>() {
             @Override
-            public void onResponse(Call<ArrayList<TransmitterGroupResource>> call, Response<ArrayList<TransmitterGroupResource>> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(DapnetResponse<List<TransmitterGroup>> dapnetResponse) {
+                //TODO: implement response.isSuccessful()
+                if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection getting transmittergroups was successful");
                     // tasks available
-                    ArrayList<TransmitterGroupResource> data = response.body();
-                    Collections.sort(data, new Comparator<TransmitterGroupResource>() {
+                List<TransmitterGroup> data = dapnetResponse.body();
+                    Collections.sort(data, new Comparator<TransmitterGroup>() {
                         @Override
-                        public int compare(TransmitterGroupResource o1, TransmitterGroupResource o2) {
+                        public int compare(TransmitterGroup o1, TransmitterGroup o2) {
                             int n = o1.getName().compareTo(o2.getName());
                             if (n==0)
                                 return o1.getDescription().compareTo(o2.getDescription());
@@ -227,31 +215,34 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                                 return n;
                         }
                     });
-                    TransmitterGroupResource[] transmitterGroupResources =data.toArray(new TransmitterGroupResource[data.size()]);
+                    TransmitterGroup[] transmitterGroupResources =data.toArray(new TransmitterGroup[data.size()]);
                     saveData(transmitterGroupResources);
                     setTransmittergroups(transmitterGroupResources);
                 } else {
+                    //TODO: implement .code,message
+                    Log.e(TAG, "Error.");
                     //APIError error = ErrorUtils.parseError(response);
-                    Log.e(TAG, "Error " + response.code());
+                    /*Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
                     if (response.code() == 401) {
                         SharedPreferences sharedPref = PostCallActivity.this.getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.clear();
                         editor.apply();
-                    }
+                    }*/
                 }
             }
 
             @Override
-            public void onFailure(Call<ArrayList<TransmitterGroupResource>> call, Throwable t) {
+            public void onFailure(Throwable throwable) {
+
                 // something went completely wrong (e.g. no internet connection)
-                Log.e(TAG, "Error... Do you have internet? "+ t.getMessage());
+                Log.e(TAG, "Error... Do you have internet? " + throwable.getMessage());
             }
         });
     }
 
-    private void setTransmittergroups(TransmitterGroupResource[] data) {
+    private void setTransmittergroups(TransmitterGroup[] data) {
         transmitterGroupCompletion = (TransmitterGroupCompletionView) findViewById(R.id.transmittergroupSearchView);
         transmitterGroupCompletion.setAdapter(generateAdapter(data));
         transmitterGroupCompletion.setTokenListener(new tokenTransmitter());
@@ -261,12 +252,12 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         transmitterGroupCompletion.setThreshold(1);
         transmitterGroupCompletion.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_FILTER|InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         if (transmitterGroupCompletion.getObjects()==null||transmitterGroupCompletion.getObjects().size()==0){
-            transmitterGroupCompletion.addObject(new TransmitterGroupResource("ALL"));
+            transmitterGroupCompletion.addObject(new TransmitterGroup("ALL", "", new ArrayList<>(), new ArrayList<>()));
         }
     }
 
-    private FilteredArrayAdapter<TransmitterGroupResource> generateAdapter(TransmitterGroupResource[] transmittergroups) {
-        return new FilteredArrayAdapter<TransmitterGroupResource>(this, R.layout.callsign_layout, transmittergroups) {
+    private FilteredArrayAdapter<TransmitterGroup> generateAdapter(TransmitterGroup[] transmittergroups) {
+        return new FilteredArrayAdapter<TransmitterGroup>(this, R.layout.callsign_layout, transmittergroups) {
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -276,7 +267,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     convertView = l.inflate(R.layout.callsign_layout, parent, false);
                 }
 
-                TransmitterGroupResource p = getItem(position);
+                TransmitterGroup p = getItem(position);
                 ((TextView) convertView.findViewById(R.id.name)).setText(p.getName());
                 ((TextView) convertView.findViewById(R.id.token_desc)).setText(p.getDescription());
 
@@ -284,7 +275,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
             }
 
             @Override
-            protected boolean keepObject(TransmitterGroupResource transmittergroup, String mask) {
+            protected boolean keepObject(TransmitterGroup transmittergroup, String mask) {
                 mask = mask.toLowerCase();
                 //return callsign.getName().toLowerCase().startsWith(mask) || callsign.getEmail().toLowerCase().startsWith(mask);
                 return transmittergroup.getName().toLowerCase().startsWith(mask);
@@ -300,7 +291,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                 //Forcing completion by focus change to prevent Issue #45
                 callSignsCompletion.onFocusChanged(false,View.FOCUS_FORWARD,null);
                 transmitterGroupCompletion.onFocusChanged(false,View.FOCUS_FORWARD,null);
-                sendCallMethod(msg, csnl, tgnl, emergencyBool, server, user, password);
+                sendCallMethod(msg, csnl, tgnl, emergencyBool);
             } else if (msg.length() == 0)
                 genericSnackbar(getString(R.string.error_empty_msg));
             else if (msg.length() > 79)
@@ -316,42 +307,38 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         Snackbar.make(findViewById(R.id.postcallcoordinator), s, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
-    private void sendCallMethod(String msg, List<String> csnl, List<String> tgnl, boolean e, String server, String user, String password) {
-        HamnetCall sendvalue = new HamnetCall(msg, csnl, tgnl, e);
-        try {
-            ServiceGenerator.changeApiBaseUrl(server);
-        } catch (NullPointerException err) {
-            ServiceGenerator.changeApiBaseUrl("http://www.hampager.de:8080");
-        }
-        HamPagerService service = ServiceGenerator.createService(HamPagerService.class, user, password);
-        Call<HamnetCall> call = service.postHamnetCall(sendvalue);
-        call.enqueue(new Callback<HamnetCall>() {
+    private void sendCallMethod(String msg, List<String> csnl, List<String> tgnl, boolean e) {
+        CallResource sendvalue = new CallResource(msg, csnl, tgnl, e);
+        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        dapnet.postCall(sendvalue, new DapnetListener<CallResource>() {
             @Override
-            public void onResponse(Call<HamnetCall> call, Response<HamnetCall> response) {
-                if (response.isSuccessful()) {
+            public void onResponse(DapnetResponse<CallResource> dapnetResponse) {
+                if (dapnetResponse.isSuccessful()) {
                     // tasks available
-                    //HamnetCall returnValue = response.body();
+                    //CallResource returnValue = response.body();
                     Log.i(TAG, "Sending call worked with successful response");
                     Toast.makeText(PostCallActivity.this, getString(R.string.successfully_sent_message), Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
-                    //APIError error = ErrorUtils.parseError(response);
-                    Log.e(TAG, "Post Call Error: " + response.code());
-                    genericSnackbar("Error:" + response.code() + "Msg: " + response.message());
-                    if (response.code() == 401) {
+                    Log.e(TAG, "Error.");
+                    //TODO: implement .code,.message
+                    //APIError error = ErrorUtils.parseError(response)
+                    /*Log.e(TAG, "Post Call Error: " + dapnetResponse.code());
+                    genericSnackbar("Error:" + dapnetResponse.code() + "Msg: " + dapnetResponse.message());
+                    if (dapnetResponse.code() == 401) {
                         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPref.edit();
                         editor.clear();
                         editor.apply();
-                    }
+                    }*/
                 }
             }
 
             @Override
-            public void onFailure(Call<HamnetCall> call, Throwable t) {
-                // something went completely south (like no internet connection)
+            public void onFailure(Throwable throwable) {
+// something went completely south (like no internet connection)
                 Log.e(TAG, "Sending call seems to have failed");
-                Log.e(TAG, t.toString());
+                Log.e(TAG, throwable.toString());
                 Snackbar.make(findViewById(R.id.postcallcoordinator), getString(R.string.error_no_internet), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
@@ -380,23 +367,23 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     }
 
     @Override
-    public void onTokenAdded(CallSignResource token) {
+    public void onTokenAdded(CallSign token) {
         csnl.add(token.getName());
     }
 
     @Override
-    public void onTokenRemoved(CallSignResource token) {
+    public void onTokenRemoved(CallSign token) {
         csnl.remove(token.getName());
     }
 
-    public class tokenTransmitter implements TokenCompleteTextView.TokenListener<TransmitterGroupResource> {
+    public class tokenTransmitter implements TokenCompleteTextView.TokenListener<TransmitterGroup> {
         @Override
-        public void onTokenAdded(TransmitterGroupResource token) {
+        public void onTokenAdded(TransmitterGroup token) {
             tgnl.add(token.getName());
         }
 
         @Override
-        public void onTokenRemoved(TransmitterGroupResource token) {
+        public void onTokenRemoved(TransmitterGroup token) {
             tgnl.remove(token.getName());
         }
     }

@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 import com.tokenautocomplete.TokenCompleteTextView;
 
 import de.hampager.dapnetmobile.R;
-import de.hampager.dapnetmobile.api.CallSignResource;
+import de.hampager.dap4j.models.CallSign;
 
 
-public class CallsignsCompletionView extends TokenCompleteTextView<CallSignResource> {
+public class CallsignsCompletionView extends TokenCompleteTextView<CallSign> {
 
     public CallsignsCompletionView(Context context) {
         super(context);
@@ -28,7 +28,7 @@ public class CallsignsCompletionView extends TokenCompleteTextView<CallSignResou
     }
 
     @Override
-    protected View getViewForObject(CallSignResource callsign) {
+    protected View getViewForObject(CallSign callsign) {
         LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         TokenTextView token = (TokenTextView) l.inflate(R.layout.callsign_token, (ViewGroup) getParent(), false);
         token.setText(callsign.getName());
@@ -36,7 +36,7 @@ public class CallsignsCompletionView extends TokenCompleteTextView<CallSignResou
     }
 
     @Override
-    protected CallSignResource defaultObject(String completionText) {
+    protected CallSign defaultObject(String completionText) {
         //If
         return null;
     }
