@@ -27,6 +27,6 @@ Warning: Any user needs to have access to a running [DAPNET core](https://github
 The F-Droid "Non-Free Assets"-Antifeature is present because of the Logo being licensed under [CC-BY-NC-SA](http://creativecommons.org/licenses/by-nc-sa/4.0/), in particular the NC (non-commercial) part.
 
 ## License
-The code in this Repository is licensed under the **GNU GPLv3**. Images, assets, data, documentation and everything else are licensed under the **CC BY-NC-SA 4.0**. For further information take a look at **LICENSE.md** and **LICENSE-assets.md**.
+The code in this Repository is licensed under the **GNU GPLv3**. Images, assets, data, documentation and everything else are licensed under the **CC BY-NC-SA 4.0**. For further information take a look at **LICENSE** and **LICENSE-assets**.
 If you want to use our work under a different license, e.g. for further commercial use, please contact us at  rwth-afu [at] online.de or take a look at [AFU RWTH](https://www.afu.rwth-aachen.de/ueber-uns/kontakt).
 Used libraries, projects and artworks and their respective licenses are available in the **LICENSES.md** file.
