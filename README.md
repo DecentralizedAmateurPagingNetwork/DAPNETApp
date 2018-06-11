@@ -36,8 +36,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 >See the GNU General Public License for more details.
 >You should have received a copy of the GNU General Public License along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
-![Creative Commons License](https://licensebuttons.net/l/by-nc-sa/4.0/80x15.png")
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a><br />
 Images, assets, data, documentation and everything else is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/) aka **CC BY-NC-SA 4.0**.
 For further information take a look at **LICENSE** and **LICENSE-assets**.
 If you want to use our work under a different license, e.g. for further commercial use, please contact us at  rwth-afu [at] online.de or take a look at [AFU RWTH](https://www.afu.rwth-aachen.de/ueber-uns/kontakt).
