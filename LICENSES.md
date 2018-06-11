@@ -1,10 +1,10 @@
 [DAPNET Logos](https://github.com/DecentralizedAmateurPagingNetwork/Resources)
 ```
-Licensed under CC-BY-NC-SA.
+Licensed under [CC-BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/), by RWTH AFU.
 ```
-[Retrofit](https://square.github.io/retrofit/):
+[DAP4J](https://github.com/DecentralizedAmateurPagingNetwork/DAP4J)
 ```
-Copyright 2013 Square, Inc.
+Copyright (c) 2018, RWTH AFU
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
