@@ -1,7 +1,7 @@
 <h1 align="center">DAPNETApp</h1>
 <p align="center">The official DAPNET Android App. Developed at AFU RWTH by <a href="https://github.com/dh3wr">DH3WR</a> and <a href="https://github.com/IHFSchwarz">IHFSchwarz</a>.</p>
 <p align="center">
-    <a href="https://play.google.com/store/apps/details?id=de.hampager.dapnetmobil">
+    <a href="https://play.google.com/store/apps/details?id=de.hampager.dapnetmobile">
        <img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" alt="Google Play" height="80">
     </a>
     <a href="https://f-droid.org/app/de.hampager.dapnetmobile">
