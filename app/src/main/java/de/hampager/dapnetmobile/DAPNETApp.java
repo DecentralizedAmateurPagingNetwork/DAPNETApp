@@ -10,7 +10,8 @@ import de.hampager.dap4j.DapnetSingleton;
 
 
 public class DAPNETApp extends Application {
-    @Override public void onCreate() {
+    @Override
+    public void onCreate() {
         super.onCreate();
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.

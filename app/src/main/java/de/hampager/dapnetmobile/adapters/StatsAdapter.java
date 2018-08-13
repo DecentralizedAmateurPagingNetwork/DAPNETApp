@@ -8,8 +8,8 @@ import android.widget.TextView;
 
 import java.util.LinkedHashMap;
 
-import de.hampager.dapnetmobile.R;
 import de.hampager.dap4j.models.Stats;
+import de.hampager.dapnetmobile.R;
 
 public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.StatsViewHolder> {
     private LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
@@ -26,13 +26,13 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.StatsViewHol
 
     @Override
     public void onBindViewHolder(StatsViewHolder holder, int position) {
-        if (position==7){
-            holder.nameTextView.setText(getNameByIndex(map, position)+"/Up");
-            holder.numberTextView.setText(String.valueOf(getNumberByIndex(map, position))+"/"+String.valueOf(getNumberByIndex(map,position+1)));
-        }else if(position==8){
-            holder.nameTextView.setText(getNameByIndex(map, position+1)+"/Up");
-            holder.numberTextView.setText(String.valueOf(getNumberByIndex(map, position+1))+"/"+String.valueOf(getNumberByIndex(map,position+2)));
-        }else{
+        if (position == 7) {
+            holder.nameTextView.setText(getNameByIndex(map, position) + "/Up");
+            holder.numberTextView.setText(String.valueOf(getNumberByIndex(map, position)) + "/" + String.valueOf(getNumberByIndex(map, position + 1)));
+        } else if (position == 8) {
+            holder.nameTextView.setText(getNameByIndex(map, position + 1) + "/Up");
+            holder.numberTextView.setText(String.valueOf(getNumberByIndex(map, position + 1)) + "/" + String.valueOf(getNumberByIndex(map, position + 2)));
+        } else {
             holder.nameTextView.setText(getNameByIndex(map, position));
             holder.numberTextView.setText(String.valueOf(getNumberByIndex(map, position)));
         }
@@ -42,7 +42,7 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.StatsViewHol
 
     @Override
     public int getItemCount() {
-        return map.size()-2;
+        return map.size() - 2;
     }
 
     private String getNameByIndex(LinkedHashMap<String, Integer> hMap, int index) {

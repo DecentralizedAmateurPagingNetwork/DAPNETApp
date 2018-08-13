@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button mSignInButton;
 
     private String mServer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,19 +170,20 @@ public class LoginActivity extends AppCompatActivity {
         });
         return success[0];
     }
+
     private void setServer(String server) {
-        Resources resources=getResources();
-        if (server != null){
-            if(server.equals(resources.getString(R.string.ClearNetURL)))
+        Resources resources = getResources();
+        if (server != null) {
+            if (server.equals(resources.getString(R.string.ClearNetURL)))
                 spinner.setSelection(0);
-            else if(server.equals(resources.getString(R.string.DapNetURL)))
+            else if (server.equals(resources.getString(R.string.DapNetURL)))
                 spinner.setSelection(1);
             else
                 spinner.setSelection(2);
         }
-        DapnetSingleton dapnetSingleton=DapnetSingleton.getInstance();
+        DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-        dapnetSingleton.init(server,sharedPref.getString("user",""),sharedPref.getString("pass",""));
+        dapnetSingleton.init(server, sharedPref.getString("user", ""), sharedPref.getString("pass", ""));
         SharedPreferences.Editor edit = sharedPref.edit();
         edit.putString("defServer", server);
         edit.apply();
@@ -200,9 +202,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(DapnetResponse<User> dapnetResponse) {
 
                 if (dapnetResponse.isSuccessful()) {
-                User returnValue = dapnetResponse.body();
-                    saveData(server, user, password, true);
-                    Log.i(TAG, "getUser, admin: " + true);
+                    User returnValue = dapnetResponse.body();
+                    saveData(server, user, password, returnValue.getAdmin());
+                    Log.i(TAG, "getUser, admin: " + returnValue.getAdmin());
                     showProgress(false);
                     Log.i(TAG, "Login was successful!");
                     Toast.makeText(LoginActivity.this, getString(R.string.success_welcome) + user, Toast.LENGTH_SHORT).show();

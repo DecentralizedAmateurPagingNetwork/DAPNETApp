@@ -33,6 +33,7 @@ import de.hampager.dap4j.models.Version;
 import de.hampager.dapnetmobile.fragments.CallFragment;
 import de.hampager.dapnetmobile.fragments.HelpFragment;
 import de.hampager.dapnetmobile.fragments.MapFragment;
+import de.hampager.dapnetmobile.fragments.TableFragment;
 import de.hampager.dapnetmobile.fragments.WelcomeFragment;
 
 
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.commit();
         }
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        if (((ViewGroup.MarginLayoutParams)frameLayout.getLayoutParams()).leftMargin == (int) getResources().getDimension(R.dimen.drawer_size)) {
+        if (((ViewGroup.MarginLayoutParams) frameLayout.getLayoutParams()).leftMargin == (int) getResources().getDimension(R.dimen.drawer_size)) {
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
             drawer.setScrimColor(Color.TRANSPARENT);
             isDrawerLocked = true;
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)&&isDrawerLocked) {
+        if (drawer.isDrawerOpen(GravityCompat.START) && isDrawerLocked) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
 
@@ -156,45 +157,70 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mPreviousMenuItem.setChecked(false);
         }
         mPreviousMenuItem = item;
-        FrameLayout frameLayout=(FrameLayout) findViewById(R.id.container);
+        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.container);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        if (id == R.id.nav_calls) {
-            //Insert Call Fragment with 1 Coloumn
-            // ft.replace(R.id.container, HamnetCallFragment.newInstance(1))
-            if (loggedIn) {
-                ft.replace( R.id.container, new CallFragment() ).addToBackStack( "CALLS" ).commit();
-            } else {
-                Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            }
-        } else if (id == R.id.nav_map) {
-            ft.replace(R.id.container, new MapFragment()).addToBackStack("MAP").commit();
-        } else if (id == R.id.nav_githublink) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork"));
-            startActivity(browserIntent);
-        } else if (id == R.id.nav_feedbacklink) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork/DAPNETApp/issues"));
-            startActivity(browserIntent);
-        } else if (id == R.id.nav_loginstatus) {
-            if (loggedIn) {
-                SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.clear();
-                editor.apply();
-            }
-            Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
-            myIntent.putExtra("defServer", mServer);
-            MainActivity.this.startActivity(myIntent);
-        } else if (id == R.id.nav_help) {
-            ft.replace(R.id.container, new HelpFragment()).addToBackStack("HELP").commit();
+        switch (id) {
+            case R.id.nav_calls:
+                if (loggedIn) {
+                    ft.replace(R.id.container, new CallFragment()).addToBackStack("CALLS").commit();
+                } else {
+                    Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
+                break;
+            case R.id.nav_subscribers:
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.SUBSCRIBERS)).addToBackStack("SUBSCRIBERS").commit();
+                break;
+            case R.id.nav_rubrics:
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.RUBRICS)).addToBackStack("RUBRICS").commit();
+                break;
+            case R.id.nav_rubricContent:
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.RUBRIC_CONTENT)).addToBackStack("RUBRIC_CONTENT").commit();
+                break;
+            case R.id.nav_transmitters:
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTERS)).addToBackStack("TRANSMITTERS").commit();
+                break;
+            case R.id.nav_map:
+                ft.replace(R.id.container, new MapFragment()).addToBackStack("MAP").commit();
+                break;
+            case R.id.nav_transmitterGroups:
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTER_GROUPS)).addToBackStack("TRANSMITTER_GROUPS").commit();
+                break;
+            case R.id.nav_nodes:
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.NODES)).addToBackStack("NODES").commit();
+                break;
+            case R.id.nav_users:
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.USERS)).addToBackStack("USERS").commit();
+                break;
+            case R.id.nav_githublink:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork"));
+                startActivity(browserIntent);
+                break;
+            case R.id.nav_feedbacklink:
+                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork/DAPNETApp/issues"));
+                startActivity(browserIntent);
+                break;
+            case R.id.nav_loginstatus:
+                if (loggedIn) {
+                    SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.clear();
+                    editor.apply();
+                }
+                Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
+                myIntent.putExtra("defServer", mServer);
+                MainActivity.this.startActivity(myIntent);
+                break;
+            case R.id.nav_help:
+                ft.replace(R.id.container, new HelpFragment()).addToBackStack("HELP").commit();
+                break;
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         // item.setChecked(true)
-        if(!isDrawerLocked)
-        drawer.closeDrawer(GravityCompat.START);
+        if (!isDrawerLocked)
+            drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -207,8 +233,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //TODO: Find which item is checked and uncheck it
         navigationView.getMenu().findItem(R.id.nav_calls).setChecked(false);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if(!isDrawerLocked)
-        drawer.closeDrawer(GravityCompat.START);
+        if (!isDrawerLocked)
+            drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -232,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     /*Log.e(TAG, "Error getting versions" + dapnetResponse.code());
                     Log.e(TAG, dapnetResponse.message());
                     Snackbar.make(findViewById(R.id.container), getString(R.string.error_get_versions) + " " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();*/
-               }
+                }
             }
 
             @Override
@@ -246,7 +272,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String s = "";
         s += "App v";
         s += BuildConfig.VERSION_NAME;
-        if(mNavHeadVersions!=null)
+        if (mNavHeadVersions != null)
             mNavHeadVersions.setText(s);
     }
 

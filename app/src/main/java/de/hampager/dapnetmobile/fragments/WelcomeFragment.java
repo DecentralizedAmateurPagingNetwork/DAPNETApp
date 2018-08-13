@@ -82,7 +82,6 @@ public class WelcomeFragment extends Fragment {
     }
 
 
-
     private void fetchJSON(String server) {
 
         dapnet.getStats(new DapnetListener<Stats>() {
@@ -91,7 +90,7 @@ public class WelcomeFragment extends Fragment {
                 if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                Stats data = dapnetResponse.body();
+                    Stats data = dapnetResponse.body();
                     adapter = new StatsAdapter(data);
                     recyclerView.setAdapter(adapter);
 
@@ -112,7 +111,7 @@ public class WelcomeFragment extends Fragment {
             public void onFailure(Throwable throwable) {
                 // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, "Fatal connection error.. " + throwable.getMessage());
-                if(getActivity()!=null&&getActivity().findViewById(R.id.container)!=null) {
+                if (getActivity() != null && getActivity().findViewById(R.id.container) != null) {
                     Snackbar.make(getActivity().findViewById(R.id.container), "Fatal connection error.. " + throwable.getMessage(), Snackbar.LENGTH_LONG).show();
                 }
             }
@@ -127,7 +126,7 @@ public class WelcomeFragment extends Fragment {
 
         //Implement arguments and bundle checks
         TextView description = (TextView) v.findViewById(R.id.DAPscription);
-        description.setText( Html.fromHtml(getResources().getString(R.string.DAPscription)));
+        description.setText(Html.fromHtml(getResources().getString(R.string.DAPscription)));
         description.setMovementMethod(LinkMovementMethod.getInstance());
         initViews(v);
         return v;

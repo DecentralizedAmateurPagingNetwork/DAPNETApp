@@ -1,5 +1,7 @@
 package de.hampager.dapnetmobile.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
@@ -33,6 +35,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
     private CallAdapter adapter;
     private SwipeRefreshLayout mSwipe;
     private SearchView searchView;
+
     public CallFragment() {
         // Required empty public constructor
     }
@@ -43,7 +46,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
 
 
     private void initViews(View v) {
-        adapter=new CallAdapter(new ArrayList<CallResource>());
+        adapter = new CallAdapter(new ArrayList<CallResource>());
         recyclerView = (RecyclerView) v.findViewById(R.id.item_recycler_view);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
@@ -56,23 +59,31 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
     }
 
     private void fetchJSON() {
+        mSwipe.setRefreshing(true);
         DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        String s = "";
+        boolean admin = sharedPreferences.getBoolean("admin", false);
+        if (!admin) {
+            s = sharedPreferences.getString("user", "null");
+        }
         //TODO: Implement non-admin
         //Log.i(TAG, "fetchJSON, admin: " + admin);
-        //if (admin) {
-        //  Log.i(TAG, "Admin access granted. Fetching All Calls...");
-        dapnet.getCalls("", new DapnetListener<List<CallResource>>() {
+        if (admin) {
+            Log.i(TAG, "Admin access granted. Fetching All Calls...");
+        }
+        dapnet.getCalls(s, new DapnetListener<List<CallResource>>() {
             @Override
             public void onResponse(DapnetResponse<List<CallResource>> dapnetResponse) {
                 if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                List<CallResource> data = dapnetResponse.body();
+                    List<CallResource> data = dapnetResponse.body();
                     adapter.setmValues(data);
                     adapter.notifyDataSetChanged();
-                    mSwipe.setRefreshing(false);
                 } else {
                     Log.e(TAG, "Error");
+
                     //TODO: .code,.message etc
                     /*Log.e(TAG, "Error " + dapnetResponse.code());
                     Log.e(TAG, dapnetResponse.message());
@@ -84,6 +95,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
                         editor.apply();
                     }*/
                 }
+                mSwipe.setRefreshing(false);
             }
 
             @Override
@@ -102,8 +114,9 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
         View v = inflater.inflate(R.layout.fragment_call, container, false);
         v.setTag(TAG);
         setHasOptionsMenu(true);
-        initViews(v);
         mSwipe = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshCalls);
+        initViews(v);
+
 
         // Setup refresh listener which triggers new data loading
 

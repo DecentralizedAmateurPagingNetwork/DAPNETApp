@@ -2,46 +2,91 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawerMenu">
 
-    <group>
+    <group android:id="@+id/nav_group_1">
+            <item
+                android:id="@+id/nav_calls"
+                android:checkable="true"
+                android:icon="@drawable/ic_textsms"
+                android:title="@string/calls" />
+            <item
+                android:id="@+id/nav_subscribers"
+                android:checkable="true"
+                android:icon="@drawable/ic_playlist_check_black_48dp"
+                android:title="Subscribers" />
+    </group>
+
+    <group android:id="@+id/nav_group_2">
         <item
-            android:id="@+id/nav_calls"
+        android:id="@+id/nav_rubrics"
+        android:checkable="true"
+        android:icon="@drawable/ic_shape_black_48dp"
+        android:title="Rubrics" />
+        <item
+            android:id="@+id/nav_rubricContent"
             android:checkable="true"
-            android:icon="@drawable/ic_textsms"
-            android:title="@string/calls" />
+            android:icon="@drawable/ic_text_subject_black_48dp"
+            android:title="Rubric content" />
+    </group>
+    <group android:id="@+id/nav_group_3">
+
+        <item
+            android:id="@+id/nav_transmitters"
+            android:checkable="true"
+            android:icon="@drawable/ic_radio_tower_black_48dp"
+            android:title="Transmitters" />
         <item
             android:id="@+id/nav_map"
             android:checkable="true"
             android:icon="@mipmap/ic_map_black"
             android:title="@string/map" />
-        <item android:title="@string/prompt_user">
-            <menu android:id="@+id/nav_user_menu">
-                <item
-                    android:id="@+id/nav_loginstatus"
-                    android:icon="@android:drawable/ic_lock_power_off"
-                    android:title="@string/login" />
-            </menu>
-        </item>
+
+        <item
+            android:id="@+id/nav_transmitterGroups"
+            android:checkable="true"
+            android:icon="@drawable/ic_forum_black_48dp"
+            android:title="Transmitter Groups" />
+    </group>
+
+    <group android:id="@+id/nav_group_4">
+        <item
+            android:id="@+id/nav_nodes"
+            android:checkable="true"
+            android:icon="@drawable/ic_server_black_48dp"
+            android:title="Nodes" />
+    </group>
+    <group android:id="@+id/nav_group_5">
+        <item
+            android:id="@+id/nav_users"
+            android:checkable="true"
+            android:icon="@drawable/ic_account_multiple_black_48dp"
+            android:title="Users" />
+        <item
+        android:id="@+id/nav_loginstatus"
+        android:icon="@android:drawable/ic_lock_power_off"
+        android:title="@string/login" />
+    </group>
+    <group>
         <item android:title="@string/miscellaneous">
-            <menu android:id="@+id/nav_misc_menu">
-                <item
-                    android:id="@+id/nav_help"
-                    android:checkable="true"
-                    android:icon="@mipmap/ic_help_black"
-                    android:linksClickable="true"
-                    android:title="@string/help" />
-                <item
-                    android:id="@+id/nav_feedbacklink"
-                    android:autoLink="web"
-                    android:icon="@mipmap/ic_feedback_black"
-                    android:linksClickable="true"
-                    android:title="@string/feedback_and_more" />
-                <item
-                    android:id="@+id/nav_githublink"
-                    android:autoLink="web"
-                    android:icon="@mipmap/ic_githubmark"
-                    android:linksClickable="true"
-                    android:title="@string/github" />
-            </menu>
+        <menu android:id="@+id/nav_misc_menu">
+            <item
+                android:id="@+id/nav_help"
+                android:checkable="true"
+                android:icon="@mipmap/ic_help_black"
+                android:linksClickable="true"
+                android:title="@string/help" />
+            <item
+                android:id="@+id/nav_feedbacklink"
+                android:autoLink="web"
+                android:icon="@mipmap/ic_feedback_black"
+                android:linksClickable="true"
+                android:title="@string/feedback_and_more" />
+            <item
+                android:id="@+id/nav_githublink"
+                android:autoLink="web"
+                android:icon="@mipmap/ic_githubmark"
+                android:linksClickable="true"
+                android:title="@string/github" />
+        </menu>
         </item>
     </group>
 

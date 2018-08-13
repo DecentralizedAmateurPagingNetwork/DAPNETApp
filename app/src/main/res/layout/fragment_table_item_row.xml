@@ -10,7 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp">
 
         <TextView
             android:id="@+id/table_upperLeft"
@@ -19,14 +21,14 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="4dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginRight="4dp"
             android:layout_marginEnd="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
             android:maxLines="1"
             android:text="To: DH3WR,PLCHDR"
-            android:textAppearance="@style/TextAppearance.AppCompat.Notification.Info"/>
+            android:textAppearance="@style/TextAppearance.AppCompat.Notification.Info" />
 
         <TextView
             android:id="@+id/table_center"
@@ -40,8 +42,8 @@
             android:layout_toEndOf="@+id/table_hiddenCenter"
             android:layout_toRightOf="@+id/table_hiddenCenter"
             android:text="@string/msg_placeceholder"
-
             android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
 
         <TextView
             android:id="@+id/table_hiddenMore"
@@ -62,10 +64,9 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/table_center"
-            android:text="Jul 30, 2015 10:13:37 AM"
             android:layout_marginEnd="4dp"
-            android:layout_marginRight="4dp"
             android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
             android:layout_marginStart="4dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Notification.Time" />
 
@@ -76,13 +77,13 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@id/table_center"
+            android:layout_marginBottom="4dp"
             android:layout_marginLeft="4dp"
             android:layout_marginStart="4dp"
             android:layout_toLeftOf="@+id/table_lowerRight"
             android:layout_toStartOf="@+id/table_lowerRight"
             android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Notification.Info"
-            android:text="Groups: All" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Notification.Info" />
 
         <TextView
             android:id="@+id/table_hiddenCenter"
@@ -90,15 +91,25 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
             android:layout_below="@+id/table_upperLeft"
-            android:layout_marginTop="2dp"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="4dp"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
             android:layout_marginStart="4dp"
+            android:layout_marginTop="2dp"
             android:text="OWN3R"
             android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/table_upperRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="4dp" />
 
     </RelativeLayout>
 

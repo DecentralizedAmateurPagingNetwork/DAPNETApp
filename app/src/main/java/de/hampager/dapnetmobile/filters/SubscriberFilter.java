@@ -1,35 +1,35 @@
-package de.hampager.dapnetmobile.adapters;
+package de.hampager.dapnetmobile.filters;
 
 import android.widget.Filter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hampager.dap4j.models.CallResource;
+import de.hampager.dap4j.models.CallSign;
+import de.hampager.dapnetmobile.adapters.SubscriberAdapter;
 
-public class CustomFilter extends Filter {
-    private CallAdapter adapter;
-    private List<CallResource> filterList;
-    public CustomFilter(List<CallResource> filterList,CallAdapter adapter)
-    {
-        this.adapter=adapter;
-        this.filterList=filterList;
+public class SubscriberFilter extends Filter {
+    private SubscriberAdapter adapter;
+    private List<CallSign> filterList;
+
+    public SubscriberFilter(List<CallSign> filterList, SubscriberAdapter adapter) {
+        this.adapter = adapter;
+        this.filterList = filterList;
     }
+
     //FILTERING OCCURS
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {
-        FilterResults results=new FilterResults();
+        FilterResults results = new FilterResults();
         //CHECK CONSTRAINT VALIDITY
-        if(constraint != null && constraint.length() > 0)
-        {
+        if (constraint != null && constraint.length() > 0) {
             //CHANGE TO UPPER
-            constraint=constraint.toString().toUpperCase();
+            constraint = constraint.toString().toUpperCase();
             //STORE OUR FILTERED PLAYERS
-            List<CallResource> filteredCallResources=new ArrayList<>();
-            for (CallResource hamnetCall:filterList)
-            {
+            List<CallSign> filteredCallSigns = new ArrayList<>();
+            for (CallSign hamnetCall : filterList) {
                 //CHECK
-
+/*
                 String text = hamnetCall.getText().toUpperCase();
                 List<String> callSignNames = hamnetCall.getCallSignNames();
                 List<String> transmitterGroupNames = hamnetCall.getTransmitterGroupNames();
@@ -43,21 +43,21 @@ public class CustomFilter extends Filter {
                 if(text.contains(constraint)||ownerName.contains(constraint)||callSignNames.contains(constraint.toString()))
                 {
                     //ADD CALL TO FILTERED
-                    filteredCallResources.add(hamnetCall);
-                }
+                    filteredCallSigns.add(hamnetCall);
+                }*/
             }
-            results.count=filteredCallResources.size();
-            results.values=filteredCallResources;
-        }else
-        {
-            results.count=filterList.size();
-            results.values=filterList;
+            results.count = filteredCallSigns.size();
+            results.values = filteredCallSigns;
+        } else {
+            results.count = filterList.size();
+            results.values = filterList;
         }
         return results;
     }
+
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-        adapter.setmValues((ArrayList<CallResource>) results.values);
+        adapter.setmValues((ArrayList<CallSign>) results.values);
         //REFRESH
         adapter.notifyDataSetChanged();
     }
