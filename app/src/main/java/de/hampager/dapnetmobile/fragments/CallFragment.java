@@ -67,8 +67,6 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
         if (!admin) {
             s = sharedPreferences.getString("user", "null");
         }
-        //TODO: Implement non-admin
-        //Log.i(TAG, "fetchJSON, admin: " + admin);
         if (admin) {
             Log.i(TAG, "Admin access granted. Fetching All Calls...");
         }
@@ -83,17 +81,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
                     adapter.notifyDataSetChanged();
                 } else {
                     Log.e(TAG, "Error");
-
                     //TODO: .code,.message etc
-                    /*Log.e(TAG, "Error " + dapnetResponse.code());
-                    Log.e(TAG, dapnetResponse.message());
-                    Snackbar.make(recyclerView, "Error! " + dapnetResponse.code() + " " + dapnetResponse.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    if (dapnetResponse.code() == 401) {
-                        SharedPreferences sharedPref = getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.clear();
-                        editor.apply();
-                    }*/
                 }
                 mSwipe.setRefreshing(false);
             }

@@ -21,6 +21,7 @@ public class NodeFilter extends Filter {
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {
         FilterResults results = new FilterResults();
+        //TODO FILTERING
         //CHECK CONSTRAINT VALIDITY
         if (constraint != null && constraint.length() > 0) {
             //CHANGE TO UPPER

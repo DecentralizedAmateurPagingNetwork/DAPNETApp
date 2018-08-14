@@ -1,7 +1,6 @@
 package de.hampager.dapnetmobile.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,9 @@ import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.filters.UserFilter;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.TableViewHolder> implements Filterable {
-    private List<User> mValues, filterValues;
-    private de.hampager.dapnetmobile.filters.UserFilter UserFilter;
+    private List<User> mValues;
+    private List<User> filterValues;
+    private de.hampager.dapnetmobile.filters.UserFilter userFilter;
 
     public UserAdapter(List<User> mValues) {
         this.mValues = mValues;
@@ -32,7 +32,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.TableViewHolde
     //Write Content of Call Items for the RecyclerView
     @Override
     public void onBindViewHolder(TableViewHolder viewHolder, int i) {
-        //TODO: ADAPT
         User hamnetUser = mValues.get(i);
         viewHolder.mUpperLeft.setText("Admin: " + hamnetUser.getAdmin().toString().toUpperCase());
         viewHolder.mCenter.setText(hamnetUser.getName());
@@ -46,8 +45,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.TableViewHolde
 
     @Override
     public Filter getFilter() {
-        if (UserFilter == null) UserFilter = new UserFilter(mValues, this);
-        return UserFilter;
+        if (userFilter == null) userFilter = new UserFilter(mValues, this);
+        return userFilter;
     }
 
     public List<User> getmValues() {
@@ -67,53 +66,25 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.TableViewHolde
     }
 
     public UserFilter getUserFilter() {
-        return UserFilter;
+        return userFilter;
     }
 
-    public void setUserFilter(UserFilter UserFilter) {
-        this.UserFilter = UserFilter;
+    public void setUserFilter(UserFilter userFilter) {
+        this.userFilter = userFilter;
     }
 
     //Holds relevant parts of one Call Item
     public class TableViewHolder extends RecyclerView.ViewHolder {
-        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("CallAdapter", "CLICK");
-                /*
-                if (Build.VERSION.SDK_INT>15){
-                    if(mCallCallSign.getMaxLines()==1){
-                        mCallCallSign.setMaxLines(10);
-                        mCallUser.setMaxLines(10);
-                        mOwner.setVisibility(View.VISIBLE);
-                    }else{
-                        mCallCallSign.setMaxLines(1);
-                        mCallUser.setMaxLines(1);
-                        mOwner.setVisibility(View.GONE);
-                    }
-                }*/
-            }
-        };
+        //Missing: onClick
         private TextView mUpperLeft;
-        private TextView mLowerLeft;
         private TextView mCenter;
         private TextView mUpperRight;
-        private TextView mHiddenMore;
-        private TextView mLowerRight;
-        private TextView mHiddenCenter;
-
+        //Missing:mLowerLeft,mHiddenMore,mLowerRight
         public TableViewHolder(View view) {
             super(view);
-
-            mUpperRight = (TextView) view.findViewById(R.id.table_upperRight);
-            mUpperLeft = (TextView) view.findViewById(R.id.table_upperLeft);
-            mLowerLeft = (TextView) view.findViewById(R.id.table_lowerLeft);
-            mCenter = (TextView) view.findViewById(R.id.table_center);
-            mHiddenMore = (TextView) view.findViewById(R.id.table_hiddenMore);
-            mLowerRight = (TextView) view.findViewById(R.id.table_lowerRight);
-            mHiddenCenter = (TextView) view.findViewById(R.id.table_hiddenCenter);
-
-            view.setOnClickListener(mOnClickListener);
+            mUpperRight = view.findViewById(R.id.table_upperRight);
+            mUpperLeft = view.findViewById(R.id.table_upperLeft);
+            mCenter = view.findViewById(R.id.table_center);
         }
     }
 }

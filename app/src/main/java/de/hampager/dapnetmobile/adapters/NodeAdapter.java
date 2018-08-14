@@ -11,14 +11,14 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import de.hampager.dap4j.models.Address;
 import de.hampager.dap4j.models.Node;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.filters.NodeFilter;
 
 public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.TableViewHolder> implements Filterable {
-    private List<Node> mValues, filterValues;
-    private de.hampager.dapnetmobile.filters.NodeFilter NodeFilter;
+    private List<Node> mValues;
+    private List<Node> filterValues;
+    private de.hampager.dapnetmobile.filters.NodeFilter nodeFilter;
 
     public NodeAdapter(List<Node> mValues) {
         this.mValues = mValues;
@@ -33,7 +33,6 @@ public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.TableViewHolde
     //Write Content of Call Items for the RecyclerView
     @Override
     public void onBindViewHolder(TableViewHolder viewHolder, int i) {
-        //TODO: ADAPT
         Node hamnetNode = mValues.get(i);
         viewHolder.mUpperLeft.setText(hamnetNode.getName().toUpperCase());
         if (hamnetNode.getOwnerNames() != null)
@@ -55,8 +54,8 @@ public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.TableViewHolde
 
     @Override
     public Filter getFilter() {
-        if (NodeFilter == null) NodeFilter = new NodeFilter(mValues, this);
-        return NodeFilter;
+        if (nodeFilter == null) nodeFilter = new NodeFilter(mValues, this);
+        return nodeFilter;
     }
 
     public List<Node> getmValues() {
@@ -76,11 +75,11 @@ public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.TableViewHolde
     }
 
     public NodeFilter getNodeFilter() {
-        return NodeFilter;
+        return nodeFilter;
     }
 
-    public void setNodeFilter(NodeFilter NodeFilter) {
-        this.NodeFilter = NodeFilter;
+    public void setNodeFilter(NodeFilter nodeFilter) {
+        this.nodeFilter = nodeFilter;
     }
 
     //Holds relevant parts of one Call Item
@@ -89,39 +88,22 @@ public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.TableViewHolde
             @Override
             public void onClick(View v) {
                 Log.i("CallAdapter", "CLICK");
-                /*
-                if (Build.VERSION.SDK_INT>15){
-                    if(mCallCallSign.getMaxLines()==1){
-                        mCallCallSign.setMaxLines(10);
-                        mCallNode.setMaxLines(10);
-                        mOwner.setVisibility(View.VISIBLE);
-                    }else{
-                        mCallCallSign.setMaxLines(1);
-                        mCallNode.setMaxLines(1);
-                        mOwner.setVisibility(View.GONE);
-                    }
-                }*/
             }
         };
         private TextView mUpperLeft;
         private TextView mLowerLeft;
         private TextView mCenter;
         private TextView mUpperRight;
-        private TextView mHiddenMore;
         private TextView mLowerRight;
-        private TextView mHiddenCenter;
+        //Missing: mHiddenMore,mHiddenCenter
 
         public TableViewHolder(View view) {
             super(view);
-
-            mUpperRight = (TextView) view.findViewById(R.id.table_upperRight);
-            mUpperLeft = (TextView) view.findViewById(R.id.table_upperLeft);
-            mLowerLeft = (TextView) view.findViewById(R.id.table_lowerLeft);
-            mCenter = (TextView) view.findViewById(R.id.table_center);
-            mHiddenMore = (TextView) view.findViewById(R.id.table_hiddenMore);
-            mLowerRight = (TextView) view.findViewById(R.id.table_lowerRight);
-            mHiddenCenter = (TextView) view.findViewById(R.id.table_hiddenCenter);
-
+            mUpperRight = view.findViewById(R.id.table_upperRight);
+            mUpperLeft = view.findViewById(R.id.table_upperLeft);
+            mLowerLeft = view.findViewById(R.id.table_lowerLeft);
+            mCenter = view.findViewById(R.id.table_center);
+            mLowerRight = view.findViewById(R.id.table_lowerRight);
             view.setOnClickListener(mOnClickListener);
         }
     }

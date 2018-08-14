@@ -39,24 +39,16 @@ public class TransmitterGroupCompletionView extends TokenCompleteTextView<Transm
 
     @Override
     protected TransmitterGroup defaultObject(String completionText) {
-        //Stupid simple example of guessing if we have an email or not
-        /*int index = completionText.indexOf('@');
-        if (index == -1) {*/
+        //probs should check if valid
         return new TransmitterGroup(completionText, "", new ArrayList<>(), new ArrayList<>());
-        /*} else {
-            return new TransmitterGroup(completionText.substring(0, index),"");
-        }*/
     }
 
     @Override
     public void onFocusChanged(boolean hasFocus, int direction, Rect previous) {
         super.onFocusChanged(hasFocus, direction, previous);
-        if (hasFocus && getObjects().size() == 1 && getObjects().get(0).getName().toUpperCase().equals("ALL")) {
+        if (hasFocus && getObjects().size() == 1 && getObjects().get(0).getName().equalsIgnoreCase("ALL")) {
             removeObject(getObjects().get(0));
         }
     }
 
-    private void displayList() {
-
-    }
 }

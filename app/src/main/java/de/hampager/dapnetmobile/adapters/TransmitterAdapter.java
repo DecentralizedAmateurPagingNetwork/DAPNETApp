@@ -1,7 +1,6 @@
 package de.hampager.dapnetmobile.adapters;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,9 @@ import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.filters.TransmitterFilter;
 
 public class TransmitterAdapter extends RecyclerView.Adapter<TransmitterAdapter.TableViewHolder> implements Filterable {
-    private List<Transmitter> mValues, filterValues;
-    private de.hampager.dapnetmobile.filters.TransmitterFilter TransmitterFilter;
+    private List<Transmitter> mValues;
+    private List<Transmitter> filterValues;
+    private de.hampager.dapnetmobile.filters.TransmitterFilter transmitterFilter;
 
     public TransmitterAdapter(List<Transmitter> mValues) {
         this.mValues = mValues;
@@ -48,8 +48,8 @@ public class TransmitterAdapter extends RecyclerView.Adapter<TransmitterAdapter.
 
     @Override
     public Filter getFilter() {
-        if (TransmitterFilter == null) TransmitterFilter = new TransmitterFilter(mValues, this);
-        return TransmitterFilter;
+        if (transmitterFilter == null) transmitterFilter = new TransmitterFilter(mValues, this);
+        return transmitterFilter;
     }
 
     public List<Transmitter> getmValues() {
@@ -69,53 +69,29 @@ public class TransmitterAdapter extends RecyclerView.Adapter<TransmitterAdapter.
     }
 
     public TransmitterFilter getTransmitterFilter() {
-        return TransmitterFilter;
+        return transmitterFilter;
     }
 
-    public void setTransmitterFilter(TransmitterFilter TransmitterFilter) {
-        this.TransmitterFilter = TransmitterFilter;
+    public void setTransmitterFilter(TransmitterFilter transmitterFilter) {
+        this.transmitterFilter = transmitterFilter;
     }
 
     //Holds relevant parts of one Call Item
     public class TableViewHolder extends RecyclerView.ViewHolder {
-        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("CallAdapter", "CLICK");
-                /*
-                if (Build.VERSION.SDK_INT>15){
-                    if(mCallCallSign.getMaxLines()==1){
-                        mCallCallSign.setMaxLines(10);
-                        mCallTransmitterGroup.setMaxLines(10);
-                        mOwner.setVisibility(View.VISIBLE);
-                    }else{
-                        mCallCallSign.setMaxLines(1);
-                        mCallTransmitterGroup.setMaxLines(1);
-                        mOwner.setVisibility(View.GONE);
-                    }
-                }*/
-            }
-        };
+//Missing: onClick
         private TextView mUpperLeft;
         private TextView mLowerLeft;
         private TextView mCenter;
         private TextView mUpperRight;
-        private TextView mHiddenMore;
-        private TextView mLowerRight;
-        private TextView mHiddenCenter;
+        //Missing: mHiddenMore
 
         public TableViewHolder(View view) {
             super(view);
 
-            mUpperRight = (TextView) view.findViewById(R.id.table_upperRight);
-            mUpperLeft = (TextView) view.findViewById(R.id.table_upperLeft);
-            mLowerLeft = (TextView) view.findViewById(R.id.table_lowerLeft);
-            mCenter = (TextView) view.findViewById(R.id.table_center);
-            mHiddenMore = (TextView) view.findViewById(R.id.table_hiddenMore);
-            mLowerRight = (TextView) view.findViewById(R.id.table_lowerRight);
-            mHiddenCenter = (TextView) view.findViewById(R.id.table_hiddenCenter);
-
-            view.setOnClickListener(mOnClickListener);
+            mUpperRight = view.findViewById(R.id.table_upperRight);
+            mUpperLeft = view.findViewById(R.id.table_upperLeft);
+            mLowerLeft = view.findViewById(R.id.table_lowerLeft);
+            mCenter = view.findViewById(R.id.table_center);
         }
     }
 }
