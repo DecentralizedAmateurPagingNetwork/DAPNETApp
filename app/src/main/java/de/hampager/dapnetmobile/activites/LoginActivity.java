@@ -1,4 +1,4 @@
-package de.hampager.dapnetmobile;
+package de.hampager.dapnetmobile.activites;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -27,6 +27,7 @@ import de.hampager.dap4j.callbacks.DapnetListener;
 import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.User;
 import de.hampager.dap4j.models.Version;
+import de.hampager.dapnetmobile.R;
 
 
 /**

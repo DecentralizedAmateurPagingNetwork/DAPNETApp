@@ -1,8 +1,10 @@
-package de.hampager.dapnetmobile;
+package de.hampager.dapnetmobile.activites;
 
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.AdapterView;
+
+import de.hampager.dapnetmobile.R;
 
 public class CustomOnItemSelectedListener implements AdapterView.OnItemSelectedListener {
     private final View rootView;

@@ -10,7 +10,7 @@
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="de.hampager.dapnetmobile"
-            android:targetClass="de.hampager.dapnetmobile.PostCallActivity" />
+            android:targetClass="de.hampager.dapnetmobile.activites.PostCallActivity" />
         <!-- If your shortcut is associated with multiple intents, include them
              here. The last intent in the list determines what the user sees when
              they launch this shortcut. -->

@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.hampager.dap4j.models.Rubric;
-import de.hampager.dapnetmobile.MainActivity;
+import de.hampager.dapnetmobile.activites.MainActivity;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.filters.RubricFilter;
 import de.hampager.dapnetmobile.fragments.TableFragment;

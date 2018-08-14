@@ -1,4 +1,4 @@
-package de.hampager.dapnetmobile;
+package de.hampager.dapnetmobile.activites;
 
 import android.app.Activity;
 import android.content.Context;
@@ -37,6 +37,7 @@ import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.CallResource;
 import de.hampager.dap4j.models.CallSign;
 import de.hampager.dap4j.models.TransmitterGroup;
+import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.tokenautocomplete.CallsignsCompletionView;
 import de.hampager.dapnetmobile.tokenautocomplete.TransmitterGroupCompletionView;
 

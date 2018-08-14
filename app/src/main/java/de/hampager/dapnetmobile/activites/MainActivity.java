@@ -1,4 +1,4 @@
-package de.hampager.dapnetmobile;
+package de.hampager.dapnetmobile.activites;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +30,8 @@ import de.hampager.dap4j.DapnetSingleton;
 import de.hampager.dap4j.callbacks.DapnetListener;
 import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.Version;
+import de.hampager.dapnetmobile.BuildConfig;
+import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.fragments.CallFragment;
 import de.hampager.dapnetmobile.fragments.HelpFragment;
 import de.hampager.dapnetmobile.fragments.MapFragment;
