@@ -36,8 +36,8 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'org.osmdroid:osmdroid-android:6.0.1'
-    compile 'com.github.MKergall:osmbonuspack:6.5.2'
+    implementation 'org.osmdroid:osmdroid-android:6.0.2'
+    implementation 'com.github.MKergall:osmbonuspack:6.5.2'
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
@@ -46,7 +46,7 @@ dependencies {
     implementation 'com.splitwise:tokenautocomplete:2.0.8@aar'
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.google.code.gson:gson:2.8.2'
-    implementation 'com.github.DecentralizedAmateurPagingNetwork:DAP4J:cb9db64990'
+    implementation 'com.github.DecentralizedAmateurPagingNetwork:DAP4J:b2360c0113'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }

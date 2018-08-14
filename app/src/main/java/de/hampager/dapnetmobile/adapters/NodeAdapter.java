@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import de.hampager.dap4j.models.Address;
 import de.hampager.dap4j.models.Node;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.filters.NodeFilter;
@@ -35,14 +36,16 @@ public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.TableViewHolde
         //TODO: ADAPT
         Node hamnetNode = mValues.get(i);
         viewHolder.mUpperLeft.setText(hamnetNode.getName().toUpperCase());
-        if (hamnetNode.getOwner() != null)
-            viewHolder.mUpperRight.setText(hamnetNode.getOwner().toString());
+        if (hamnetNode.getOwnerNames() != null)
+            viewHolder.mUpperRight.setText(hamnetNode.getOwnerNames().toString());
         viewHolder.mLowerLeft.setText(hamnetNode.getStatus());
         if (hamnetNode.getAddress() != null)
-            viewHolder.mCenter.setText(hamnetNode.getAddress().getIpAddr());
+            viewHolder.mCenter.setText(hamnetNode.getAddress().toString());
         else
-            viewHolder.mCenter.setText("Address null");
-        viewHolder.mLowerRight.setText(hamnetNode.getVersion());
+            viewHolder.mCenter.setText("Address unavailable");
+        if (hamnetNode.getVersion() != null)
+            viewHolder.mLowerRight.setText(hamnetNode.getVersion());
+
     }
 
     @Override

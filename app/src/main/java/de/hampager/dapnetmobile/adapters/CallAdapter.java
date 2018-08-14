@@ -17,7 +17,8 @@ import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.filters.CustomFilter;
 
 public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder> implements Filterable {
-    private List<CallResource> mValues, filterValues;
+    private List<CallResource> mValues;
+    private List<CallResource> filterValues;
     private CustomFilter customFilter;
 
     public CallAdapter(List<CallResource> mValues) {
@@ -95,7 +96,7 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
         private TextView mCallCallSign;
         private TextView mCallTransmitterGroup;
         private TextView mCallMsgContent;
-        private TextView mCallMoreCalls;
+        //Missing: mCallMoreCalls
         private TextView mTimestamp;
         private TextView mOwner;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -121,7 +122,6 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
             mCallCallSign = (TextView) view.findViewById(R.id.table_upperLeft);
             mCallTransmitterGroup = (TextView) view.findViewById(R.id.table_lowerLeft);
             mCallMsgContent = (TextView) view.findViewById(R.id.table_center);
-            mCallMoreCalls = (TextView) view.findViewById(R.id.table_hiddenMore);
             mTimestamp = (TextView) view.findViewById(R.id.table_lowerRight);
             mOwner = (TextView) view.findViewById(R.id.table_hiddenCenter);
             view.setOnClickListener(mOnClickListener);

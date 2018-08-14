@@ -17,8 +17,10 @@ import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.filters.SubscriberFilter;
 
 public class SubscriberAdapter extends RecyclerView.Adapter<SubscriberAdapter.TableViewHolder> implements Filterable {
-    private List<CallSign> mValues, filterValues;
-    private de.hampager.dapnetmobile.filters.SubscriberFilter SubscriberFilter;
+    private List<CallSign> mValues;
+    private List<CallSign> filterValues;
+    private de.hampager.dapnetmobile.filters.SubscriberFilter subscriberFilter;
+    private static final String TAG="SubscriberAdapter";
 
     public SubscriberAdapter(List<CallSign> mValues) {
         this.mValues = mValues;
@@ -34,20 +36,6 @@ public class SubscriberAdapter extends RecyclerView.Adapter<SubscriberAdapter.Ta
     @Override
     public void onBindViewHolder(TableViewHolder viewHolder, int i) {
         CallSign hamnetCall = mValues.get(i);
-        /*
-
-        StringBuilder upperLeft=new StringBuilder();
-        upperLeft.append("To: ");
-        upperLeft.append(hamnetCall.getCallSignNames().get(0).toUpperCase());
-        for(int j=1;j<hamnetCall.getCallSignNames().size();j++){
-            upperLeft.append(", ");
-            upperLeft.append(hamnetCall.getCallSignNames().get(j).toUpperCase());
-        }
-        viewHolder.mCallCallSign.setText(upperLeft);
-        viewHolder.mCallMsgContent.setText(hamnetCall.getText());
-        viewHolder.mTimestamp.setText(hamnetCall.getTimestamp());
-        viewHolder.mOwner.setText(hamnetCall.getOwnerName()+":");
-*/
         viewHolder.mUpperLeft.setText(hamnetCall.getName().toUpperCase());
         viewHolder.mCenter.setText(hamnetCall.getDescription());
         StringBuilder lowerLeft = new StringBuilder();
@@ -66,11 +54,13 @@ public class SubscriberAdapter extends RecyclerView.Adapter<SubscriberAdapter.Ta
                 lowerLeft.append(")");
             }
         } catch (Exception e) {
+            Log.e(TAG,"Adapter error");
         }
         viewHolder.mLowerLeft.setText(lowerLeft.toString());
         try {
             viewHolder.mUpperRight.setText(hamnetCall.getOwnerNames().toString().toUpperCase());
         } catch (Exception e) {
+            Log.e(TAG,"Adapter error, setting text failed");
         }
     }
 
@@ -81,8 +71,8 @@ public class SubscriberAdapter extends RecyclerView.Adapter<SubscriberAdapter.Ta
 
     @Override
     public Filter getFilter() {
-        if (SubscriberFilter == null) SubscriberFilter = new SubscriberFilter(mValues, this);
-        return SubscriberFilter;
+        if (subscriberFilter == null) subscriberFilter = new SubscriberFilter(mValues, this);
+        return subscriberFilter;
     }
 
     public List<CallSign> getmValues() {
@@ -102,53 +92,27 @@ public class SubscriberAdapter extends RecyclerView.Adapter<SubscriberAdapter.Ta
     }
 
     public SubscriberFilter getSubscriberFilter() {
-        return SubscriberFilter;
+        return subscriberFilter;
     }
 
-    public void setSubscriberFilter(SubscriberFilter SubscriberFilter) {
-        this.SubscriberFilter = SubscriberFilter;
+    public void setSubscriberFilter(SubscriberFilter subscriberFilter) {
+        this.subscriberFilter = subscriberFilter;
     }
 
     //Holds relevant parts of one Call Item
     public class TableViewHolder extends RecyclerView.ViewHolder {
-        private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("CallAdapter", "CLICK");
-                /*
-                if (Build.VERSION.SDK_INT>15){
-                    if(mCallCallSign.getMaxLines()==1){
-                        mCallCallSign.setMaxLines(10);
-                        mCallTransmitterGroup.setMaxLines(10);
-                        mOwner.setVisibility(View.VISIBLE);
-                    }else{
-                        mCallCallSign.setMaxLines(1);
-                        mCallTransmitterGroup.setMaxLines(1);
-                        mOwner.setVisibility(View.GONE);
-                    }
-                }*/
-            }
-        };
+        //OnClick Missing
         private TextView mUpperLeft;
         private TextView mLowerLeft;
         private TextView mCenter;
         private TextView mUpperRight;
-        private TextView mHiddenMore;
-        private TextView mLowerRight;
-        private TextView mHiddenCenter;
-
+        //Missing: mHiddenMore,mLowerRight,mHiddenCenter
         public TableViewHolder(View view) {
             super(view);
-
-            mUpperRight = (TextView) view.findViewById(R.id.table_upperRight);
-            mUpperLeft = (TextView) view.findViewById(R.id.table_upperLeft);
-            mLowerLeft = (TextView) view.findViewById(R.id.table_lowerLeft);
-            mCenter = (TextView) view.findViewById(R.id.table_center);
-            mHiddenMore = (TextView) view.findViewById(R.id.table_hiddenMore);
-            mLowerRight = (TextView) view.findViewById(R.id.table_lowerRight);
-            mHiddenCenter = (TextView) view.findViewById(R.id.table_hiddenCenter);
-
-            view.setOnClickListener(mOnClickListener);
+            mUpperRight = view.findViewById(R.id.table_upperRight);
+            mUpperLeft = view.findViewById(R.id.table_upperLeft);
+            mLowerLeft = view.findViewById(R.id.table_lowerLeft);
+            mCenter = view.findViewById(R.id.table_center);
         }
     }
 }

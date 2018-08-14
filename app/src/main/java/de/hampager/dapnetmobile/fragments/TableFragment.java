@@ -281,7 +281,6 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
         v.setTag(TAG);
         setHasOptionsMenu(true);
         mSwipe = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshCalls);
-        Bundle arguments = getArguments();
         initViews(v);
         // Setup refresh listener which triggers new data loading
         mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -308,8 +307,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
     @Override
     public boolean onQueryTextChange(String query) {
         // Here is where we are going to implement the filter logic
-        //TODO FIX
-        // adapter.getFilter().filter(query);
+        //TODO FIX filer, eg get Filter from adapter and filter query
         return false;
     }
 

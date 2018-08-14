@@ -34,7 +34,8 @@ import de.hampager.dap4j.models.Version;
  */
 
 public class LoginActivity extends AppCompatActivity {
-    private final String TAG = "LoginActivity";
+    public static final String SP = "sharedPref";
+    private static final String TAG = "LoginActivity";
 
     // UI references.
     private TextInputEditText mServerView;
@@ -45,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
     private Spinner spinner;
     private Button mSignInButton;
 
-    private String mServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +53,10 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
-        mServerView = (TextInputEditText) findViewById(R.id.server);
-        mUsernameView = (TextInputEditText) findViewById(R.id.user);
-        mPasswordView = (TextInputEditText) findViewById(R.id.password);
-        mSignInButton = (Button) findViewById(R.id.user_sign_in_button);
+        mServerView = findViewById(R.id.server);
+        mUsernameView = findViewById(R.id.user);
+        mPasswordView = findViewById(R.id.password);
+        mSignInButton = findViewById(R.id.user_sign_in_button);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         addListeners();
@@ -89,20 +89,20 @@ public class LoginActivity extends AppCompatActivity {
     private void checkServers() {
         Resources resources = getResources();
         String clearNetURL = resources.getString(R.string.ClearNetURL);
-        String DAPNetURL = resources.getString(R.string.DapNetURL);
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        String dapNetUrl = resources.getString(R.string.DapNetURL);
+        SharedPreferences sharedPreferences = getSharedPreferences(SP, Context.MODE_PRIVATE);
         String server = sharedPreferences.getString("defServer", clearNetURL);
         DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
         dapnetSingleton.init(server, "", "");
         DAPNET dapnet = dapnetSingleton.getDapnet();
         switch (server) {
             case "https://hampager.de/api/":
-                dapnetSingleton.init(DAPNetURL, "", "");
+                dapnetSingleton.init(dapNetUrl, "", "");
                 DAPNET dapnet1 = dapnetSingleton.getDapnet();
                 dapnet1.getVersion(new DapnetListener<Version>() {
                     @Override
                     public void onResponse(DapnetResponse<Version> dapnetResponse) {
-                        setServer(DAPNetURL);
+                        setServer(dapNetUrl);
                     }
 
                     @Override
@@ -133,12 +133,12 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Throwable throwable) {
-                        dapnetSingleton.init(DAPNetURL, "", "");
+                        dapnetSingleton.init(dapNetUrl, "", "");
                         DAPNET dapnet = dapnetSingleton.getDapnet();
                         dapnet.getVersion(new DapnetListener<Version>() {
                             @Override
                             public void onResponse(DapnetResponse<Version> dapnetResponse) {
-                                setServer(DAPNetURL);
+                                setServer(dapNetUrl);
                             }
 
                             @Override
@@ -151,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
                 break;
         }
     }
-
+    //TODO: Check wether Method is needed
     private boolean checkIndividualServer(String server) {
         final Boolean[] success = {false};
         DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
@@ -165,7 +165,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable throwable) {
-
+                //Inform user of error
             }
         });
         return success[0];
@@ -182,7 +182,7 @@ public class LoginActivity extends AppCompatActivity {
                 spinner.setSelection(2);
         }
         DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
-        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences(SP, Context.MODE_PRIVATE);
         dapnetSingleton.init(server, sharedPref.getString("user", ""), sharedPref.getString("pass", ""));
         SharedPreferences.Editor edit = sharedPref.edit();
         edit.putString("defServer", server);
@@ -195,9 +195,7 @@ public class LoginActivity extends AppCompatActivity {
         dapnetSingleton.init(server, user, password);
         Log.d(TAG, dapnetSingleton.getUrl() + "; " + dapnetSingleton.getUser() + "; " + dapnetSingleton.getPass());
         DAPNET dapnet = dapnetSingleton.getDapnet();
-        String name = user;
-        User returnValue;
-        dapnet.getUser(name, new DapnetListener<User>() {
+        dapnet.getUser(user, new DapnetListener<User>() {
             @Override
             public void onResponse(DapnetResponse<User> dapnetResponse) {
 
@@ -215,11 +213,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
 
                     Log.e(TAG, "Error: ");
-                    //TODO: implement .code
-                    //Log.e(TAG, "Error: " + dapnetResponse().code);
-                    //Should Use APIError
-
-                    //Log.e(TAG, error.message());
+                    //TODO: implement .code, .error
                     showProgress(false);
                     View focusView = mUsernameView;
                     focusView.requestFocus();
@@ -268,8 +262,8 @@ public class LoginActivity extends AppCompatActivity {
         String password = mPasswordView.getText().toString();
 
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        // Check for a valid password, if the user entered one. Maybe check validity?
+        if (!TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -280,11 +274,7 @@ public class LoginActivity extends AppCompatActivity {
             mUsernameView.setError(getString(R.string.error_field_required));
             focusView = mUsernameView;
             cancel = true;
-        } else if (!isEmailValid(user)) {
-            mUsernameView.setError(getString(R.string.error_invalid_user));
-            focusView = mUsernameView;
-            cancel = true;
-        }
+        } // might wanna check valid email
         if (cancel) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -296,15 +286,6 @@ public class LoginActivity extends AppCompatActivity {
             Log.i(TAG, "Logging in...");
             getUser(user, password, server);
         }
-    }
-
-    //TODO: Replace this with your own logic
-    private boolean isEmailValid(String user) {
-        return true;
-    }
-
-    private boolean isPasswordValid(String password) {
-        return true;
     }
 
     private boolean isServerValid(String server) {
@@ -340,7 +321,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void saveData(String server, String user, String pass, Boolean admin) {
-        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences(SP, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("server", server);
         editor.putString("user", user);

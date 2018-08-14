@@ -28,7 +28,6 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.FolderOverlay;
 import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
-import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
 
@@ -53,6 +52,7 @@ import de.hampager.dapnetmobile.R;
  * create an instance of this fragment.
  */
 public class MapFragment extends Fragment implements MapEventsReceiver {
+    public static final String BR = "<br/>";
     static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     private static final String TAG = "MapFragment";
     Menu menu;
@@ -136,9 +136,10 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
         map.setFlingEnabled(true);
-        IMapController mapController = map.getController();
-        mapController.setZoom(6);
+        map.setMinZoomLevel(2.5);
         GeoPoint startPoint = new GeoPoint(50.77623, 6.06937);
+        IMapController mapController = map.getController();
+        mapController.setZoom(6.0);
         mapController.setCenter(startPoint);
         onWClusterer = new RadiusMarkerClusterer(getContext());
         onPClusterer = new RadiusMarkerClusterer(getContext());
@@ -185,7 +186,6 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
             }
         }
         map.getOverlays().add(onlineWideRangeFolder);
-        List<Overlay> l = onlineWideRangeFolder.getItems();
         map.invalidate();
     }
 
@@ -213,20 +213,11 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                 if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                    //List<Transmitter> data = response.body();
                     transmitterList = dapnetResponse.body();
                     config();
                 } else {
                     Log.e(TAG, "Error.");
                     //TODO: implement .code,.message
-                    /*Log.e(TAG, "Error " + response.code());
-                    Log.e(TAG, response.message());
-                    if (response.code() == 401) {
-                        SharedPreferences sharedPref = getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.clear();
-                        editor.apply();
-                    }*/
                 }
             }
 
@@ -239,22 +230,22 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         });
     }
 
-    private String getDesc(Transmitter TrRe) {
+    private String getDesc(Transmitter transmitter) {
         StringBuilder s = new StringBuilder();
         String dot = ": ";
         Context res = getContext();
-        s.append(res.getString(R.string.type)).append(dot).append(TrRe.getUsage()).append("<br/>");
-        s.append(res.getString(R.string.transmission_power)).append(dot).append(TrRe.getPower()).append("<br/>");
-        if (TrRe.getTimeSlot().length() > 1) s.append(res.getString(R.string.timeslots));
+        s.append(res.getString(R.string.type)).append(dot).append(transmitter.getUsage()).append(BR);
+        s.append(res.getString(R.string.transmission_power)).append(dot).append(transmitter.getPower()).append(BR);
+        if (transmitter.getTimeSlot().length() > 1) s.append(res.getString(R.string.timeslots));
         else s.append(res.getString(R.string.timeslot));
-        s.append(dot).append(TrRe.getTimeSlot()).append("<br/>");
-        if (TrRe.getOwnerNames().size() > 1) {
+        s.append(dot).append(transmitter.getTimeSlot()).append(BR);
+        if (transmitter.getOwnerNames().size() > 1) {
             s.append(res.getString(R.string.owners)).append(dot);
-            for (String temp : TrRe.getOwnerNames()) {
+            for (String temp : transmitter.getOwnerNames()) {
                 s.append(temp).append(",");
             }
         } else
-            s.append(res.getString(R.string.owner)).append(dot).append(TrRe.getOwnerNames().get(0));
+            s.append(res.getString(R.string.owner)).append(dot).append(transmitter.getOwnerNames().get(0));
 
         return s.toString();
     }
@@ -286,13 +277,26 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         item.setChecked(!item.isChecked());
-        Menu menu = this.menu;
         boolean onlineEnabled = menu.findItem(R.id.online_filter).isChecked();
         boolean offlineEnabled = menu.findItem(R.id.offline_filter).isChecked();
         boolean wideRangeEnabled = menu.findItem(R.id.widerange_filter).isChecked();
         boolean personalEnabled = menu.findItem(R.id.personal_filter).isChecked();
-
-        if (onlineEnabled) {
+        if(onlineEnabled) mapOnlineEnabledCheck(wideRangeEnabled,personalEnabled);
+        else {
+            map.getOverlays().remove(onlineWideRangeFolder);
+            map.getOverlays().remove(onlinePersonalFolder);
+        }
+        if (offlineEnabled) {
+            mapOfflineEnabledCheck(wideRangeEnabled,personalEnabled);
+        } else {
+            map.getOverlays().remove(offlineWideRangeFolder);
+            map.getOverlays().remove(offlinePersonalFolder);
+        }
+        map.invalidate();
+        InfoWindow.closeAllInfoWindowsOn(map);
+        return true;
+    }
+    private void mapOnlineEnabledCheck(boolean wideRangeEnabled, boolean personalEnabled){
             if (wideRangeEnabled) {
                 if (!map.getOverlays().contains(onlineWideRangeFolder)) {
                     map.getOverlays().add(onlineWideRangeFolder);
@@ -305,30 +309,20 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                 }
             } else
                 map.getOverlays().remove(onlinePersonalFolder);
-        } else {
-            map.getOverlays().remove(onlineWideRangeFolder);
-            map.getOverlays().remove(onlinePersonalFolder);
-        }
-        if (offlineEnabled) {
-            if (wideRangeEnabled) {
-                if (!map.getOverlays().contains(offlineWideRangeFolder))
-                    map.getOverlays().add(offlineWideRangeFolder);
-            } else
-                map.getOverlays().remove(offlineWideRangeFolder);
-            if (personalEnabled) {
-                if (!map.getOverlays().contains(offlinePersonalFolder))
-                    map.getOverlays().add(offlinePersonalFolder);
-            } else
-                map.getOverlays().remove(offlinePersonalFolder);
-        } else {
-            map.getOverlays().remove(offlineWideRangeFolder);
-            map.getOverlays().remove(offlinePersonalFolder);
-        }
-        map.invalidate();
-        InfoWindow.closeAllInfoWindowsOn(map);
-        return true;
     }
 
+    private void mapOfflineEnabledCheck(boolean wideRangeEnabled, boolean personalEnabled){
+        if (wideRangeEnabled) {
+            if (!map.getOverlays().contains(offlineWideRangeFolder))
+                map.getOverlays().add(offlineWideRangeFolder);
+        } else
+            map.getOverlays().remove(offlineWideRangeFolder);
+        if (personalEnabled) {
+            if (!map.getOverlays().contains(offlinePersonalFolder))
+                map.getOverlays().add(offlinePersonalFolder);
+        } else
+            map.getOverlays().remove(offlinePersonalFolder);
+    }
     @Override
     public void onResume() {
         super.onResume();

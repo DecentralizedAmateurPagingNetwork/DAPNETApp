@@ -12,12 +12,15 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.hampager.dap4j.models.Rubric;
+import de.hampager.dapnetmobile.MainActivity;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.filters.RubricFilter;
+import de.hampager.dapnetmobile.fragments.TableFragment;
 
 public class RubricAdapter extends RecyclerView.Adapter<RubricAdapter.TableViewHolder> implements Filterable {
-    private List<Rubric> mValues, filterValues;
-    private de.hampager.dapnetmobile.filters.RubricFilter RubricFilter;
+    private List<Rubric> mValues;
+    private List<Rubric> filterValues;
+    private de.hampager.dapnetmobile.filters.RubricFilter rubricFilter;
 
     public RubricAdapter(List<Rubric> mValues) {
         this.mValues = mValues;
@@ -63,8 +66,8 @@ public class RubricAdapter extends RecyclerView.Adapter<RubricAdapter.TableViewH
 
     @Override
     public Filter getFilter() {
-        if (RubricFilter == null) RubricFilter = new RubricFilter(mValues, this);
-        return RubricFilter;
+        if (rubricFilter == null) rubricFilter = new RubricFilter(mValues, this);
+        return rubricFilter;
     }
 
     public List<Rubric> getmValues() {
@@ -84,11 +87,11 @@ public class RubricAdapter extends RecyclerView.Adapter<RubricAdapter.TableViewH
     }
 
     public RubricFilter getRubricFilter() {
-        return RubricFilter;
+        return rubricFilter;
     }
 
-    public void setRubricFilter(RubricFilter RubricFilter) {
-        this.RubricFilter = RubricFilter;
+    public void setRubricFilter(RubricFilter rubricFilter) {
+        this.rubricFilter = rubricFilter;
     }
 
     //Holds relevant parts of one Call Item
@@ -97,39 +100,23 @@ public class RubricAdapter extends RecyclerView.Adapter<RubricAdapter.TableViewH
             @Override
             public void onClick(View v) {
                 Log.i("CallAdapter", "CLICK");
-                /*
-                if (Build.VERSION.SDK_INT>15){
-                    if(mCallCallSign.getMaxLines()==1){
-                        mCallCallSign.setMaxLines(10);
-                        mCallTransmitterGroup.setMaxLines(10);
-                        mOwner.setVisibility(View.VISIBLE);
-                    }else{
-                        mCallCallSign.setMaxLines(1);
-                        mCallTransmitterGroup.setMaxLines(1);
-                        mOwner.setVisibility(View.GONE);
-                    }
-                }*/
+                //TODO: Inform fragment of rubricName
+                ((MainActivity) v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.RUBRIC_CONTENT)).addToBackStack("RUBRIC_CONTENT").commit();
             }
         };
         private TextView mUpperLeft;
         private TextView mLowerLeft;
         private TextView mCenter;
         private TextView mUpperRight;
-        private TextView mHiddenMore;
-        private TextView mLowerRight;
-        private TextView mHiddenCenter;
+        //Missing: mHiddenMore,mLowerRight,mHiddenCenter
 
         public TableViewHolder(View view) {
             super(view);
 
-            mUpperRight = (TextView) view.findViewById(R.id.table_upperRight);
-            mUpperLeft = (TextView) view.findViewById(R.id.table_upperLeft);
-            mLowerLeft = (TextView) view.findViewById(R.id.table_lowerLeft);
-            mCenter = (TextView) view.findViewById(R.id.table_center);
-            mHiddenMore = (TextView) view.findViewById(R.id.table_hiddenMore);
-            mLowerRight = (TextView) view.findViewById(R.id.table_lowerRight);
-            mHiddenCenter = (TextView) view.findViewById(R.id.table_hiddenCenter);
-
+            mUpperRight = view.findViewById(R.id.table_upperRight);
+            mUpperLeft = view.findViewById(R.id.table_upperLeft);
+            mLowerLeft = view.findViewById(R.id.table_lowerLeft);
+            mCenter = view.findViewById(R.id.table_center);
             view.setOnClickListener(mOnClickListener);
         }
     }

@@ -42,7 +42,7 @@
             android:layout_toEndOf="@+id/table_hiddenCenter"
             android:layout_toRightOf="@+id/table_hiddenCenter"
             android:text="@string/msg_placeceholder"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
 
         <TextView

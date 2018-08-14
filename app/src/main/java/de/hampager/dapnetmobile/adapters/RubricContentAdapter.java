@@ -16,8 +16,9 @@ import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.filters.RubricContentFilter;
 
 public class RubricContentAdapter extends RecyclerView.Adapter<RubricContentAdapter.TableViewHolder> implements Filterable {
-    private List<News> mValues, filterValues;
-    private de.hampager.dapnetmobile.filters.RubricContentFilter RubricContentFilter;
+    private List<News> mValues;
+    private List<News> filterValues;
+    private de.hampager.dapnetmobile.filters.RubricContentFilter rubricContentFilter;
 
     public RubricContentAdapter(List<News> mValues) {
         this.mValues = mValues;
@@ -34,12 +35,10 @@ public class RubricContentAdapter extends RecyclerView.Adapter<RubricContentAdap
     public void onBindViewHolder(TableViewHolder viewHolder, int i) {
         //TODO: ADAPT
         News news = mValues.get(i);
-
         viewHolder.mUpperLeft.setText("Rubric: " + news.getRubricName());
         viewHolder.mCenter.setText(news.getText());
         viewHolder.mLowerRight.setText(news.getTimestamp());
         viewHolder.mLowerLeft.setText(news.getOwnerName());
-        // viewHolder.mUpperRight.setText(news.getNumber());
 
     }
 
@@ -50,9 +49,9 @@ public class RubricContentAdapter extends RecyclerView.Adapter<RubricContentAdap
 
     @Override
     public Filter getFilter() {
-        if (RubricContentFilter == null)
-            RubricContentFilter = new RubricContentFilter(mValues, this);
-        return RubricContentFilter;
+        if (rubricContentFilter == null)
+            rubricContentFilter = new RubricContentFilter(mValues, this);
+        return rubricContentFilter;
     }
 
     public List<News> getmValues() {
@@ -72,11 +71,11 @@ public class RubricContentAdapter extends RecyclerView.Adapter<RubricContentAdap
     }
 
     public RubricContentFilter getRubricContentFilter() {
-        return RubricContentFilter;
+        return rubricContentFilter;
     }
 
-    public void setRubricContentFilter(RubricContentFilter RubricContentFilter) {
-        this.RubricContentFilter = RubricContentFilter;
+    public void setRubricContentFilter(RubricContentFilter rubricContentFilter) {
+        this.rubricContentFilter = rubricContentFilter;
     }
 
     //Holds relevant parts of one Call Item
@@ -85,39 +84,20 @@ public class RubricContentAdapter extends RecyclerView.Adapter<RubricContentAdap
             @Override
             public void onClick(View v) {
                 Log.i("CallAdapter", "CLICK");
-                /*
-                if (Build.VERSION.SDK_INT>15){
-                    if(mCallCallSign.getMaxLines()==1){
-                        mCallCallSign.setMaxLines(10);
-                        mCallTransmitterGroup.setMaxLines(10);
-                        mOwner.setVisibility(View.VISIBLE);
-                    }else{
-                        mCallCallSign.setMaxLines(1);
-                        mCallTransmitterGroup.setMaxLines(1);
-                        mOwner.setVisibility(View.GONE);
-                    }
-                }*/
             }
         };
         private TextView mUpperLeft;
         private TextView mLowerLeft;
         private TextView mCenter;
-        private TextView mUpperRight;
-        private TextView mHiddenMore;
         private TextView mLowerRight;
-        private TextView mHiddenCenter;
+        //Missing: mUpperRight,mHiddenMore,mHiddenCenter
 
         public TableViewHolder(View view) {
             super(view);
-
-            mUpperRight = (TextView) view.findViewById(R.id.table_upperRight);
-            mUpperLeft = (TextView) view.findViewById(R.id.table_upperLeft);
-            mLowerLeft = (TextView) view.findViewById(R.id.table_lowerLeft);
-            mCenter = (TextView) view.findViewById(R.id.table_center);
-            mHiddenMore = (TextView) view.findViewById(R.id.table_hiddenMore);
-            mLowerRight = (TextView) view.findViewById(R.id.table_lowerRight);
-            mHiddenCenter = (TextView) view.findViewById(R.id.table_hiddenCenter);
-
+            mUpperLeft = view.findViewById(R.id.table_upperLeft);
+            mLowerLeft = view.findViewById(R.id.table_lowerLeft);
+            mCenter = view.findViewById(R.id.table_center);
+            mLowerRight = view.findViewById(R.id.table_lowerRight);
             view.setOnClickListener(mOnClickListener);
         }
     }
