@@ -28,7 +28,7 @@
             android:layout_marginTop="4dp"
             android:maxLines="1"
             android:text="To: DH3WR,PLCHDR"
-            android:textAppearance="@style/TextAppearance.AppCompat.Notification.Info" />
+            android:textAppearance="@style/TextAppearance.Compat.Notification.Info" />
 
         <TextView
             android:id="@+id/table_center"
@@ -68,7 +68,7 @@
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
             android:layout_marginStart="4dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Notification.Time" />
+            android:textAppearance="@style/TextAppearance.Compat.Notification.Time" />
 
         <TextView
             android:id="@+id/table_lowerLeft"
@@ -83,7 +83,7 @@
             android:layout_toLeftOf="@+id/table_lowerRight"
             android:layout_toStartOf="@+id/table_lowerRight"
             android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Notification.Info" />
+            android:textAppearance="@style/TextAppearance.Compat.Notification.Info" />
 
         <TextView
             android:id="@+id/table_hiddenCenter"

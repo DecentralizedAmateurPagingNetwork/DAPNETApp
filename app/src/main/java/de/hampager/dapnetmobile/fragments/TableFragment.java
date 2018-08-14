@@ -42,6 +42,7 @@ import de.hampager.dapnetmobile.adapters.UserAdapter;
 
 public class TableFragment extends Fragment implements SearchView.OnQueryTextListener {
     private static final String TAG = "TableFragment";
+    public static final String TT = "tableType";
     private RecyclerView recyclerView;
     private SwipeRefreshLayout mSwipe;
     private DAPNET dapnet;
@@ -54,7 +55,15 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
     public static TableFragment newInstance(TableTypes tableType) {
         TableFragment fragment = new TableFragment();
         Bundle arguments = new Bundle();
-        arguments.putSerializable("tableType", tableType);
+        arguments.putSerializable(TT, tableType);
+        fragment.setArguments(arguments);
+        return fragment;
+    }
+    public static TableFragment newInstance(TableTypes tableType,String additionalInfo) {
+        TableFragment fragment = new TableFragment();
+        Bundle arguments = new Bundle();
+        arguments.putSerializable(TT, tableType);
+        arguments.putString("AdditionalInfo",additionalInfo);
         fragment.setArguments(arguments);
         return fragment;
     }
@@ -270,7 +279,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
         super.onCreate(savedInstanceState);
         Bundle arguments = this.getArguments();
         if (arguments != null) {
-            selected = (TableTypes) arguments.getSerializable("tableType");
+            selected = (TableTypes) arguments.getSerializable(TT);
         }
     }
 
