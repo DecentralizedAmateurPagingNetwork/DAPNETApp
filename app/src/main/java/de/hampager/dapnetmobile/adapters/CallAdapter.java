@@ -1,6 +1,7 @@
 package de.hampager.dapnetmobile.adapters;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,15 +26,16 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
         this.mValues = mValues;
     }
 
+    @NonNull
     @Override
-    public CallAdapter.CallViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public CallAdapter.CallViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_call_item_row, viewGroup, false);
         return new CallViewHolder(view);
     }
 
     //Write Content of Call Items for the RecyclerView
     @Override
-    public void onBindViewHolder(CallAdapter.CallViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull CallAdapter.CallViewHolder viewHolder, int i) {
         CallResource hamnetCall = mValues.get(i);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("Groups: ");
@@ -119,11 +121,11 @@ public class CallAdapter extends RecyclerView.Adapter<CallAdapter.CallViewHolder
 
         public CallViewHolder(View view) {
             super(view);
-            mCallCallSign = (TextView) view.findViewById(R.id.table_upperLeft);
-            mCallTransmitterGroup = (TextView) view.findViewById(R.id.table_lowerLeft);
-            mCallMsgContent = (TextView) view.findViewById(R.id.table_center);
-            mTimestamp = (TextView) view.findViewById(R.id.table_lowerRight);
-            mOwner = (TextView) view.findViewById(R.id.table_hiddenCenter);
+            mCallCallSign = view.findViewById(R.id.table_upperLeft);
+            mCallTransmitterGroup = view.findViewById(R.id.table_lowerLeft);
+            mCallMsgContent = view.findViewById(R.id.table_center);
+            mTimestamp = view.findViewById(R.id.table_lowerRight);
+            mOwner = view.findViewById(R.id.table_hiddenCenter);
             view.setOnClickListener(mOnClickListener);
         }
     }

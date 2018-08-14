@@ -1,5 +1,6 @@
 package de.hampager.dapnetmobile.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,15 +25,16 @@ public class RubricContentAdapter extends RecyclerView.Adapter<RubricContentAdap
         this.mValues = mValues;
     }
 
+    @NonNull
     @Override
-    public RubricContentAdapter.TableViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public RubricContentAdapter.TableViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_table_item_row, viewGroup, false);
         return new TableViewHolder(view);
     }
 
     //Write Content of Call Items for the RecyclerView
     @Override
-    public void onBindViewHolder(TableViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull TableViewHolder viewHolder, int i) {
         //TODO: ADAPT
         News news = mValues.get(i);
         viewHolder.mUpperLeft.setText("Rubric: " + news.getRubricName());

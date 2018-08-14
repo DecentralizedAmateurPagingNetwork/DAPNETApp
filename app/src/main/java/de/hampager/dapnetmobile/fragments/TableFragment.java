@@ -1,6 +1,7 @@
 package de.hampager.dapnetmobile.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -70,7 +71,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
 
     private void initViews(View v) {
         SubscriberAdapter adapter = new SubscriberAdapter(new ArrayList<CallSign>());
-        recyclerView = (RecyclerView) v.findViewById(R.id.item_recycler_view);
+        recyclerView = v.findViewById(R.id.item_recycler_view);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -284,12 +285,12 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_call, container, false);
         v.setTag(TAG);
         setHasOptionsMenu(true);
-        mSwipe = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshCalls);
+        mSwipe = v.findViewById(R.id.swipeRefreshCalls);
         initViews(v);
         // Setup refresh listener which triggers new data loading
         mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

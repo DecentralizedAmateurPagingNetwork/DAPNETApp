@@ -1,5 +1,6 @@
 package de.hampager.dapnetmobile.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,15 +27,16 @@ public class SubscriberAdapter extends RecyclerView.Adapter<SubscriberAdapter.Ta
         this.mValues = mValues;
     }
 
+    @NonNull
     @Override
-    public SubscriberAdapter.TableViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public SubscriberAdapter.TableViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_table_item_row, viewGroup, false);
         return new TableViewHolder(view);
     }
 
     //Write Content of Call Items for the RecyclerView
     @Override
-    public void onBindViewHolder(TableViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull TableViewHolder viewHolder, int i) {
         CallSign hamnetCall = mValues.get(i);
         viewHolder.mUpperLeft.setText(hamnetCall.getName().toUpperCase());
         viewHolder.mCenter.setText(hamnetCall.getDescription());

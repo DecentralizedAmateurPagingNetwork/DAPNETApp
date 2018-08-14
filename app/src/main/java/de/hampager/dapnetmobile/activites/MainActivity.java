@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn));
             ft.commit();
         }
-        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.content_frame);
+        FrameLayout frameLayout = findViewById(R.id.content_frame);
         if (((ViewGroup.MarginLayoutParams) frameLayout.getLayoutParams()).leftMargin == (int) getResources().getDimension(R.dimen.drawer_size)) {
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
             drawer.setScrimColor(Color.TRANSPARENT);
@@ -245,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
-                    TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
+                    TextView mNavHeadVersions = findViewById(R.id.navheadversions);
                     String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + dapnetResponse.body().getCore() + ", API v" + dapnetResponse.body().getApi() + ", ";
                     mNavHeadVersions.setText(tmp);
                 } else {
@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Snackbar.make(findViewById(R.id.container), "Fatal connection error.. " + throwable.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
-        TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
+        TextView mNavHeadVersions = findViewById(R.id.navheadversions);
         String s = "";
         s += "App v";
         s += BuildConfig.VERSION_NAME;

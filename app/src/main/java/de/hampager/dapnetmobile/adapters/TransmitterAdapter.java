@@ -1,5 +1,6 @@
 package de.hampager.dapnetmobile.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,15 +24,16 @@ public class TransmitterAdapter extends RecyclerView.Adapter<TransmitterAdapter.
         this.mValues = mValues;
     }
 
+    @NonNull
     @Override
-    public TransmitterAdapter.TableViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public TransmitterAdapter.TableViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_table_item_row, viewGroup, false);
         return new TableViewHolder(view);
     }
 
     //Write Content of Call Items for the RecyclerView
     @Override
-    public void onBindViewHolder(TableViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull TableViewHolder viewHolder, int i) {
         //TODO: ADAPT
         Transmitter hamnetTransmitter = mValues.get(i);
         viewHolder.mCenter.setText(hamnetTransmitter.getDeviceType() + " " + hamnetTransmitter.getDeviceVersion());

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
@@ -77,7 +78,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
     private void defineObjects() {
         message = findViewById(R.id.post_call_text);
-        Switch emergency = (Switch) findViewById(R.id.post_call_emergencyswitch);
+        Switch emergency = findViewById(R.id.post_call_emergencyswitch);
         String m = DapnetSingleton.getInstance().getUser().toUpperCase();
         m += ": ";
         message.setText(m);
@@ -160,8 +161,9 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     private FilteredArrayAdapter<CallSign> generateAdapter(CallSign[] callsigns) {
         return new FilteredArrayAdapter<CallSign>(this, R.layout.callsign_layout, callsigns) {
 
+            @NonNull
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                 if (convertView == null) {
 
                     LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -239,8 +241,9 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     private FilteredArrayAdapter<TransmitterGroup> generateAdapter(TransmitterGroup[] transmittergroups) {
         return new FilteredArrayAdapter<TransmitterGroup>(this, R.layout.callsign_layout, transmittergroups) {
 
+            @NonNull
             @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
+            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                 if (convertView == null) {
 
                     LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);

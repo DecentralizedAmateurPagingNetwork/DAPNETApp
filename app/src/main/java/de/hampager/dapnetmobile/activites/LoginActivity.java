@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void addListeners() {
-        spinner = (Spinner) findViewById(R.id.spinner);
+        spinner = findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener(findViewById(R.id.loginactivityid)));
 
 

@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -92,7 +93,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_map, container, false);
@@ -125,7 +126,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                 // result of the request.
             }
         }
-        map = (MapView) v.findViewById(R.id.map);
+        map = v.findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
         configMap();
 
@@ -251,7 +252,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.i(TAG, "Permission");
         if (requestCode == PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE) {
             // If request is cancelled, the result arrays are empty.

@@ -1,5 +1,6 @@
 package de.hampager.dapnetmobile.adapters;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,20 +13,21 @@ import de.hampager.dap4j.models.Stats;
 import de.hampager.dapnetmobile.R;
 
 public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.StatsViewHolder> {
-    private LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
+    private LinkedHashMap<String, Integer> map;
 
     public StatsAdapter(Stats stats) {
         this.map = (LinkedHashMap<String, Integer>) stats.getStats();
     }
 
+    @NonNull
     @Override
-    public StatsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StatsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View listItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.stats_item, parent, false);
         return new StatsViewHolder(listItem);
     }
 
     @Override
-    public void onBindViewHolder(StatsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StatsViewHolder holder, int position) {
         if (position == 7) {
             holder.nameTextView.setText(getNameByIndex(map, position) + "/Up");
             holder.numberTextView.setText(getNumberByIndex(map, position) + "/" + getNumberByIndex(map, position + 1));
@@ -60,8 +62,8 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.StatsViewHol
 
         public StatsViewHolder(View itemView) {
             super(itemView);
-            nameTextView = (TextView) itemView.findViewById(R.id.welcomeStatsName);
-            numberTextView = (TextView) itemView.findViewById(R.id.welcomeStatsNumber);
+            nameTextView = itemView.findViewById(R.id.welcomeStatsName);
+            numberTextView = itemView.findViewById(R.id.welcomeStatsNumber);
         }
     }
 

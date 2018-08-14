@@ -3,6 +3,7 @@ package de.hampager.dapnetmobile.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -31,7 +32,6 @@ import de.hampager.dapnetmobile.adapters.CallAdapter;
 
 public class CallFragment extends Fragment implements SearchView.OnQueryTextListener {
     private static final String TAG = "CallFragment";
-    private RecyclerView recyclerView;
     private CallAdapter adapter;
     private SwipeRefreshLayout mSwipe;
     private SearchView searchView;
@@ -47,7 +47,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
 
     private void initViews(View v) {
         adapter = new CallAdapter(new ArrayList<CallResource>());
-        recyclerView = (RecyclerView) v.findViewById(R.id.item_recycler_view);
+        RecyclerView recyclerView = v.findViewById(R.id.item_recycler_view);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -96,13 +96,13 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_call, container, false);
         v.setTag(TAG);
         setHasOptionsMenu(true);
-        mSwipe = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshCalls);
+        mSwipe = v.findViewById(R.id.swipeRefreshCalls);
         initViews(v);
 
 
@@ -134,7 +134,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
         inflater.inflate(R.menu.main_menu, menu);
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
 
 
