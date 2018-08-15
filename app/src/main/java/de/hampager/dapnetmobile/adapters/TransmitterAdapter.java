@@ -45,7 +45,8 @@ public class TransmitterAdapter extends RecyclerView.Adapter<TransmitterAdapter.
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        try {return mValues.size();}
+        catch (Exception e) {return 0;}
     }
 
     @Override

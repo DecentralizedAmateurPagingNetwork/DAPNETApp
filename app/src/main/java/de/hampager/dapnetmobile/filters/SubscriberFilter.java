@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hampager.dap4j.models.CallSign;
+import de.hampager.dap4j.models.Pager;
 import de.hampager.dapnetmobile.adapters.SubscriberAdapter;
 
 public class SubscriberFilter extends Filter {
@@ -23,28 +24,22 @@ public class SubscriberFilter extends Filter {
         FilterResults results = new FilterResults();
         //CHECK CONSTRAINT VALIDITY
         if (constraint != null && constraint.length() > 0) {
-            //CHANGE TO UPPER
-            constraint = constraint.toString().toUpperCase();
-            //STORE OUR FILTERED PLAYERS
+            //STORE OUR FILTERED ITEMS
             List<CallSign> filteredCallSigns = new ArrayList<>();
-            for (CallSign hamnetCall : filterList) {
+            for (CallSign callSign : filterList) {
                 //CHECK
-/*
-                String text = hamnetCall.getText().toUpperCase();
-                List<String> callSignNames = hamnetCall.getCallSignNames();
-                List<String> transmitterGroupNames = hamnetCall.getTransmitterGroupNames();
-                String ownerName = hamnetCall.getOwnerName();
-                for(int i=0;i<callSignNames.size();i++){
-                    callSignNames.set(i,callSignNames.get(i).toUpperCase());
+                String desc= callSign.getDescription().toUpperCase();
+                String name=callSign.getName().toUpperCase();
+                List<String> callSignOwnerNames = callSign.getOwnerNames();
+                List<String> pagerNames = new ArrayList<>();
+                for (Pager p : callSign.getPagers()){
+                    pagerNames.add(p.getName());
                 }
-                for(int i=0;i<transmitterGroupNames.size();i++){
-                    transmitterGroupNames.set(i,transmitterGroupNames.get(i).toUpperCase());
-                }
-                if(text.contains(constraint)||ownerName.contains(constraint)||callSignNames.contains(constraint.toString()))
+                if(desc.contains(constraint.toString().toUpperCase())||name.contains(constraint.toString().toUpperCase())||callSignOwnerNames.contains(constraint.toString())||pagerNames.contains(constraint.toString()))
                 {
                     //ADD CALL TO FILTERED
-                    filteredCallSigns.add(hamnetCall);
-                }*/
+                    filteredCallSigns.add(callSign);
+                }
             }
             results.count = filteredCallSigns.size();
             results.values = filteredCallSigns;

@@ -5,6 +5,8 @@ import android.widget.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hampager.dap4j.models.CallSign;
+import de.hampager.dap4j.models.Pager;
 import de.hampager.dap4j.models.Rubric;
 import de.hampager.dapnetmobile.adapters.RubricAdapter;
 
@@ -23,31 +25,22 @@ public class RubricFilter extends Filter {
         FilterResults results = new FilterResults();
         //CHECK CONSTRAINT VALIDITY
         if (constraint != null && constraint.length() > 0) {
-            //CHANGE TO UPPER
-            constraint = constraint.toString().toUpperCase();
-            //STORE OUR FILTERED PLAYERS
-            List<Rubric> filteredRubrics = new ArrayList<>();
-            for (Rubric hamnetCall : filterList) {
+            //STORE OUR FILTERED ITEMS
+            List<Rubric> filteredCallSigns = new ArrayList<>();
+            for (Rubric rubric : filterList) {
                 //CHECK
-/*
-                String text = hamnetCall.getText().toUpperCase();
-                List<String> RubricNames = hamnetCall.getRubricNames();
-                List<String> transmitterGroupNames = hamnetCall.getTransmitterGroupNames();
-                String ownerName = hamnetCall.getOwnerName();
-                for(int i=0;i<RubricNames.size();i++){
-                    RubricNames.set(i,RubricNames.get(i).toUpperCase());
-                }
-                for(int i=0;i<transmitterGroupNames.size();i++){
-                    transmitterGroupNames.set(i,transmitterGroupNames.get(i).toUpperCase());
-                }
-                if(text.contains(constraint)||ownerName.contains(constraint)||RubricNames.contains(constraint.toString()))
+                String desc= rubric.getLabel().toUpperCase();
+                String name=rubric.getName().toUpperCase();
+                List<String> ownerNames = rubric.getOwnerNames();
+                List<String> groups = rubric.getTransmitterGroupNames();
+                if(desc.contains(constraint.toString().toUpperCase())||name.contains(constraint.toString().toUpperCase())||ownerNames.contains(constraint.toString())||groups.contains(constraint.toString()))
                 {
                     //ADD CALL TO FILTERED
-                    filteredRubrics.add(hamnetCall);
-                }*/
+                    filteredCallSigns.add(rubric);
+                }
             }
-            results.count = filteredRubrics.size();
-            results.values = filteredRubrics;
+            results.count = filteredCallSigns.size();
+            results.values = filteredCallSigns;
         } else {
             results.count = filterList.size();
             results.values = filterList;

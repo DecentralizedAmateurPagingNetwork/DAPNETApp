@@ -42,6 +42,7 @@ import de.hampager.dapnetmobile.adapters.TransmitterGroupAdapter;
 import de.hampager.dapnetmobile.adapters.UserAdapter;
 
 public class TableFragment extends Fragment implements SearchView.OnQueryTextListener {
+    //TODO: Fix Class format, extract Tabletypes properly
     private static final String TAG = "TableFragment";
     public static final String TT = "tableType";
     private RecyclerView recyclerView;
@@ -49,7 +50,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
     private DAPNET dapnet;
     private TableTypes selected = TableTypes.SUBSCRIBERS;
     private String addInfo ="";
-
+    private RecyclerView.Adapter currentAdapter;
     public TableFragment() {
         // Empty constructor needed for android
     }
@@ -109,6 +110,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
 
     private void fetchSubscribers() {
         SubscriberAdapter adapter = new SubscriberAdapter(new ArrayList<>());
+        currentAdapter=adapter;
         recyclerView.setAdapter(adapter);
         mSwipe.setRefreshing(true);
         dapnet.getAllCallSigns(new DapnetListener<List<CallSign>>() {
@@ -145,6 +147,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
 
     private void fetchRubrics() {
         RubricAdapter adapter = new RubricAdapter(new ArrayList<>());
+        currentAdapter=adapter;
         recyclerView.setAdapter(adapter);
         dapnet.getAllRubrics(new DapnetListener<List<Rubric>>() {
             @Override
@@ -170,6 +173,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
 
     private void fetchRubricContent() {
         RubricContentAdapter adapter = new RubricContentAdapter(new ArrayList<>());
+        currentAdapter=adapter;
         recyclerView.setAdapter(adapter);
         dapnet.getNews(addInfo, new DapnetListener<List<News>>() {
             @Override
@@ -208,6 +212,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
 
     private void fetchTransmitters() {
         TransmitterAdapter adapter = new TransmitterAdapter(new ArrayList<>());
+        currentAdapter=adapter;
         recyclerView.setAdapter(adapter);
         dapnet.getAllTransmitters(new DapnetListener<List<Transmitter>>() {
             @Override
@@ -227,6 +232,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
 
     private void fetchTransmitterGroups() {
         TransmitterGroupAdapter adapter = new TransmitterGroupAdapter(new ArrayList<>());
+        currentAdapter=adapter;
         recyclerView.setAdapter(adapter);
         dapnet.getAllTransmitterGroups(new DapnetListener<List<TransmitterGroup>>() {
             @Override
@@ -246,6 +252,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
 
     private void fetchNodes() {
         NodeAdapter adapter = new NodeAdapter(new ArrayList<>());
+        currentAdapter=adapter;
         recyclerView.setAdapter(adapter);
         dapnet.getAllNodes(new DapnetListener<List<Node>>() {
             @Override
@@ -265,6 +272,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
 
     private void fetchUsers() {
         UserAdapter adapter = new UserAdapter(new ArrayList<>());
+        currentAdapter=adapter;
         recyclerView.setAdapter(adapter);
         dapnet.getAllUsers(new DapnetListener<List<User>>() {
             @Override
@@ -330,7 +338,46 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
     public boolean onQueryTextChange(String query) {
         // Here is where we are going to implement the filter logic
         //TODO FIX filer, eg get Filter from adapter and filter query
-        return false;
+        //HACK
+        boolean res=true;
+        if(currentAdapter!=null){
+            switch (selected) {
+                case CALLS:
+                    res=false;
+                    break;
+                case SUBSCRIBERS:
+                    SubscriberAdapter subscriberAdapter=(SubscriberAdapter) currentAdapter;
+                    subscriberAdapter.getFilter().filter(query);
+                    break;
+                case RUBRICS:
+                    RubricAdapter rubricAdapter=(RubricAdapter) currentAdapter;
+                    rubricAdapter.getFilter().filter(query);
+                    break;
+                case RUBRIC_CONTENT:
+                    RubricContentAdapter rubricContentAdapter=(RubricContentAdapter) currentAdapter;
+                    rubricContentAdapter.getFilter().filter(query);
+                    break;
+                case TRANSMITTERS:
+                    TransmitterAdapter transmitterAdapter=(TransmitterAdapter) currentAdapter;
+                    transmitterAdapter.getFilter().filter(query);
+                    break;
+                case TRANSMITTER_GROUPS:
+                    TransmitterGroupAdapter transmitterGroupAdapter=(TransmitterGroupAdapter) currentAdapter;
+                    transmitterGroupAdapter.getFilter().filter(query);
+                    break;
+                case NODES:
+                    NodeAdapter nodeAdapter=(NodeAdapter) currentAdapter;
+                    nodeAdapter.getFilter().filter(query);
+                    break;
+                case USERS:
+                    UserAdapter userAdapter=(UserAdapter) currentAdapter;
+                    userAdapter.getFilter().filter(query);
+                    break;
+                default:
+                    res=false;
+            }
+        }
+        return res;
     }
 
     @Override

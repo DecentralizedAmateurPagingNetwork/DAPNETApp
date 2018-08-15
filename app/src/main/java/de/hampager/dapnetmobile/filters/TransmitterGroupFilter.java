@@ -5,6 +5,7 @@ import android.widget.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hampager.dap4j.models.Transmitter;
 import de.hampager.dap4j.models.TransmitterGroup;
 import de.hampager.dapnetmobile.adapters.TransmitterGroupAdapter;
 
@@ -23,31 +24,23 @@ public class TransmitterGroupFilter extends Filter {
         FilterResults results = new FilterResults();
         //CHECK CONSTRAINT VALIDITY
         if (constraint != null && constraint.length() > 0) {
-            //CHANGE TO UPPER
-            constraint = constraint.toString().toUpperCase();
-            //STORE OUR FILTERED PLAYERS
-            List<TransmitterGroup> filteredTransmitterGroups = new ArrayList<>();
-            for (TransmitterGroup hamnetCall : filterList) {
+            //STORE OUR FILTERED ITEMS
+            CharSequence constraintU=constraint.toString().toUpperCase();
+            List<TransmitterGroup> filteredCallSigns = new ArrayList<>();
+            for (TransmitterGroup transmitterGroup : filterList) {
                 //CHECK
-/*
-                String text = hamnetCall.getText().toUpperCase();
-                List<String> TransmitterGroupNames = hamnetCall.getTransmitterGroupNames();
-                List<String> TransmitterGroupNames = hamnetCall.getTransmitterGroupNames();
-                String ownerName = hamnetCall.getOwnerName();
-                for(int i=0;i<TransmitterGroupNames.size();i++){
-                    TransmitterGroupNames.set(i,TransmitterGroupNames.get(i).toUpperCase());
-                }
-                for(int i=0;i<TransmitterGroupNames.size();i++){
-                    TransmitterGroupNames.set(i,TransmitterGroupNames.get(i).toUpperCase());
-                }
-                if(text.contains(constraint)||ownerName.contains(constraint)||TransmitterGroupNames.contains(constraint.toString()))
+                String name= transmitterGroup.getName().toUpperCase();
+                String desc=transmitterGroup.getDescription();
+                List<String> ownerNames = transmitterGroup.getOwnerNames();
+                List<String> transmitterNames=transmitterGroup.getTransmitterNames();
+                if(name.contains(constraintU)||desc.contains(constraintU)||ownerNames.contains(constraint.toString())||transmitterNames.contains(constraint.toString()))
                 {
                     //ADD CALL TO FILTERED
-                    filteredTransmitterGroups.add(hamnetCall);
-                }*/
+                    filteredCallSigns.add(transmitterGroup);
+                }
             }
-            results.count = filteredTransmitterGroups.size();
-            results.values = filteredTransmitterGroups;
+            results.count = filteredCallSigns.size();
+            results.values = filteredCallSigns;
         } else {
             results.count = filterList.size();
             results.values = filterList;

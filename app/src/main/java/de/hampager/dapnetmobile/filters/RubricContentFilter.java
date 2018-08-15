@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hampager.dap4j.models.News;
+import de.hampager.dap4j.models.Rubric;
 import de.hampager.dapnetmobile.adapters.RubricContentAdapter;
 
 public class RubricContentFilter extends Filter {
@@ -23,37 +24,28 @@ public class RubricContentFilter extends Filter {
         FilterResults results = new FilterResults();
         //CHECK CONSTRAINT VALIDITY
         if (constraint != null && constraint.length() > 0) {
-            //CHANGE TO UPPER
-            constraint = constraint.toString().toUpperCase();
-            //STORE OUR FILTERED PLAYERS
-            List<News> filteredRubrics = new ArrayList<>();
-            for (News hamnetCall : filterList) {
+            //STORE OUR FILTERED ITEMS
+            constraint=constraint.toString().toUpperCase();
+            List<News> filteredCallSigns = new ArrayList<>();
+            for (News news : filterList) {
                 //CHECK
-/*
-                String text = hamnetCall.getText().toUpperCase();
-                List<String> RubricNames = hamnetCall.getRubricNames();
-                List<String> transmitterGroupNames = hamnetCall.getTransmitterGroupNames();
-                String ownerName = hamnetCall.getOwnerName();
-                for(int i=0;i<RubricNames.size();i++){
-                    RubricNames.set(i,RubricNames.get(i).toUpperCase());
-                }
-                for(int i=0;i<transmitterGroupNames.size();i++){
-                    transmitterGroupNames.set(i,transmitterGroupNames.get(i).toUpperCase());
-                }
-                if(text.contains(constraint)||ownerName.contains(constraint)||RubricNames.contains(constraint.toString()))
+                String name=news.getOwnerName().toUpperCase();
+                String desc=news.getText().toUpperCase();
+                if(desc.contains(constraint)||name.contains(constraint))
                 {
                     //ADD CALL TO FILTERED
-                    filteredRubrics.add(hamnetCall);
-                }*/
+                    filteredCallSigns.add(news);
+                }
             }
-            results.count = filteredRubrics.size();
-            results.values = filteredRubrics;
+            results.count = filteredCallSigns.size();
+            results.values = filteredCallSigns;
         } else {
             results.count = filterList.size();
             results.values = filterList;
         }
         return results;
     }
+
 
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {

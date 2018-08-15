@@ -134,7 +134,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
         inflater.inflate(R.menu.main_menu, menu);
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) searchItem.getActionView();
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
 
 

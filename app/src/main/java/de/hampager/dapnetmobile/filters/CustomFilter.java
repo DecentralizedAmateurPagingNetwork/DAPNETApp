@@ -25,7 +25,7 @@ public class CustomFilter extends Filter {
         if (constraint != null && constraint.length() > 0) {
             //CHANGE TO UPPER
             constraint = constraint.toString().toUpperCase();
-            //STORE OUR FILTERED PLAYERS
+            //STORE OUR FILTERED ITEMS
             List<CallResource> filteredCallResources = new ArrayList<>();
             for (CallResource hamnetCall : filterList) {
                 //CHECK

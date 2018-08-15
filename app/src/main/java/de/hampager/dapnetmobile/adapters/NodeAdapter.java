@@ -51,7 +51,8 @@ public class NodeAdapter extends RecyclerView.Adapter<NodeAdapter.TableViewHolde
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        try{return mValues.size();}
+        catch(Exception e){return 0;}
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hampager.dap4j.models.Node;
+import de.hampager.dap4j.models.TransmitterGroup;
 import de.hampager.dapnetmobile.adapters.NodeAdapter;
 
 public class NodeFilter extends Filter {
@@ -21,34 +22,26 @@ public class NodeFilter extends Filter {
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {
         FilterResults results = new FilterResults();
-        //TODO FILTERING
         //CHECK CONSTRAINT VALIDITY
         if (constraint != null && constraint.length() > 0) {
-            //CHANGE TO UPPER
-            constraint = constraint.toString().toUpperCase();
-            //STORE OUR FILTERED PLAYERS
-            List<Node> filteredNodes = new ArrayList<>();
-            for (Node hamnetCall : filterList) {
+            //STORE OUR FILTERED ITEMS
+            CharSequence constraintU=constraint.toString().toUpperCase();
+            List<Node> filteredCallSigns = new ArrayList<>();
+            for (Node node : filterList) {
                 //CHECK
-/*
-                String text = hamnetCall.getText().toUpperCase();
-                List<String> NodeNames = hamnetCall.getNodeNames();
-                List<String> NodeNames = hamnetCall.getNodeNames();
-                String ownerName = hamnetCall.getOwnerName();
-                for(int i=0;i<NodeNames.size();i++){
-                    NodeNames.set(i,NodeNames.get(i).toUpperCase());
-                }
-                for(int i=0;i<NodeNames.size();i++){
-                    NodeNames.set(i,NodeNames.get(i).toUpperCase());
-                }
-                if(text.contains(constraint)||ownerName.contains(constraint)||NodeNames.contains(constraint.toString()))
+                String name= node.getName().toUpperCase();
+                String desc=node.getAddress().toString().toUpperCase();
+                String status=node.getStatus().toUpperCase();
+                String version=node.getVersion().toUpperCase();
+                List<String> ownerNames = node.getOwnerNames();
+                if(name.contains(constraintU)||(desc!=null&&desc.contains(constraintU))||status.contains(constraintU)||(version!=null&&version.contains(constraintU))||ownerNames.contains(constraint.toString()))
                 {
                     //ADD CALL TO FILTERED
-                    filteredNodes.add(hamnetCall);
-                }*/
+                    filteredCallSigns.add(node);
+                }
             }
-            results.count = filteredNodes.size();
-            results.values = filteredNodes;
+            results.count = filteredCallSigns.size();
+            results.values = filteredCallSigns;
         } else {
             results.count = filterList.size();
             results.values = filterList;
