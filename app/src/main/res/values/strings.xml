@@ -89,11 +89,20 @@
     <string name="owners">Owners</string>
     <string name="statistics_for_dapnet">Statistics for DAPNET</string>
     <string name="name">NAME</string>
-    <string name="description">Description</string>
     <string name="miniature_logo">Miniature Logo</string>
     <string name="DAPscription" translatable="false">&lt;p style="text-align:center">DAPNET is an international amateur radio paging network developed by the Amateur Radio Group at the RWTH Aachen University. In order to participate and use this app, you need to be a valid amateur radio operator and have an account at &lt;a href="http://www.hampager.de">hampager.de&lt;/a>. If you do not have a an account yet, visit our Website now and follow the instructions for subscription. You should also check out our Help/FAQ.&lt;br> This App has been created by &lt;a href=https://github.com/IHFSchwarz>IHFSchwarz&lt;/a> under supervision of &lt;a href=https://github.com/dh3wr>DH3WR&lt;/a>&lt;/p></string>
 
     <string name="compose_shortcut_short_label1" translatable="false">Compose</string>
     <string name="compose_shortcut_long_label1" translatable="false">Compose Call</string>
     <string name="compose_disabled_message1" translatable="false">Compose disabled</string>
+    <string name="subscribers">Subscribers</string>
+    <string name="rubrics">Rubrics</string>
+    <string name="transmitters">Transmitters</string>
+    <string name="transmitter_groups">Transmitter Groups</string>
+    <string name="nodes">Nodes</string>
+    <string name="users">Users</string>
+    <string name="bubble">Bubble</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="address">Address</string>
 </resources>

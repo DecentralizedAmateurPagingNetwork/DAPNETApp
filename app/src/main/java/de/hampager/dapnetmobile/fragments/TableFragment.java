@@ -3,7 +3,7 @@ package de.hampager.dapnetmobile.fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
+
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,6 +48,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
     private SwipeRefreshLayout mSwipe;
     private DAPNET dapnet;
     private TableTypes selected = TableTypes.SUBSCRIBERS;
+    private String addInfo ="";
 
     public TableFragment() {
         // Empty constructor needed for android
@@ -70,7 +71,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
     private void initViews(View v) {
-        SubscriberAdapter adapter = new SubscriberAdapter(new ArrayList<CallSign>());
+        SubscriberAdapter adapter = new SubscriberAdapter(new ArrayList<>());
         recyclerView = v.findViewById(R.id.item_recycler_view);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
@@ -107,7 +108,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
     private void fetchSubscribers() {
-        SubscriberAdapter adapter = new SubscriberAdapter(new ArrayList<CallSign>());
+        SubscriberAdapter adapter = new SubscriberAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
         mSwipe.setRefreshing(true);
         dapnet.getAllCallSigns(new DapnetListener<List<CallSign>>() {
@@ -143,7 +144,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
     private void fetchRubrics() {
-        RubricAdapter adapter = new RubricAdapter(new ArrayList<Rubric>());
+        RubricAdapter adapter = new RubricAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
         dapnet.getAllRubrics(new DapnetListener<List<Rubric>>() {
             @Override
@@ -168,9 +169,9 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
     }
 
     private void fetchRubricContent() {
-        RubricContentAdapter adapter = new RubricContentAdapter(new ArrayList<News>());
+        RubricContentAdapter adapter = new RubricContentAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
-        dapnet.getNews("", new DapnetListener<List<News>>() {
+        dapnet.getNews(addInfo, new DapnetListener<List<News>>() {
             @Override
             public void onResponse(DapnetResponse<List<News>> dapnetResponse) {
                 if (dapnetResponse.isSuccessful()) {
@@ -178,7 +179,15 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                     Comparator<News> comparator = new Comparator<News>() {
                         @Override
                         public int compare(News o1, News o2) {
-                            return o2.getTimestamp().compareTo(o1.getTimestamp());
+                            String o1compareValue="0";
+                            String o2compareValue="0";
+                            if (o1!=null&&o1.getTimestamp()!=null){
+                                o1compareValue=o1.getTimestamp();
+                            }
+                            if(o2!=null&&o2.getTimestamp()!=null){
+                                o2compareValue=o2.getTimestamp();
+                            }
+                            return o1compareValue.compareTo(o2compareValue);
                         }
                     };
                     Collections.sort(data, comparator);
@@ -190,9 +199,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
             @Override
             public void onFailure(Throwable throwable) {
                 Log.e(TAG, "Major connection error");
-                News tnews = new News("Error connecting, content not yet implemented", "", 1);
                 List<News> data = new ArrayList<>();
-                data.add(tnews);
                 adapter.setmValues(data);
                 adapter.notifyDataSetChanged();
             }
@@ -281,6 +288,11 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
         Bundle arguments = this.getArguments();
         if (arguments != null) {
             selected = (TableTypes) arguments.getSerializable(TT);
+            try{
+                addInfo = arguments.getString("AdditionalInfo");
+            }catch (Exception e){
+                addInfo = "";
+            }
         }
     }
 
@@ -310,7 +322,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
         Log.i(TAG, "Creating menu...");
         inflater.inflate(R.menu.main_menu, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(this);
     }
 

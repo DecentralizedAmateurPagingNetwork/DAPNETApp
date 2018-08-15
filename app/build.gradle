@@ -45,7 +45,7 @@ dependencies {
     implementation 'com.splitwise:tokenautocomplete:2.0.8@aar'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.google.code.gson:gson:2.8.2'
-    implementation 'com.github.DecentralizedAmateurPagingNetwork:DAP4J:b2360c0113'
+    implementation 'com.github.DecentralizedAmateurPagingNetwork:DAP4J:5e8237b34a'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }

@@ -19,7 +19,7 @@
             android:background="@drawable/stats_background"
             android:ellipsize="end"
             android:padding="2dp"
-            android:text="1337"
+            android:text=""
             android:textColor="@android:color/background_light" />
 
         <TextView

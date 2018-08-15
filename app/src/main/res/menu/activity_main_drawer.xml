@@ -12,7 +12,7 @@
                 android:id="@+id/nav_subscribers"
                 android:checkable="true"
                 android:icon="@drawable/ic_playlist_check_black_48dp"
-                android:title="Subscribers" />
+                android:title="@string/subscribers" />
     </group>
 
     <group android:id="@+id/nav_group_2">
@@ -20,12 +20,7 @@
         android:id="@+id/nav_rubrics"
         android:checkable="true"
         android:icon="@drawable/ic_shape_black_48dp"
-        android:title="Rubrics" />
-        <item
-            android:id="@+id/nav_rubricContent"
-            android:checkable="true"
-            android:icon="@drawable/ic_text_subject_black_48dp"
-            android:title="Rubric content" />
+        android:title="@string/rubrics" />
     </group>
     <group android:id="@+id/nav_group_3">
 
@@ -33,7 +28,7 @@
             android:id="@+id/nav_transmitters"
             android:checkable="true"
             android:icon="@drawable/ic_radio_tower_black_48dp"
-            android:title="Transmitters" />
+            android:title="@string/transmitters" />
         <item
             android:id="@+id/nav_map"
             android:checkable="true"
@@ -44,7 +39,7 @@
             android:id="@+id/nav_transmitterGroups"
             android:checkable="true"
             android:icon="@drawable/ic_forum_black_48dp"
-            android:title="Transmitter Groups" />
+            android:title="@string/transmitter_groups" />
     </group>
 
     <group android:id="@+id/nav_group_4">
@@ -52,14 +47,14 @@
             android:id="@+id/nav_nodes"
             android:checkable="true"
             android:icon="@drawable/ic_server_black_48dp"
-            android:title="Nodes" />
+            android:title="@string/nodes" />
     </group>
     <group android:id="@+id/nav_group_5">
         <item
             android:id="@+id/nav_users"
             android:checkable="true"
             android:icon="@drawable/ic_account_multiple_black_48dp"
-            android:title="Users" />
+            android:title="@string/users" />
         <item
         android:id="@+id/nav_loginstatus"
         android:icon="@android:drawable/ic_lock_power_off"

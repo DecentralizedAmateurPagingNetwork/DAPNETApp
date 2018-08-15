@@ -10,6 +10,7 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+
 import java.util.List;
 
 import de.hampager.dap4j.models.Rubric;
@@ -22,6 +23,7 @@ public class RubricAdapter extends RecyclerView.Adapter<RubricAdapter.TableViewH
     private List<Rubric> mValues;
     private List<Rubric> filterValues;
     private de.hampager.dapnetmobile.filters.RubricFilter rubricFilter;
+    private RecyclerView mRecyclerView;
 
     public RubricAdapter(List<Rubric> mValues) {
         this.mValues = mValues;
@@ -33,11 +35,16 @@ public class RubricAdapter extends RecyclerView.Adapter<RubricAdapter.TableViewH
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_table_item_row, viewGroup, false);
         return new TableViewHolder(view);
     }
-
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        mRecyclerView = recyclerView;
+    }
     //Write Content of Call Items for the RecyclerView
     @Override
     public void onBindViewHolder(@NonNull TableViewHolder viewHolder, int i) {
         //TODO: ADAPT
+        viewHolder.recyclerView = mRecyclerView;
         Rubric hamnetRubric = mValues.get(i);
 
         StringBuilder groups = new StringBuilder();
@@ -54,7 +61,7 @@ public class RubricAdapter extends RecyclerView.Adapter<RubricAdapter.TableViewH
             groups.append(", ");
             groups.append(hamnetRubric.getTransmitterGroupNames().get(j).toUpperCase());
         }
-        viewHolder.mUpperLeft.setText("Name: " + hamnetRubric.getName());
+        viewHolder.mUpperLeft.setText(hamnetRubric.getName());
         viewHolder.mCenter.setText("Label: " + hamnetRubric.getLabel());
         viewHolder.mLowerLeft.setText(lowerLeft);
         viewHolder.mUpperRight.setText(groups);
@@ -102,10 +109,11 @@ public class RubricAdapter extends RecyclerView.Adapter<RubricAdapter.TableViewH
             @Override
             public void onClick(View v) {
                 Log.i("CallAdapter", "CLICK");
-                //TODO: Inform fragment of rubricName
-                ((MainActivity) v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.RUBRIC_CONTENT)).addToBackStack("RUBRIC_CONTENT").commit();
+                ((MainActivity) v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.RUBRIC_CONTENT,mUpperLeft.getText().toString())).addToBackStack("RUBRIC_CONTENT").commit();
             }
         };
+
+        private RecyclerView recyclerView;
         private TextView mUpperLeft;
         private TextView mLowerLeft;
         private TextView mCenter;

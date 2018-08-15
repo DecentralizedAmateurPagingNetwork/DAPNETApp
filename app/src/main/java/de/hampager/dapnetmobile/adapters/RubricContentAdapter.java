@@ -17,6 +17,7 @@ import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.filters.RubricContentFilter;
 
 public class RubricContentAdapter extends RecyclerView.Adapter<RubricContentAdapter.TableViewHolder> implements Filterable {
+    private static final String NULL = "Empty";
     private List<News> mValues;
     private List<News> filterValues;
     private de.hampager.dapnetmobile.filters.RubricContentFilter rubricContentFilter;
@@ -37,10 +38,17 @@ public class RubricContentAdapter extends RecyclerView.Adapter<RubricContentAdap
     public void onBindViewHolder(@NonNull TableViewHolder viewHolder, int i) {
         //TODO: ADAPT
         News news = mValues.get(i);
-        viewHolder.mUpperLeft.setText("Rubric: " + news.getRubricName());
-        viewHolder.mCenter.setText(news.getText());
-        viewHolder.mLowerRight.setText(news.getTimestamp());
-        viewHolder.mLowerLeft.setText(news.getOwnerName());
+        if(news!=null) {
+            viewHolder.mUpperLeft.setText("Rubric: " + news.getRubricName());
+            viewHolder.mCenter.setText(news.getText());
+            viewHolder.mLowerRight.setText(news.getTimestamp());
+            viewHolder.mLowerLeft.setText(news.getOwnerName());
+        }else{
+            viewHolder.mUpperLeft.setText(NULL);
+            viewHolder.mCenter.setText(NULL);
+            viewHolder.mLowerRight.setText(NULL);
+            viewHolder.mLowerLeft.setText(NULL);
+        }
 
     }
 
