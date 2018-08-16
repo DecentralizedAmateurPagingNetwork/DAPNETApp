@@ -7,8 +7,8 @@ android {
         applicationId "de.hampager.dapnetmobile"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 21
-        versionName "1.0.16"
+        versionCode 22
+        versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -45,7 +45,7 @@ dependencies {
     implementation 'com.splitwise:tokenautocomplete:2.0.8@aar'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.google.code.gson:gson:2.8.2'
-    implementation 'com.github.DecentralizedAmateurPagingNetwork:DAP4J:5e8237b34a'
+    implementation 'com.github.DecentralizedAmateurPagingNetwork:DAP4J:1.1.0'
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
 }
