@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="ClearNetURL">https://hampager.de/api/</string>
-    <string name="DapNetURL">http://db0sda.ampr.org/api/</string>
+    <string name="ClearNetURL" translatable="false">https://hampager.de/api/</string>
+    <string name="DapNetURL" translatable="false">http://db0sda.ampr.org/api/</string>
 </resources>

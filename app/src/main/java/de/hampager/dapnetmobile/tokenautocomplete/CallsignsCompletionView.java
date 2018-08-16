@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 
 import com.tokenautocomplete.TokenCompleteTextView;
 
-import de.hampager.dapnetmobile.R;
 import de.hampager.dap4j.models.CallSign;
+import de.hampager.dapnetmobile.R;
 
 
 public class CallsignsCompletionView extends TokenCompleteTextView<CallSign> {

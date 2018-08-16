@@ -1,4 +1,4 @@
-package de.hampager.dapnetmobile;
+package de.hampager.dapnetmobile.activites;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,19 +25,25 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 import de.hampager.dap4j.DAPNET;
 import de.hampager.dap4j.DapnetSingleton;
 import de.hampager.dap4j.callbacks.DapnetListener;
 import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.Version;
+import de.hampager.dapnetmobile.BuildConfig;
+import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.fragments.CallFragment;
 import de.hampager.dapnetmobile.fragments.HelpFragment;
 import de.hampager.dapnetmobile.fragments.MapFragment;
+import de.hampager.dapnetmobile.fragments.TableFragment;
 import de.hampager.dapnetmobile.fragments.WelcomeFragment;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";
+    public static final String SP = "sharedPref";
     boolean loggedIn = false;
     private String mServer;
     private MenuItem mPreviousMenuItem;
@@ -47,10 +53,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,10 +70,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
@@ -76,8 +82,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn));
             ft.commit();
         }
-        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.content_frame);
-        if (((ViewGroup.MarginLayoutParams)frameLayout.getLayoutParams()).leftMargin == (int) getResources().getDimension(R.dimen.drawer_size)) {
+        FrameLayout frameLayout = findViewById(R.id.content_frame);
+        if (((ViewGroup.MarginLayoutParams) frameLayout.getLayoutParams()).leftMargin == (int) getResources().getDimension(R.dimen.drawer_size)) {
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
             drawer.setScrimColor(Color.TRANSPARENT);
             isDrawerLocked = true;
@@ -95,12 +101,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)&&isDrawerLocked) {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START) && isDrawerLocked) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
 
-            SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+            SharedPreferences sharedPref = getSharedPreferences(SP, Context.MODE_PRIVATE);
             loggedIn = sharedPref.getBoolean("isLoggedIn", false);
             super.onBackPressed();
         }
@@ -108,10 +114,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         Menu nv = navigationView.getMenu();
         MenuItem mloginstatus = nv.findItem(R.id.nav_loginstatus);
-        SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences(SP, Context.MODE_PRIVATE);
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
 
         if (loggedIn) {
@@ -156,59 +162,82 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mPreviousMenuItem.setChecked(false);
         }
         mPreviousMenuItem = item;
-        FrameLayout frameLayout=(FrameLayout) findViewById(R.id.container);
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        if (id == R.id.nav_calls) {
-            //Insert Call Fragment with 1 Coloumn
-            // ft.replace(R.id.container, HamnetCallFragment.newInstance(1))
-            if (loggedIn) {
-                ft.replace( R.id.container, new CallFragment() ).addToBackStack( "CALLS" ).commit();
-            } else {
-                Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-            }
-        } else if (id == R.id.nav_map) {
-            ft.replace(R.id.container, new MapFragment()).addToBackStack("MAP").commit();
-        } else if (id == R.id.nav_githublink) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork"));
-            startActivity(browserIntent);
-        } else if (id == R.id.nav_feedbacklink) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork/DAPNETApp/issues"));
-            startActivity(browserIntent);
-        } else if (id == R.id.nav_loginstatus) {
-            if (loggedIn) {
-                SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.clear();
-                editor.apply();
-            }
-            Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
-            myIntent.putExtra("defServer", mServer);
-            MainActivity.this.startActivity(myIntent);
-        } else if (id == R.id.nav_help) {
-            ft.replace(R.id.container, new HelpFragment()).addToBackStack("HELP").commit();
+        switch (id) {
+            case R.id.nav_calls:
+                if (loggedIn) {
+                    ft.replace(R.id.container, new CallFragment()).addToBackStack("CALLS").commit();
+                } else {
+                    Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                }
+                break;
+            case R.id.nav_subscribers:
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.SUBSCRIBERS)).addToBackStack("SUBSCRIBERS").commit();
+                break;
+            case R.id.nav_rubrics:
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.RUBRICS)).addToBackStack("RUBRICS").commit();
+                break;
+            case R.id.nav_transmitters:
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTERS)).addToBackStack("TRANSMITTERS").commit();
+                break;
+            case R.id.nav_map:
+                setActionBarTitle("DAPNET map");
+                ft.replace(R.id.container, new MapFragment()).addToBackStack("MAP").commit();
+                break;
+            case R.id.nav_transmitterGroups:
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTER_GROUPS)).addToBackStack("TRANSMITTER_GROUPS").commit();
+                break;
+            case R.id.nav_nodes:
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.NODES)).addToBackStack("NODES").commit();
+                break;
+            case R.id.nav_users:
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.USERS)).addToBackStack("USERS").commit();
+                break;
+            case R.id.nav_githublink:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork"));
+                startActivity(browserIntent);
+                break;
+            case R.id.nav_feedbacklink:
+                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork/DAPNETApp/issues"));
+                startActivity(browserIntent);
+                break;
+            case R.id.nav_loginstatus:
+                if (loggedIn) {
+                    SharedPreferences sharedPref = getSharedPreferences(SP, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.clear();
+                    editor.apply();
+                }
+                Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
+                myIntent.putExtra("defServer", mServer);
+                MainActivity.this.startActivity(myIntent);
+                break;
+            case R.id.nav_help:
+                setActionBarTitle("DAPNET help");
+                ft.replace(R.id.container, new HelpFragment()).addToBackStack("HELP").commit();
+                break;
+            default:
+                break;
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         // item.setChecked(true)
-        if(!isDrawerLocked)
-        drawer.closeDrawer(GravityCompat.START);
+        if (!isDrawerLocked)
+            drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
     public boolean onNavHeaderSelected() {
+        setActionBarTitle("DAPNET");
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn));
         ft.commit();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         //TODO: Find which item is checked and uncheck it
         navigationView.getMenu().findItem(R.id.nav_calls).setChecked(false);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if(!isDrawerLocked)
-        drawer.closeDrawer(GravityCompat.START);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (!isDrawerLocked)
+            drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -221,18 +250,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
-                    TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
+                    try{TextView mNavHeadVersions = findViewById(R.id.navheadversions);
                     String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + dapnetResponse.body().getCore() + ", API v" + dapnetResponse.body().getApi() + ", ";
-                    mNavHeadVersions.setText(tmp);
+                    mNavHeadVersions.setText(tmp);}catch (Exception e){Log.e(TAG,"Error setting versions");}
                 } else {
-                    //TODO: implement .code,.message
+                    //TODO: implement .code,.message, snackbar
                     Log.e(TAG, "Error.");
 
-                    // APIError error = ErrorUtils.parseError(response)
-                    /*Log.e(TAG, "Error getting versions" + dapnetResponse.code());
-                    Log.e(TAG, dapnetResponse.message());
-                    Snackbar.make(findViewById(R.id.container), getString(R.string.error_get_versions) + " " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();*/
-               }
+                }
             }
 
             @Override
@@ -242,15 +267,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Snackbar.make(findViewById(R.id.container), "Fatal connection error.. " + throwable.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
-        TextView mNavHeadVersions = (TextView) findViewById(R.id.navheadversions);
+        TextView mNavHeadVersions = findViewById(R.id.navheadversions);
         String s = "";
         s += "App v";
         s += BuildConfig.VERSION_NAME;
-        if(mNavHeadVersions!=null)
+        if (mNavHeadVersions != null)
             mNavHeadVersions.setText(s);
     }
 
     public void onNavHeaderSelected(View view) {
         onNavHeaderSelected();
+    }
+    public void setActionBarTitle(String title) {
+        Objects.requireNonNull(getSupportActionBar()).setTitle(title);
     }
 }

@@ -1,6 +1,9 @@
 package de.hampager.dapnetmobile.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -24,15 +27,16 @@ import de.hampager.dap4j.callbacks.DapnetListener;
 import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.CallResource;
 import de.hampager.dapnetmobile.R;
+import de.hampager.dapnetmobile.activites.MainActivity;
 import de.hampager.dapnetmobile.adapters.CallAdapter;
 
 
 public class CallFragment extends Fragment implements SearchView.OnQueryTextListener {
     private static final String TAG = "CallFragment";
-    private RecyclerView recyclerView;
     private CallAdapter adapter;
     private SwipeRefreshLayout mSwipe;
     private SearchView searchView;
+
     public CallFragment() {
         // Required empty public constructor
     }
@@ -43,67 +47,68 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
 
 
     private void initViews(View v) {
-        adapter=new CallAdapter(new ArrayList<CallResource>());
-        recyclerView = (RecyclerView) v.findViewById(R.id.item_recycler_view);
+        adapter = new CallAdapter(new ArrayList<CallResource>());
+        RecyclerView recyclerView = v.findViewById(R.id.item_recycler_view);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(mLayoutManager);
+        ((MainActivity) getActivity()).setActionBarTitle("DAPNET calls");
         fetchJSON();
 
     }
 
     private void fetchJSON() {
+        mSwipe.setRefreshing(true);
         DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
-        //TODO: Implement non-admin
-        //Log.i(TAG, "fetchJSON, admin: " + admin);
-        //if (admin) {
-        //  Log.i(TAG, "Admin access granted. Fetching All Calls...");
-        dapnet.getCalls("", new DapnetListener<List<CallResource>>() {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
+        String s = "";
+        boolean admin = sharedPreferences.getBoolean("admin", false);
+        if (!admin) {
+            s = sharedPreferences.getString("user", "null");
+        }
+        if (admin) {
+            Log.i(TAG, "Admin access granted. Fetching All Calls...");
+        }
+        dapnet.getCalls(s, new DapnetListener<List<CallResource>>() {
             @Override
             public void onResponse(DapnetResponse<List<CallResource>> dapnetResponse) {
                 if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                List<CallResource> data = dapnetResponse.body();
+                    List<CallResource> data = dapnetResponse.body();
                     adapter.setmValues(data);
                     adapter.notifyDataSetChanged();
-                    mSwipe.setRefreshing(false);
                 } else {
                     Log.e(TAG, "Error");
                     //TODO: .code,.message etc
-                    /*Log.e(TAG, "Error " + dapnetResponse.code());
-                    Log.e(TAG, dapnetResponse.message());
-                    Snackbar.make(recyclerView, "Error! " + dapnetResponse.code() + " " + dapnetResponse.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    if (dapnetResponse.code() == 401) {
-                        SharedPreferences sharedPref = getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPref.edit();
-                        editor.clear();
-                        editor.apply();
-                    }*/
                 }
+                mSwipe.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Throwable throwable) {
                 // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, throwable.getMessage());
+                mSwipe.setRefreshing(false);
+
             }
         });
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_call, container, false);
         v.setTag(TAG);
         setHasOptionsMenu(true);
+        mSwipe = v.findViewById(R.id.swipeRefreshCalls);
         initViews(v);
-        mSwipe = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshCalls);
+
 
         // Setup refresh listener which triggers new data loading
 

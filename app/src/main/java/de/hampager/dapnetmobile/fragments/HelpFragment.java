@@ -1,6 +1,7 @@
 package de.hampager.dapnetmobile.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -36,12 +37,12 @@ public class HelpFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View result =inflater.inflate(R.layout.fragment_help, container, false);
-        LinearLayout linearLayout = (LinearLayout) result.findViewById(R.id.helpLayout);
-        for (String s : getResources().getStringArray(R.array.faq)){
+        View result = inflater.inflate(R.layout.fragment_help, container, false);
+        LinearLayout linearLayout = result.findViewById(R.id.helpLayout);
+        for (String s : getResources().getStringArray(R.array.faq)) {
             TextView tv = new TextView(getActivity());
             tv.setText(Html.fromHtml(s));
             linearLayout.addView(tv);

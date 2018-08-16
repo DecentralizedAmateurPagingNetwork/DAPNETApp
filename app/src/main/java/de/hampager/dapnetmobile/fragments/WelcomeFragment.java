@@ -3,6 +3,7 @@ package de.hampager.dapnetmobile.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -67,20 +68,19 @@ public class WelcomeFragment extends Fragment {
 
 
     private void initViews(View v) {
-        recyclerView = (RecyclerView) v.findViewById(R.id.welcome_statslist);
+        recyclerView = v.findViewById(R.id.welcome_statslist);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
         recyclerView.setLayoutManager(mLayoutManager);
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         String server = sharedPref.getString("server", getResources().getString(R.string.ClearNetURL));
-        muninImageView = (ImageView) v.findViewById(R.id.statsImage);
+        muninImageView = v.findViewById(R.id.statsImage);
         if (server.contains("ampr.org"))
             Picasso.with(muninImageView.getContext()).load("http://db0sda.ampr.org/munin-cgi/munin-cgi-graph/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png").into(muninImageView);
         else
             Picasso.with(muninImageView.getContext()).load("https://www.afu.rwth-aachen.de/munin-cgi/munin-cgi-graph/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png").into(muninImageView);
         fetchJSON(server);
     }
-
 
 
     private void fetchJSON(String server) {
@@ -91,7 +91,7 @@ public class WelcomeFragment extends Fragment {
                 if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
                     // tasks available
-                Stats data = dapnetResponse.body();
+                    Stats data = dapnetResponse.body();
                     adapter = new StatsAdapter(data);
                     recyclerView.setAdapter(adapter);
 
@@ -112,7 +112,7 @@ public class WelcomeFragment extends Fragment {
             public void onFailure(Throwable throwable) {
                 // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, "Fatal connection error.. " + throwable.getMessage());
-                if(getActivity()!=null&&getActivity().findViewById(R.id.container)!=null) {
+                if (getActivity() != null && getActivity().findViewById(R.id.container) != null) {
                     Snackbar.make(getActivity().findViewById(R.id.container), "Fatal connection error.. " + throwable.getMessage(), Snackbar.LENGTH_LONG).show();
                 }
             }
@@ -120,14 +120,14 @@ public class WelcomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_welcome, container, false);
 
         //Implement arguments and bundle checks
-        TextView description = (TextView) v.findViewById(R.id.DAPscription);
-        description.setText( Html.fromHtml(getResources().getString(R.string.DAPscription)));
+        TextView description = v.findViewById(R.id.DAPscription);
+        description.setText(Html.fromHtml(getResources().getString(R.string.DAPscription)));
         description.setMovementMethod(LinkMovementMethod.getInstance());
         initViews(v);
         return v;
