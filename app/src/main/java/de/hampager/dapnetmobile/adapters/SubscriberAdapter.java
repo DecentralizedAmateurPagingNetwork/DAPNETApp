@@ -68,7 +68,12 @@ public class SubscriberAdapter extends RecyclerView.Adapter<SubscriberAdapter.Ta
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        try{
+            return mValues.size();
+        } catch (Exception e){
+            Log.e(TAG,"Error filtering");
+            return 0;
+        }
     }
 
     @Override
