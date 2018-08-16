@@ -25,6 +25,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 import de.hampager.dap4j.DAPNET;
 import de.hampager.dap4j.DapnetSingleton;
 import de.hampager.dap4j.callbacks.DapnetListener;
@@ -180,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTERS)).addToBackStack("TRANSMITTERS").commit();
                 break;
             case R.id.nav_map:
+                setActionBarTitle("DAPNET map");
                 ft.replace(R.id.container, new MapFragment()).addToBackStack("MAP").commit();
                 break;
             case R.id.nav_transmitterGroups:
@@ -211,6 +214,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 MainActivity.this.startActivity(myIntent);
                 break;
             case R.id.nav_help:
+                setActionBarTitle("DAPNET help");
                 ft.replace(R.id.container, new HelpFragment()).addToBackStack("HELP").commit();
                 break;
             default:
@@ -223,6 +227,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
     public boolean onNavHeaderSelected() {
+        setActionBarTitle("DAPNET");
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn));
@@ -245,9 +250,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
-                    TextView mNavHeadVersions = findViewById(R.id.navheadversions);
+                    try{TextView mNavHeadVersions = findViewById(R.id.navheadversions);
                     String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + dapnetResponse.body().getCore() + ", API v" + dapnetResponse.body().getApi() + ", ";
-                    mNavHeadVersions.setText(tmp);
+                    mNavHeadVersions.setText(tmp);}catch (Exception e){Log.e(TAG,"Error setting versions");}
                 } else {
                     //TODO: implement .code,.message, snackbar
                     Log.e(TAG, "Error.");
@@ -272,5 +277,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void onNavHeaderSelected(View view) {
         onNavHeaderSelected();
+    }
+    public void setActionBarTitle(String title) {
+        Objects.requireNonNull(getSupportActionBar()).setTitle(title);
     }
 }

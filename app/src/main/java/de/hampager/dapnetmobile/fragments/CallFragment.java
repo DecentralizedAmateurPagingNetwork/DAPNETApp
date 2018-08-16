@@ -27,6 +27,7 @@ import de.hampager.dap4j.callbacks.DapnetListener;
 import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.CallResource;
 import de.hampager.dapnetmobile.R;
+import de.hampager.dapnetmobile.activites.MainActivity;
 import de.hampager.dapnetmobile.adapters.CallAdapter;
 
 
@@ -54,6 +55,7 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(mLayoutManager);
+        ((MainActivity) getActivity()).setActionBarTitle("DAPNET calls");
         fetchJSON();
 
     }
@@ -90,6 +92,8 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
             public void onFailure(Throwable throwable) {
                 // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, throwable.getMessage());
+                mSwipe.setRefreshing(false);
+
             }
         });
 

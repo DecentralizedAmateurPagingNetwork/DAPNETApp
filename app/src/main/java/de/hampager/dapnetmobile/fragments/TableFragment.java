@@ -33,6 +33,7 @@ import de.hampager.dap4j.models.Transmitter;
 import de.hampager.dap4j.models.TransmitterGroup;
 import de.hampager.dap4j.models.User;
 import de.hampager.dapnetmobile.R;
+import de.hampager.dapnetmobile.activites.MainActivity;
 import de.hampager.dapnetmobile.adapters.NodeAdapter;
 import de.hampager.dapnetmobile.adapters.RubricAdapter;
 import de.hampager.dapnetmobile.adapters.RubricContentAdapter;
@@ -81,28 +82,76 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
         mLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(mLayoutManager);
         dapnet = DapnetSingleton.getInstance().getDapnet();
+        //Set titlebar
+        MainActivity activity=((MainActivity) getActivity());
+        activity.setActionBarTitle("DAPNET " + selected.toString().toLowerCase());
         switch (selected) {
             case CALLS:
                 break;
             case SUBSCRIBERS:
+                mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        // Your code to refresh the list here.
+                        // Make sure you call swipeContainer.setRefreshing(false)
+                        // once the network request has completed successfully.
+                        fetchSubscribers();
+                    }
+                });
                 fetchSubscribers();
                 break;
             case RUBRICS:
+                mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        fetchRubrics();
+                    }
+                });
                 fetchRubrics();
                 break;
             case RUBRIC_CONTENT:
+                mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        fetchRubricContent();
+                    }
+                });
                 fetchRubricContent();
                 break;
             case TRANSMITTERS:
+                mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        fetchTransmitters();
+                    }
+                });
                 fetchTransmitters();
                 break;
             case TRANSMITTER_GROUPS:
+                mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        fetchTransmitterGroups();
+                    }
+                });
                 fetchTransmitterGroups();
                 break;
             case NODES:
+                mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        fetchNodes();
+                    }
+                });
                 fetchNodes();
                 break;
             case USERS:
+                mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        fetchUsers();
+                    }
+                });
                 fetchUsers();
                 break;
         }
@@ -140,12 +189,14 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
             public void onFailure(Throwable throwable) {
                 // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, throwable.getMessage());
+                mSwipe.setRefreshing(false);
             }
         });
 
     }
 
     private void fetchRubrics() {
+        mSwipe.setRefreshing(true);
         RubricAdapter adapter = new RubricAdapter(new ArrayList<>());
         currentAdapter=adapter;
         recyclerView.setAdapter(adapter);
@@ -162,16 +213,21 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                 Collections.sort(data, comparator);
                 adapter.setmValues(data);
                 adapter.notifyDataSetChanged();
+                mSwipe.setRefreshing(false);
+
             }
 
             @Override
             public void onFailure(Throwable throwable) {
                 Log.e(TAG, "Major connection error");
+                mSwipe.setRefreshing(false);
+
             }
         });
     }
 
     private void fetchRubricContent() {
+        mSwipe.setRefreshing(true);
         RubricContentAdapter adapter = new RubricContentAdapter(new ArrayList<>());
         currentAdapter=adapter;
         recyclerView.setAdapter(adapter);
@@ -183,13 +239,13 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                     Comparator<News> comparator = new Comparator<News>() {
                         @Override
                         public int compare(News o1, News o2) {
-                            String o1compareValue="0";
-                            String o2compareValue="0";
-                            if (o1!=null&&o1.getTimestamp()!=null){
-                                o1compareValue=o1.getTimestamp();
+                            String o1compareValue = "0";
+                            String o2compareValue = "0";
+                            if (o1 != null && o1.getTimestamp() != null) {
+                                o1compareValue = o1.getTimestamp();
                             }
-                            if(o2!=null&&o2.getTimestamp()!=null){
-                                o2compareValue=o2.getTimestamp();
+                            if (o2 != null && o2.getTimestamp() != null) {
+                                o2compareValue = o2.getTimestamp();
                             }
                             return o1compareValue.compareTo(o2compareValue);
                         }
@@ -198,6 +254,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                     adapter.setmValues(data);
                     adapter.notifyDataSetChanged();
                 }
+                mSwipe.setRefreshing(false);
             }
 
             @Override
@@ -206,11 +263,14 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                 List<News> data = new ArrayList<>();
                 adapter.setmValues(data);
                 adapter.notifyDataSetChanged();
+                mSwipe.setRefreshing(false);
+
             }
         });
     }
 
     private void fetchTransmitters() {
+        mSwipe.setRefreshing(true);
         TransmitterAdapter adapter = new TransmitterAdapter(new ArrayList<>());
         currentAdapter=adapter;
         recyclerView.setAdapter(adapter);
@@ -221,16 +281,21 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                     adapter.setmValues(dapnetResponse.body());
                     adapter.notifyDataSetChanged();
                 }
+                mSwipe.setRefreshing(false);
+
             }
 
             @Override
             public void onFailure(Throwable throwable) {
                 Log.e(TAG, "Major connection error");
+                mSwipe.setRefreshing(false);
+
             }
         });
     }
 
     private void fetchTransmitterGroups() {
+        mSwipe.setRefreshing(true);
         TransmitterGroupAdapter adapter = new TransmitterGroupAdapter(new ArrayList<>());
         currentAdapter=adapter;
         recyclerView.setAdapter(adapter);
@@ -241,16 +306,21 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                     adapter.setmValues(dapnetResponse.body());
                     adapter.notifyDataSetChanged();
                 }
+                mSwipe.setRefreshing(false);
+
             }
 
             @Override
             public void onFailure(Throwable throwable) {
                 Log.e(TAG, "Major connection error");
+                mSwipe.setRefreshing(false);
+
             }
         });
     }
 
     private void fetchNodes() {
+        mSwipe.setRefreshing(true);
         NodeAdapter adapter = new NodeAdapter(new ArrayList<>());
         currentAdapter=adapter;
         recyclerView.setAdapter(adapter);
@@ -261,16 +331,21 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                     adapter.setmValues(dapnetResponse.body());
                     adapter.notifyDataSetChanged();
                 }
+                mSwipe.setRefreshing(false);
+
             }
 
             @Override
             public void onFailure(Throwable throwable) {
                 Log.e(TAG, "Major connection error");
+                mSwipe.setRefreshing(false);
+
             }
         });
     }
 
     private void fetchUsers() {
+        mSwipe.setRefreshing(true);
         UserAdapter adapter = new UserAdapter(new ArrayList<>());
         currentAdapter=adapter;
         recyclerView.setAdapter(adapter);
@@ -281,11 +356,15 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                     adapter.setmValues(dapnetResponse.body());
                     adapter.notifyDataSetChanged();
                 }
+                mSwipe.setRefreshing(false);
+
             }
 
             @Override
             public void onFailure(Throwable throwable) {
                 Log.e(TAG, "Major connection error");
+                mSwipe.setRefreshing(false);
+
             }
         });
     }
@@ -313,15 +392,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
         mSwipe = v.findViewById(R.id.swipeRefreshCalls);
         initViews(v);
         // Setup refresh listener which triggers new data loading
-        mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
-                fetchSubscribers();
-            }
-        });
+
         return v;
     }
 

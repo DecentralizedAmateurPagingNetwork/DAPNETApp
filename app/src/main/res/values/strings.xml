@@ -95,14 +95,14 @@
     <string name="compose_shortcut_short_label1" translatable="false">Compose</string>
     <string name="compose_shortcut_long_label1" translatable="false">Compose Call</string>
     <string name="compose_disabled_message1" translatable="false">Compose disabled</string>
-    <string name="subscribers">Subscribers</string>
-    <string name="rubrics">Rubrics</string>
-    <string name="transmitters">Transmitters</string>
-    <string name="transmitter_groups">Transmitter Groups</string>
-    <string name="nodes">Nodes</string>
-    <string name="users">Users</string>
-    <string name="bubble">Bubble</string>
-    <string name="title">Title</string>
+    <string name="subscribers" translatable="false">Subscribers</string>
+    <string name="rubrics" translatable="false">Rubrics</string>
+    <string name="transmitters" translatable="false">Transmitters</string>
+    <string name="transmitter_groups" translatable="false">Transmitter Groups</string>
+    <string name="nodes" translatable="false">Nodes</string>
+    <string name="users" translatable="false">Users</string>
+    <string name="bubble" translatable="false">Bubble</string>
+    <string name="title" translatable="false">Title</string>
     <string name="description">Description</string>
-    <string name="address">Address</string>
+    <string name="address" translatable="false">Address</string>
 </resources>
