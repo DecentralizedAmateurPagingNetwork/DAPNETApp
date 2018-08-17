@@ -34,6 +34,7 @@ import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import de.hampager.dap4j.DAPNET;
 import de.hampager.dap4j.DapnetSingleton;
@@ -59,7 +60,6 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     Menu menu;
     private MapView map;
     private List<Transmitter> transmitterList = new ArrayList<>();
-
     private FolderOverlay onlineWideRangeFolder = new FolderOverlay();
     private RadiusMarkerClusterer onWClusterer;
     private FolderOverlay onlinePersonalFolder = new FolderOverlay();
@@ -97,7 +97,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_map, container, false);
-        Context ctx = getActivity().getApplicationContext();
+        Context ctx = Objects.requireNonNull(getActivity()).getApplicationContext();
         //important! set your user agent to prevent getting banned from the osm servers
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
@@ -142,7 +142,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         IMapController mapController = map.getController();
         mapController.setZoom(6.0);
         mapController.setCenter(startPoint);
-        onWClusterer = new RadiusMarkerClusterer(getContext());
+        onWClusterer = new RadiusMarkerClusterer(Objects.requireNonNull(getContext()));
         onPClusterer = new RadiusMarkerClusterer(getContext());
         ofWClusterer = new RadiusMarkerClusterer(getContext());
         ofPClusterer = new RadiusMarkerClusterer(getContext());
@@ -154,7 +154,6 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     }
 
     private void config() {
-
         map.getOverlays().add(new MapEventsOverlay(this));
         Drawable onlineWiderangeMarker = getResources().getDrawable(R.mipmap.ic_radiotower_green);
         Drawable offlineWiderangeMarker = getResources().getDrawable(R.mipmap.ic_radiotower_red);
@@ -235,19 +234,20 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         StringBuilder s = new StringBuilder();
         String dot = ": ";
         Context res = getContext();
-        s.append(res.getString(R.string.type)).append(dot).append(transmitter.getUsage()).append(BR);
-        s.append(res.getString(R.string.transmission_power)).append(dot).append(transmitter.getPower()).append(BR);
-        if (transmitter.getTimeSlot().length() > 1) s.append(res.getString(R.string.timeslots));
-        else s.append(res.getString(R.string.timeslot));
-        s.append(dot).append(transmitter.getTimeSlot()).append(BR);
-        if (transmitter.getOwnerNames().size() > 1) {
-            s.append(res.getString(R.string.owners)).append(dot);
-            for (String temp : transmitter.getOwnerNames()) {
-                s.append(temp).append(",");
-            }
-        } else
-            s.append(res.getString(R.string.owner)).append(dot).append(transmitter.getOwnerNames().get(0));
-
+        if (res != null) {
+            s.append(res.getString(R.string.type)).append(dot).append(transmitter.getUsage()).append(BR);
+            s.append(res.getString(R.string.transmission_power)).append(dot).append(transmitter.getPower()).append(BR);
+            if (transmitter.getTimeSlot().length() > 1) s.append(res.getString(R.string.timeslots));
+            else s.append(res.getString(R.string.timeslot));
+            s.append(dot).append(transmitter.getTimeSlot()).append(BR);
+            if (transmitter.getOwnerNames().size() > 1) {
+                s.append(res.getString(R.string.owners)).append(dot);
+                for (String temp : transmitter.getOwnerNames()) {
+                    s.append(temp).append(",");
+                }
+            } else
+                s.append(res.getString(R.string.owner)).append(dot).append(transmitter.getOwnerNames().get(0));
+        }
         return s.toString();
     }
 
@@ -330,7 +330,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         //this will refresh the osmdroid configuration on resuming.
         //if you make changes to the configuration, use
         //Shared Preferences prefs = Preference Manager.getDefault SharedPreferences(this)
-        Configuration.getInstance().load(getActivity().getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()));
+        Configuration.getInstance().load(Objects.requireNonNull(getActivity()).getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()));
     }
 
     public void onButtonPressed(Uri uri) {
