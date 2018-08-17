@@ -50,6 +50,6 @@
         android:layout_above="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:text="@string/plchldr" />
+        android:text="" />
 
 </RelativeLayout>

@@ -17,7 +17,7 @@
             android:background="@drawable/number_background"
             android:ellipsize="end"
             android:padding="4dp"
-            android:text="@string/plchldr"
+            android:text=""
             android:textColor="@android:color/background_light" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:layout_alignParentTop="true"
             android:paddingLeft="4dp"
             android:paddingRight="4dp"
-            android:text="@string/plchldr" />
+            android:text="" />
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

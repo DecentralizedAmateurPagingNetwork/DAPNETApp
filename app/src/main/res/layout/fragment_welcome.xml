@@ -39,7 +39,7 @@
             android:id="@+id/DAPscription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/plchldr" />
+            android:text="" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/welcome_statslist"
