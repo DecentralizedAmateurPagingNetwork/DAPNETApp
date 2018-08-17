@@ -23,7 +23,9 @@ import org.osmdroid.api.IMapController;
 import org.osmdroid.bonuspack.clustering.RadiusMarkerClusterer;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.events.MapEventsReceiver;
+import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.tileprovider.tilesource.XYTileSource;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.FolderOverlay;
@@ -128,6 +130,8 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         }
         map = v.findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
+        //TODO Custom HAMNET TileSource
+
         configMap();
 
         return v;
@@ -206,7 +210,12 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     }
 
     private void fetchJSON() {
-        DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
+        DapnetSingleton dapnetSingleton=DapnetSingleton.getInstance();
+        DAPNET dapnet = dapnetSingleton.getDapnet();
+        if(dapnetSingleton.getUrl().contains("ampr.org")){
+            final ITileSource tileSource = new XYTileSource("Mapnik", 0, 19, 256, ".png", new String[] {"http://karten.db0sda.ampr.org/osm/"});
+            map.setTileSource(tileSource);
+        }
         dapnet.getAllTransmitters(new DapnetListener<List<Transmitter>>() {
             @Override
             public void onResponse(DapnetResponse<List<Transmitter>> dapnetResponse) {

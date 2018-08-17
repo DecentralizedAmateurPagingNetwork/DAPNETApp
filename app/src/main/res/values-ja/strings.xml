@@ -55,11 +55,9 @@
     <string name="plchldr">PLCHLDR</string>
     <string name="all">すべて</string>
     <string name="msg_placeceholder">MSG プレースホルダー</string>
-    <string name="http_hampager_de_8080">http://www.hampager.de:8080</string>
     <string name="in_order_to_use_this_service_please_login">このサービスを使用するために、ログインしてください。</string>
     <string name="and">" および "</string>
     <string name="rwth_afu_dapnet_logo_desc">RWTH AFU DAPNET ロゴ</string>
-    <string name="default_url_prefix">http://"</string>
     <string name="server_prompt">サーバーを選択</string>
     <string name="callsign_prompt">希望のコールサインを入力</string>
     <string name="transmittergroup_prompt">希望の送信グループを入力</string>

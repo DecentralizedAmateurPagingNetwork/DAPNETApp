@@ -52,12 +52,10 @@
 <string name="plchldr">PLCHLDR</string>
 <string name="all">الجميع</string>
 <string name="msg_placeceholder">MSG placeceholder</string>
-<string name="http_hampager_de_8080">http://www.hampager.de:8080</string>
-<string name="in_order_to_use_this_service_please_login">الرجاء تسجيل الدخول لاستخدام هذه الخدمة..</string>
+    <string name="in_order_to_use_this_service_please_login">الرجاء تسجيل الدخول لاستخدام هذه الخدمة..</string>
 <string name="and">" و "</string>
 <string name="rwth_afu_dapnet_logo_desc">RWTH AFU DAPNET logo</string>
-<string name="default_url_prefix">http://"</string>
-<string name="server_prompt">اختر سيرفر</string>
+    <string name="server_prompt">اختر سيرفر</string>
 <string name="callsign_prompt">Enter your desired callsigns</string>
 <string name="transmittergroup_prompt">Enter your desired transmitter groups</string>
 <string-array name="server_array">

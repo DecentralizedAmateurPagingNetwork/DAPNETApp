@@ -107,15 +107,11 @@
 
     <string name="msg_placeceholder">MSG placeceholder</string>
 
-    <string name="http_hampager_de_8080">http://www.hampager.de:8080</string>
-
     <string name="in_order_to_use_this_service_please_login">Per usare questo servizio, logga nel tuo account, per favore</string>
 
     <string name="and">" e "</string>
 
     <string name="rwth_afu_dapnet_logo_desc">RWTH AFU DAPNET logo</string>
-
-    <string name="default_url_prefix">http://"</string>
 
     <string name="server_prompt">Scegli un server</string>
 

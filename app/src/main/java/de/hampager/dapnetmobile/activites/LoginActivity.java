@@ -46,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private View mLoginFormView;
     private Spinner spinner;
     private Button mSignInButton;
+    private String hamurl;
 
 
     @Override
@@ -96,8 +97,11 @@ public class LoginActivity extends AppCompatActivity {
         DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
         dapnetSingleton.init(server, "", "");
         DAPNET dapnet = dapnetSingleton.getDapnet();
-        switch (server) {
-            case "https://hampager.de/api/":
+        int serverIndex=0;
+        if(server.equalsIgnoreCase(clearNetURL)) serverIndex=R.string.ClearNetURL;
+        else if(server.equalsIgnoreCase(dapNetUrl))  serverIndex=R.string.DapNetURL;
+        switch (serverIndex) {
+            case R.string.ClearNetURL:
                 dapnetSingleton.init(dapNetUrl, "", "");
                 DAPNET dapnet1 = dapnetSingleton.getDapnet();
                 dapnet1.getVersion(new DapnetListener<Version>() {
@@ -112,7 +116,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
                 break;
-            case "http://db0sda.ampr.org/api/":
+            case R.string.DapNetURL:
                 dapnet.getVersion(new DapnetListener<Version>() {
                     @Override
                     public void onResponse(DapnetResponse<Version> dapnetResponse) {
