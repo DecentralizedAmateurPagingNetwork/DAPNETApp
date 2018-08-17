@@ -209,7 +209,9 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
         dapnet.getAllRubrics(new DapnetListener<List<Rubric>>() {
             @Override
             public void onResponse(DapnetResponse<List<Rubric>> dapnetResponse) {
-                List<Rubric> data = dapnetResponse.body();
+                if(dapnetResponse.isSuccessful()){
+                    List<Rubric> data = dapnetResponse.body();
+
                 Comparator<Rubric> comparator = new Comparator<Rubric>() {
                     @Override
                     public int compare(Rubric o1, Rubric o2) {
@@ -219,6 +221,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                 Collections.sort(data, comparator);
                 adapter.setmValues(data);
                 adapter.notifyDataSetChanged();
+                }
                 mSwipe.setRefreshing(false);
 
             }

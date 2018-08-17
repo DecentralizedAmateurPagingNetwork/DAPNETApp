@@ -128,12 +128,6 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         }
         map = v.findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
-        configMap();
-
-        return v;
-    }
-
-    private void configMap() {
         map.setBuiltInZoomControls(true);
         map.setMultiTouchControls(true);
         map.setFlingEnabled(true);
@@ -142,18 +136,25 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         IMapController mapController = map.getController();
         mapController.setZoom(6.0);
         mapController.setCenter(startPoint);
-        onWClusterer = new RadiusMarkerClusterer(Objects.requireNonNull(getContext()));
-        onPClusterer = new RadiusMarkerClusterer(getContext());
-        ofWClusterer = new RadiusMarkerClusterer(getContext());
-        ofPClusterer = new RadiusMarkerClusterer(getContext());
-        onlineWideRangeFolder.add(onWClusterer);
-        onlinePersonalFolder.add(onPClusterer);
-        offlineWideRangeFolder.add(ofWClusterer);
-        offlinePersonalFolder.add(ofPClusterer);
-        fetchJSON();
+try {
+    onWClusterer = new RadiusMarkerClusterer(Objects.requireNonNull(getContext()));
+    onPClusterer = new RadiusMarkerClusterer(getContext());
+    ofWClusterer = new RadiusMarkerClusterer(getContext());
+    ofPClusterer = new RadiusMarkerClusterer(getContext());
+    onlineWideRangeFolder.add(onWClusterer);
+    onlinePersonalFolder.add(onPClusterer);
+    offlineWideRangeFolder.add(ofWClusterer);
+    offlinePersonalFolder.add(ofPClusterer);
+    fetchJSON();
+}catch (Exception e){
+    Log.e(TAG,"Context missing?");
+}
+
+        return v;
     }
 
     private void config() {
+        try{
         map.getOverlays().add(new MapEventsOverlay(this));
         Drawable onlineWiderangeMarker = getResources().getDrawable(R.mipmap.ic_radiotower_green);
         Drawable offlineWiderangeMarker = getResources().getDrawable(R.mipmap.ic_radiotower_red);
@@ -187,6 +188,9 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         }
         map.getOverlays().add(onlineWideRangeFolder);
         map.invalidate();
+        } catch (Exception e){
+            Log.e(TAG,"Context missing?");
+        }
     }
 
     @Override
