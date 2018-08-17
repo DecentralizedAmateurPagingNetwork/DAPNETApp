@@ -172,7 +172,13 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                     Comparator<CallSign> comparator = new Comparator<CallSign>() {
                         @Override
                         public int compare(CallSign o1, CallSign o2) {
-                            return o2.getName().compareTo(o1.getName());
+                            String n1="Z";
+                            String n2="Z";
+                            if (o1!=null&&o1.getName()!=null)
+                                n1=o1.getName();
+                            if (o2!=null&&o2.getName()!=null)
+                                n2=o2.getName();
+                            return n2.compareTo(n1);
                         }
                     };
                     Collections.sort(data, comparator);
@@ -203,7 +209,9 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
         dapnet.getAllRubrics(new DapnetListener<List<Rubric>>() {
             @Override
             public void onResponse(DapnetResponse<List<Rubric>> dapnetResponse) {
-                List<Rubric> data = dapnetResponse.body();
+                if(dapnetResponse.isSuccessful()){
+                    List<Rubric> data = dapnetResponse.body();
+
                 Comparator<Rubric> comparator = new Comparator<Rubric>() {
                     @Override
                     public int compare(Rubric o1, Rubric o2) {
@@ -213,6 +221,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                 Collections.sort(data, comparator);
                 adapter.setmValues(data);
                 adapter.notifyDataSetChanged();
+                }
                 mSwipe.setRefreshing(false);
 
             }
