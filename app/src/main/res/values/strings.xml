@@ -105,4 +105,8 @@
     <string name="title" translatable="false">Title</string>
     <string name="description">Description</string>
     <string name="address" translatable="false">Address</string>
+
+    <!-- Temp location -->
+    <string name="callsigns">Call Signs</string>
+
 </resources>
