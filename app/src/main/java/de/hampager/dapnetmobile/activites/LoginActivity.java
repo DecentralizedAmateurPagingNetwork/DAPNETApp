@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
@@ -29,7 +30,6 @@ import de.hampager.dap4j.models.User;
 import de.hampager.dap4j.models.Version;
 import de.hampager.dapnetmobile.R;
 
-
 /**
  * A login screen that offers login via username/password.
  */
@@ -46,7 +46,8 @@ public class LoginActivity extends AppCompatActivity {
     private View mLoginFormView;
     private Spinner spinner;
     private Button mSignInButton;
-
+    private Button mSignUpButton;
+    private TextView mContinueView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,8 @@ public class LoginActivity extends AppCompatActivity {
         mUsernameView = findViewById(R.id.user);
         mPasswordView = findViewById(R.id.password);
         mSignInButton = findViewById(R.id.user_sign_in_button);
+        mSignUpButton = findViewById(R.id.user_sign_up_button);
+        mContinueView = findViewById(R.id.continue_textview);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
         addListeners();
@@ -69,23 +72,14 @@ public class LoginActivity extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener(findViewById(R.id.loginactivityid)));
 
-
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                attemptLogin();
-                return false;
-            }
+        mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
+            attemptLogin();
+            return false;
         });
 
-        mSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+        mSignInButton.setOnClickListener(view -> attemptLogin());
+        mSignUpButton.setOnClickListener(view -> goToSignUp());
     }
-
 
     private void checkServers() {
         Resources resources = getResources();
@@ -152,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                 break;
         }
     }
-    //TODO: Check wether Method is needed
+    // TODO: Check whether Method is needed
     private boolean checkIndividualServer(String server) {
         final Boolean[] success = {false};
         DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
@@ -166,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable throwable) {
-                //Inform user of error
+                // Inform user of error
             }
         });
         return success[0];
@@ -190,7 +184,6 @@ public class LoginActivity extends AppCompatActivity {
         edit.apply();
     }
 
-
     public User getUser(final String user, final String password, final String server) {
         DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
         dapnetSingleton.init(server, user, password);
@@ -212,7 +205,6 @@ public class LoginActivity extends AppCompatActivity {
                     finish();
 
                 } else {
-
                     Log.e(TAG, "Error: ");
                     //TODO: implement .code, .error
                     showProgress(false);
@@ -234,8 +226,15 @@ public class LoginActivity extends AppCompatActivity {
         return null;
     }
 
-    private void attemptLogin() {
+    /**
+     * Sends user to DAPNET support page when the "Sign up" Button is selected.
+     */
+    private void goToSignUp() {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.dapnet_support)));
+        startActivity(browserIntent);
+    }
 
+    private void attemptLogin() {
         // Reset errors.
         mUsernameView.setError(null);
         mPasswordView.setError(null);
@@ -261,7 +260,6 @@ public class LoginActivity extends AppCompatActivity {
         }
         String user = mUsernameView.getText().toString().trim();
         String password = mPasswordView.getText().toString();
-
 
         // Check for a valid password, if the user entered one. Maybe check validity?
         if (TextUtils.isEmpty(password)) {
@@ -292,7 +290,6 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isServerValid(String server) {
         return Patterns.WEB_URL.matcher(server).matches();
     }
-
 
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -332,6 +329,5 @@ public class LoginActivity extends AppCompatActivity {
         editor.apply();
         Log.i(TAG, "Saved credentials.");
     }
+
 }
-
-

@@ -40,7 +40,6 @@ import de.hampager.dapnetmobile.fragments.MapFragment;
 import de.hampager.dapnetmobile.fragments.TableFragment;
 import de.hampager.dapnetmobile.fragments.WelcomeFragment;
 
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";
     public static final String SP = "sharedPref";
@@ -71,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -139,17 +137,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-
         getMenuInflater().inflate(R.menu.main, menu);
-
-
         return true;
     }
 
-    // Handle action bar item clicks in boolean onOptionsItemSelected(MenuItem item). The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
-
+    /**
+     * Handles action bar item clicks. The action bar will automatically handle clicks on the home/up button, so long
+     * as you specify a parent activity in AndroidManifest.xml.
+     *
+     * @param item
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -262,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onFailure(Throwable throwable) {
-// something went completely wrong (e.g. no internet connection)
+                // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, "Fatal connection error.. " + throwable.getMessage());
                 Snackbar.make(findViewById(R.id.container), "Fatal connection error.. " + throwable.getMessage(), Snackbar.LENGTH_LONG).show();
             }
@@ -281,4 +279,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void setActionBarTitle(String title) {
         Objects.requireNonNull(getSupportActionBar()).setTitle(title);
     }
+
 }
