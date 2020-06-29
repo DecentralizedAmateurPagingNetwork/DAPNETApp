@@ -17,4 +17,15 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- FloatingActionButton -->
+    <style name="FloatingActionButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/floating_action_button</item>
+        <item name="android:drawableLeft">@mipmap/ic_radiotower_green</item>
+        <item name="android:text">@string/send_paging_message</item>
+        <item name="android:layout_gravity">bottom|center</item>
+        <item name="android:layout_margin">@dimen/fab_margin</item>
+    </style>
+
 </resources>

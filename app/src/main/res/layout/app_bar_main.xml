@@ -28,9 +28,24 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:layout_gravity="bottom|center"
+        app:backgroundTint="@color/colorPrimary"
+        app:tint="@android:color/white"
         android:contentDescription="@string/title_activity_postcall"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@mipmap/ic_radiotower_green" />
+
+    <!-- TODO: Unexpected appearance (drawable/floating_action_button.xml and styles.xml).
+            Use ExtendedFloatingActionButton after migrating to AndroidX. -->
+    <!--
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        style="@style/FloatingActionButton"
+        android:backgroundTint="@color/colorPrimary"
+        android:contentDescription="@string/title_activity_postcall"
+        app:backgroundTint="@color/colorPrimary"
+        app:srcCompat="@mipmap/ic_radiotower_green"
+        app:tint="@android:color/white" />
+        -->
 
 </android.support.design.widget.CoordinatorLayout>
