@@ -43,6 +43,14 @@ import de.hampager.dapnetmobile.fragments.WelcomeFragment;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";
     public static final String SP = "sharedPref";
+
+    private Toolbar toolbar;
+    private FloatingActionButton fab;
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+    private FrameLayout frameLayout;
+    private TextView mNavHeadVersions;
+
     boolean loggedIn = false;
     private String mServer;
     private MenuItem mPreviousMenuItem;
@@ -52,26 +60,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (loggedIn) {
-                    Intent myIntent = new Intent(MainActivity.this, PostCallActivity.class);
-                    MainActivity.this.startActivity(myIntent);
-                } else {
-                    Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                }
-
+        fab = findViewById(R.id.fab);
+        fab.setOnClickListener(view -> {
+            if (loggedIn) {
+                Intent myIntent = new Intent(MainActivity.this, PostCallActivity.class);
+                MainActivity.this.startActivity(myIntent);
+            }
+            else {
+                Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        drawer = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
@@ -80,7 +84,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn));
             ft.commit();
         }
-        FrameLayout frameLayout = findViewById(R.id.content_frame);
+
+        frameLayout = findViewById(R.id.content_frame);
         if (((ViewGroup.MarginLayoutParams) frameLayout.getLayoutParams()).leftMargin == (int) getResources().getDimension(R.dimen.drawer_size)) {
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
             drawer.setScrimColor(Color.TRANSPARENT);
@@ -88,22 +93,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.d(TAG, "Drawer locked");
         }
         if (!isDrawerLocked) {
-
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this,
+                    drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             drawer.addDrawerListener(toggle);
             toggle.syncState();
         }
         setVersion();
+
+        // TODO: Check if user is signed in
+        // If false, start LoginActivity
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout); // already created in onCreate?
         if (drawer.isDrawerOpen(GravityCompat.START) && isDrawerLocked) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-
+        }
+        else {
             SharedPreferences sharedPref = getSharedPreferences(SP, Context.MODE_PRIVATE);
             loggedIn = sharedPref.getBoolean("isLoggedIn", false);
             super.onBackPressed();
@@ -112,20 +119,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view); // already created in onCreate?
         Menu nv = navigationView.getMenu();
         MenuItem mloginstatus = nv.findItem(R.id.nav_loginstatus);
         SharedPreferences sharedPref = getSharedPreferences(SP, Context.MODE_PRIVATE);
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
-
         if (loggedIn) {
             mloginstatus.setTitle(R.string.nav_logout);
             Log.i(TAG, "User is logged in!");
-        } else {
+        }
+        else {
             mloginstatus.setTitle(R.string.nav_login);
             Log.i(TAG, "User is not logged in!");
         }
-
         return true;
     }
 
@@ -145,8 +151,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * Handles action bar item clicks. The action bar will automatically handle clicks on the home/up button, so long
      * as you specify a parent activity in AndroidManifest.xml.
      *
-     * @param item
-     * @return
+     * @param item  An item on the navigation drawer
+     * @return true
      */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -154,7 +160,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         // item.setCheckable(true)
-
         item.setChecked(true);
         if (mPreviousMenuItem != null && !(mPreviousMenuItem.equals(item))) {
             mPreviousMenuItem.setChecked(false);
@@ -166,7 +171,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_calls:
                 if (loggedIn) {
                     ft.replace(R.id.container, new CallFragment()).addToBackStack("CALLS").commit();
-                } else {
+                }
+                else {
                     Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
                 break;
@@ -193,11 +199,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.USERS)).addToBackStack("USERS").commit();
                 break;
             case R.id.nav_githublink:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork"));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_dapnet)));
                 startActivity(browserIntent);
                 break;
             case R.id.nav_feedbacklink:
-                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/DecentralizedAmateurPagingNetwork/DAPNETApp/issues"));
+                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_feedback)));
                 startActivity(browserIntent);
                 break;
             case R.id.nav_loginstatus:
@@ -220,10 +226,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         // item.setChecked(true)
-        if (!isDrawerLocked)
+        if (!isDrawerLocked) {
             drawer.closeDrawer(GravityCompat.START);
+        }
         return true;
     }
+    
     public boolean onNavHeaderSelected() {
         setActionBarTitle("DAPNET");
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -234,27 +242,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //TODO: Find which item is checked and uncheck it
         navigationView.getMenu().findItem(R.id.nav_calls).setChecked(false);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (!isDrawerLocked)
+        if (!isDrawerLocked) {
             drawer.closeDrawer(GravityCompat.START);
+        }
         return true;
     }
-
 
     private void setVersion() {
         DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
         dapnet.getVersion(new DapnetListener<Version>() {
             @Override
             public void onResponse(DapnetResponse<Version> dapnetResponse) {
-
                 if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
-                    try{TextView mNavHeadVersions = findViewById(R.id.navheadversions);
-                    String tmp = "App v" + BuildConfig.VERSION_NAME + ", Core v" + dapnetResponse.body().getCore() + ", API v" + dapnetResponse.body().getApi() + ", ";
-                    mNavHeadVersions.setText(tmp);}catch (Exception e){Log.e(TAG,"Error setting versions");}
-                } else {
+                    try {TextView mNavHeadVersions = findViewById(R.id.navheadversions);
+                    mNavHeadVersions.setText(getString(R.string.app_v_core_v_api_v, BuildConfig.VERSION_NAME,
+                            dapnetResponse.body().getCore(), dapnetResponse.body().getApi()));
+                    }
+                    catch (Exception e) {
+                        Log.e(TAG,"Error setting versions");
+                    }
+                }
+                else {
                     //TODO: implement .code,.message, snackbar
                     Log.e(TAG, "Error.");
-
                 }
             }
 
@@ -265,17 +276,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Snackbar.make(findViewById(R.id.container), "Fatal connection error.. " + throwable.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
-        TextView mNavHeadVersions = findViewById(R.id.navheadversions);
-        String s = "";
-        s += "App v";
-        s += BuildConfig.VERSION_NAME;
-        if (mNavHeadVersions != null)
-            mNavHeadVersions.setText(s);
+        mNavHeadVersions = findViewById(R.id.navheadversions);
+        if (mNavHeadVersions != null) {
+            mNavHeadVersions.setText(getString(R.string.app_v, BuildConfig.VERSION_NAME));
+        }
     }
 
     public void onNavHeaderSelected(View view) {
         onNavHeaderSelected();
     }
+
     public void setActionBarTitle(String title) {
         Objects.requireNonNull(getSupportActionBar()).setTitle(title);
     }

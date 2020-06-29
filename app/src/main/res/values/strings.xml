@@ -118,6 +118,11 @@
     <string name="action_sign_up">Sign up</string>
     <string name="action_sign_up_short">Sign up</string>
     <string name="dapnet_support">https://support.hampager.de</string>
+    <!-- MainActivity -->
+    <string name="github_dapnet" translatable="false">https://github.com/DecentralizedAmateurPagingNetwork</string>
+    <string name="github_feedback" translatable="false">https://github.com/DecentralizedAmateurPagingNetwork/DAPNETApp/issues</string>
+    <string name="app_v_core_v_api_v" translatable="false" formatted="true">App %1$s, Core v%2$s, API v%3$s,</string>
+    <string name="app_v" translatable="false" formatted="true">App v%1$s</string>
 
 
 </resources>

@@ -44,7 +44,6 @@ import de.hampager.dap4j.models.Transmitter;
 import de.hampager.dapnetmobile.BuildConfig;
 import de.hampager.dapnetmobile.R;
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -106,29 +105,24 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
+            // TODO: Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-
-            } else {
-
+            }
+            else {
                 // No explanation needed, we can request the permission.
-
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an app-defined int constant.
+                // The callback method gets the result of the request.
                 ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE);
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
             }
         }
         map = v.findViewById(R.id.map);
         map.setTileSource(TileSourceFactory.MAPNIK);
-        map.setBuiltInZoomControls(true);
+        map.setBuiltInZoomControls(false); // disable overlay zoom controls for now
         map.setMultiTouchControls(true);
         map.setFlingEnabled(true);
         map.setMinZoomLevel(2.5);
@@ -136,59 +130,63 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         IMapController mapController = map.getController();
         mapController.setZoom(6.0);
         mapController.setCenter(startPoint);
-try {
-    onWClusterer = new RadiusMarkerClusterer(Objects.requireNonNull(getContext()));
-    onPClusterer = new RadiusMarkerClusterer(getContext());
-    ofWClusterer = new RadiusMarkerClusterer(getContext());
-    ofPClusterer = new RadiusMarkerClusterer(getContext());
-    onlineWideRangeFolder.add(onWClusterer);
-    onlinePersonalFolder.add(onPClusterer);
-    offlineWideRangeFolder.add(ofWClusterer);
-    offlinePersonalFolder.add(ofPClusterer);
-    fetchJSON();
-}catch (Exception e){
-    Log.e(TAG,"Context missing?");
-}
-
+        try {
+            onWClusterer = new RadiusMarkerClusterer(Objects.requireNonNull(getContext()));
+            onPClusterer = new RadiusMarkerClusterer(getContext());
+            ofWClusterer = new RadiusMarkerClusterer(getContext());
+            ofPClusterer = new RadiusMarkerClusterer(getContext());
+            onlineWideRangeFolder.add(onWClusterer);
+            onlinePersonalFolder.add(onPClusterer);
+            offlineWideRangeFolder.add(ofWClusterer);
+            offlinePersonalFolder.add(ofPClusterer);
+            fetchJSON();
+        }
+        catch (Exception e) {
+            Log.e(TAG,"Context missing?");
+        }
         return v;
     }
 
     private void config() {
-        try{
-        map.getOverlays().add(new MapEventsOverlay(this));
-        Drawable onlineWiderangeMarker = getResources().getDrawable(R.mipmap.ic_radiotower_green);
-        Drawable offlineWiderangeMarker = getResources().getDrawable(R.mipmap.ic_radiotower_red);
-        Drawable onlinePersonalMarker = getResources().getDrawable(R.drawable.transmitter_personal_online);
-        Drawable offlinePersonalMarker = getResources().getDrawable(R.drawable.transmitter_personal_offline);
+        try {
+            map.getOverlays().add(new MapEventsOverlay(this));
+            Drawable onlineWiderangeMarker = getResources().getDrawable(R.mipmap.ic_radiotower_green);
+            Drawable offlineWiderangeMarker = getResources().getDrawable(R.mipmap.ic_radiotower_red);
+            Drawable onlinePersonalMarker = getResources().getDrawable(R.drawable.transmitter_personal_online);
+            Drawable offlinePersonalMarker = getResources().getDrawable(R.drawable.transmitter_personal_offline);
 
-        for (Transmitter t : transmitterList) {
-            Marker tempMarker = new Marker(map);
-            tempMarker.setPosition(new GeoPoint(t.getLatitude(), t.getLongitude()));
-            tempMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
-            tempMarker.setSnippet(getDesc(t));
-            tempMarker.setTitle(t.getName());
-            tempMarker.setInfoWindow(new MarkerInfoWindow(R.layout.custom_info_window, map));
-            if (t.getStatus().equals("ONLINE")) {
-                if (t.getUsage().equals("WIDERANGE")) {
-                    tempMarker.setIcon(onlineWiderangeMarker);
-                    onWClusterer.add(tempMarker);
-                } else {
-                    tempMarker.setIcon(onlinePersonalMarker);
-                    onPClusterer.add(tempMarker);
+            for (Transmitter t : transmitterList) {
+                Marker tempMarker = new Marker(map);
+                tempMarker.setPosition(new GeoPoint(t.getLatitude(), t.getLongitude()));
+                tempMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM);
+                tempMarker.setSnippet(getDesc(t));
+                tempMarker.setTitle(t.getName());
+                tempMarker.setInfoWindow(new MarkerInfoWindow(R.layout.custom_info_window, map));
+                if (t.getStatus().equals("ONLINE")) {
+                    if (t.getUsage().equals("WIDERANGE")) {
+                        tempMarker.setIcon(onlineWiderangeMarker);
+                        onWClusterer.add(tempMarker);
+                    }
+                    else {
+                        tempMarker.setIcon(onlinePersonalMarker);
+                        onPClusterer.add(tempMarker);
+                    }
                 }
-            } else {
-                if (t.getUsage().equals("WIDERANGE")) {
-                    tempMarker.setIcon(offlineWiderangeMarker);
-                    ofWClusterer.add(tempMarker);
-                } else {
-                    tempMarker.setIcon(offlinePersonalMarker);
-                    ofPClusterer.add(tempMarker);
+                else {
+                    if (t.getUsage().equals("WIDERANGE")) {
+                        tempMarker.setIcon(offlineWiderangeMarker);
+                        ofWClusterer.add(tempMarker);
+                    }
+                    else {
+                        tempMarker.setIcon(offlinePersonalMarker);
+                        ofPClusterer.add(tempMarker);
+                    }
                 }
             }
+            map.getOverlays().add(onlineWideRangeFolder);
+            map.invalidate();
         }
-        map.getOverlays().add(onlineWideRangeFolder);
-        map.invalidate();
-        } catch (Exception e){
+        catch (Exception e){
             Log.e(TAG,"Context missing?");
         }
     }
@@ -234,23 +232,38 @@ try {
         });
     }
 
+    /**
+     * Creates a String from the selected Transmitter node.
+     *
+     * @param transmitter  The selected Transmitter node
+     * @return The generated String
+     */
     private String getDesc(Transmitter transmitter) {
         StringBuilder s = new StringBuilder();
         String dot = ": ";
         Context res = getContext();
         if (res != null) {
-            s.append(res.getString(R.string.type)).append(dot).append(transmitter.getUsage()).append(BR);
-            s.append(res.getString(R.string.transmission_power)).append(dot).append(transmitter.getPower()).append(BR);
-            if (transmitter.getTimeSlot().length() > 1) s.append(res.getString(R.string.timeslots));
-            else s.append(res.getString(R.string.timeslot));
-            s.append(dot).append(transmitter.getTimeSlot()).append(BR);
+            s.append(res.getString(R.string.type))
+                    .append(dot)
+                    .append(transmitter.getUsage())
+                    .append(BR)
+                    .append(res.getString(R.string.transmission_power))
+                    .append(dot)
+                    .append(transmitter.getPower())
+                    .append(BR);
+            s.append((transmitter.getTimeSlot().length() > 1) ? res.getString(R.string.timeslots) : res.getString(R.string.timeslot))
+                    .append(dot)
+                    .append(transmitter.getTimeSlot())
+                    .append(BR);
             if (transmitter.getOwnerNames().size() > 1) {
                 s.append(res.getString(R.string.owners)).append(dot);
                 for (String temp : transmitter.getOwnerNames()) {
                     s.append(temp).append(",");
                 }
-            } else
+            }
+            else {
                 s.append(res.getString(R.string.owner)).append(dot).append(transmitter.getOwnerNames().get(0));
+            }
         }
         return s.toString();
     }
@@ -258,19 +271,20 @@ try {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.i(TAG, "Permission");
+
+        // To use more Permissions you should implement a switch
         if (requestCode == PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE) {
             // If request is cancelled, the result arrays are empty.
             Log.i(TAG, "Permission request");
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // permission was granted
                 Log.i(TAG, "Permission granted");
-            } else {
-                Log.i(TAG, "Permission not granted");
+            }
+            else {
                 // permission denied
+                Log.i(TAG, "Permission not granted");
             }
         }
-        //To use more Permissions you should implement a switch
     }
 
     @Override
@@ -286,14 +300,17 @@ try {
         boolean offlineEnabled = menu.findItem(R.id.offline_filter).isChecked();
         boolean wideRangeEnabled = menu.findItem(R.id.widerange_filter).isChecked();
         boolean personalEnabled = menu.findItem(R.id.personal_filter).isChecked();
-        if(onlineEnabled) mapOnlineEnabledCheck(wideRangeEnabled,personalEnabled);
+        if (onlineEnabled) {
+            mapOnlineEnabledCheck(wideRangeEnabled, personalEnabled);
+        }
         else {
             map.getOverlays().remove(onlineWideRangeFolder);
             map.getOverlays().remove(onlinePersonalFolder);
         }
         if (offlineEnabled) {
             mapOfflineEnabledCheck(wideRangeEnabled,personalEnabled);
-        } else {
+        }
+        else {
             map.getOverlays().remove(offlineWideRangeFolder);
             map.getOverlays().remove(offlinePersonalFolder);
         }
@@ -301,54 +318,59 @@ try {
         InfoWindow.closeAllInfoWindowsOn(map);
         return true;
     }
+
     private void mapOnlineEnabledCheck(boolean wideRangeEnabled, boolean personalEnabled){
-            if (wideRangeEnabled) {
-                if (!map.getOverlays().contains(onlineWideRangeFolder)) {
-                    map.getOverlays().add(onlineWideRangeFolder);
-                }
-            } else
-                map.getOverlays().remove(onlineWideRangeFolder);
-            if (personalEnabled) {
-                if (!map.getOverlays().contains(onlinePersonalFolder)) {
-                    map.getOverlays().add(onlinePersonalFolder);
-                }
-            } else
-                map.getOverlays().remove(onlinePersonalFolder);
+        if (wideRangeEnabled) {
+            if (!map.getOverlays().contains(onlineWideRangeFolder)) {
+                map.getOverlays().add(onlineWideRangeFolder);
+            }
+        }
+        else {
+            map.getOverlays().remove(onlineWideRangeFolder);
+        }
+        if (personalEnabled) {
+            if (!map.getOverlays().contains(onlinePersonalFolder)) {
+                map.getOverlays().add(onlinePersonalFolder);
+            }
+        }
+        else {
+            map.getOverlays().remove(onlinePersonalFolder);
+        }
     }
 
     private void mapOfflineEnabledCheck(boolean wideRangeEnabled, boolean personalEnabled){
         if (wideRangeEnabled) {
-            if (!map.getOverlays().contains(offlineWideRangeFolder))
+            if (!map.getOverlays().contains(offlineWideRangeFolder)) {
                 map.getOverlays().add(offlineWideRangeFolder);
-        } else
+            }
+        }
+        else {
             map.getOverlays().remove(offlineWideRangeFolder);
+        }
         if (personalEnabled) {
-            if (!map.getOverlays().contains(offlinePersonalFolder))
+            if (!map.getOverlays().contains(offlinePersonalFolder)) {
                 map.getOverlays().add(offlinePersonalFolder);
-        } else
+            }
+        }
+        else {
             map.getOverlays().remove(offlinePersonalFolder);
+        }
     }
+
+    /**
+     * Refreshes the osmdroid configuration on resuming.
+     */
     @Override
     public void onResume() {
         super.onResume();
-        //this will refresh the osmdroid configuration on resuming.
-        //if you make changes to the configuration, use
-        //Shared Preferences prefs = Preference Manager.getDefault SharedPreferences(this)
-        Configuration.getInstance().load(Objects.requireNonNull(getActivity()).getApplicationContext(), PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()));
+        // if you make changes to the configuration, use:
+        // SharedPreferences prefs = Preference Manager.getDefaultSharedPreferences(this);
+        Configuration.getInstance().load(Objects.requireNonNull(getActivity()).getApplicationContext(),
+                PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()));
     }
 
     public void onButtonPressed(Uri uri) {
-        //Not yet implemented
+        // TODO: Not yet implemented
     }
 
-    /*
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
 }

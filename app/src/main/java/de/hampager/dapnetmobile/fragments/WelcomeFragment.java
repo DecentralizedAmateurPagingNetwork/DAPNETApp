@@ -41,7 +41,7 @@ public class WelcomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String TAG = "WelcomeFragment";
     List<CardView> listItems = new ArrayList<>();
-    ImageView muninImageView;
+    //ImageView muninImageView;
     private RecyclerView recyclerView;
     private StatsAdapter adapter;
     private DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
@@ -74,11 +74,13 @@ public class WelcomeFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         String server = sharedPref.getString("server", getResources().getString(R.string.ClearNetURL));
+        /*
         muninImageView = v.findViewById(R.id.statsImage);
         if (server.contains("ampr.org"))
             Picasso.with(muninImageView.getContext()).load("http://db0sda.ampr.org/munin-cgi/munin-cgi-graph/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png").into(muninImageView);
         else
             Picasso.with(muninImageView.getContext()).load("https://www.afu.rwth-aachen.de/munin-cgi/munin-cgi-graph/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png").into(muninImageView);
+        */
         fetchJSON(server);
     }
 
@@ -126,9 +128,11 @@ public class WelcomeFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_welcome, container, false);
 
         //Implement arguments and bundle checks
+        /*
         TextView description = v.findViewById(R.id.DAPscription);
         description.setText(Html.fromHtml(getResources().getString(R.string.DAPscription)));
         description.setMovementMethod(LinkMovementMethod.getInstance());
+         */
         initViews(v);
         return v;
     }

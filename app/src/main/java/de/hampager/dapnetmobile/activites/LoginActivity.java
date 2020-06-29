@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mSignInButton.setOnClickListener(view -> attemptLogin());
         mSignUpButton.setOnClickListener(view -> goToSignUp());
+        mContinueView.setOnClickListener(view -> continueToMain());
     }
 
     private void checkServers() {
@@ -192,7 +193,6 @@ public class LoginActivity extends AppCompatActivity {
         dapnet.getUser(user, new DapnetListener<User>() {
             @Override
             public void onResponse(DapnetResponse<User> dapnetResponse) {
-
                 if (dapnetResponse.isSuccessful()) {
                     User returnValue = dapnetResponse.body();
                     saveData(server, user, password, returnValue.getAdmin());
@@ -200,11 +200,10 @@ public class LoginActivity extends AppCompatActivity {
                     showProgress(false);
                     Log.i(TAG, "Login was successful!");
                     Toast.makeText(LoginActivity.this, getString(R.string.success_welcome) + user, Toast.LENGTH_SHORT).show();
-                    Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    LoginActivity.this.startActivity(myIntent);
+                    LoginActivity.this.startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
-
-                } else {
+                }
+                else {
                     Log.e(TAG, "Error: ");
                     //TODO: implement .code, .error
                     showProgress(false);
@@ -230,8 +229,14 @@ public class LoginActivity extends AppCompatActivity {
      * Sends user to DAPNET support page when the "Sign up" Button is selected.
      */
     private void goToSignUp() {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.dapnet_support)));
-        startActivity(browserIntent);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.dapnet_support))));
+    }
+
+    /**
+     * Sends user to "Welcome" activity when the "Continue without signing in" TextView is selected.
+     */
+    private void continueToMain() {
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     private void attemptLogin() {
@@ -253,9 +258,11 @@ public class LoginActivity extends AppCompatActivity {
                 focusView = mServerView;
                 cancel = true;
             }
-        } else if (spinner.getSelectedItemPosition() == 1) {
+        }
+        else if (spinner.getSelectedItemPosition() == 1) {
             server = getResources().getString(R.string.DapNetURL);
-        } else {
+        }
+        else {
             server = getResources().getString(R.string.ClearNetURL);
         }
         String user = mUsernameView.getText().toString().trim();
@@ -278,7 +285,8 @@ public class LoginActivity extends AppCompatActivity {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
-        } else {
+        }
+        else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
