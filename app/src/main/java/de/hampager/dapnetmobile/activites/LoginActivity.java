@@ -63,13 +63,13 @@ public class LoginActivity extends AppCompatActivity {
         mContinueView = findViewById(R.id.continue_textview);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        spinner = findViewById(R.id.spinner);
         addListeners();
         checkServers();
-        mUsernameView.requestFocus();
+        //mUsernameView.requestFocus();
     }
 
     public void addListeners() {
-        spinner = findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener(findViewById(R.id.loginactivityid)));
 
         mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
@@ -147,6 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                 break;
         }
     }
+
     // TODO: Check whether Method is needed
     private boolean checkIndividualServer(String server) {
         final Boolean[] success = {false};
@@ -233,10 +234,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Sends user to "Welcome" activity when the "Continue without signing in" TextView is selected.
+     * Returns user to "Welcome" activity when the "Continue without signing in" TextView is selected.
      */
     private void continueToMain() {
-        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     private void attemptLogin() {

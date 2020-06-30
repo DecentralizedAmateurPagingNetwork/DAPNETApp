@@ -100,8 +100,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         setVersion();
 
-        // TODO: Check if user is signed in
-        // If false, start LoginActivity
+        // Obtain login status
+        if (savedInstanceState == null) {
+            boolean loggedIn = getSharedPreferences(SP, Context.MODE_PRIVATE).getBoolean("isLoggedIn", false);
+            // User is not logged in- start LoginActivity
+            if (!loggedIn) {
+                startActivity(new Intent(this, LoginActivity.class));
+            }
+        }
     }
 
     @Override
@@ -239,7 +245,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn));
         ft.commit();
         NavigationView navigationView = findViewById(R.id.nav_view);
-        //TODO: Find which item is checked and uncheck it
+        // TODO: Find which item is checked and uncheck it
         navigationView.getMenu().findItem(R.id.nav_calls).setChecked(false);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (!isDrawerLocked) {
@@ -264,7 +270,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
                 else {
-                    //TODO: implement .code,.message, snackbar
+                    // TODO: implement .code,.message, snackbar
                     Log.e(TAG, "Error.");
                 }
             }
