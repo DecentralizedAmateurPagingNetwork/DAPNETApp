@@ -124,7 +124,7 @@
     <string name="app_v_core_v_api_v" translatable="false" formatted="true">App %1$s, Core v%2$s, API v%3$s,</string>
     <string name="app_v" translatable="false" formatted="true">App v%1$s</string>
 
-    <string name="send_paging_message">Send paging message</string>
+    <string name="send_paging_message">\t\tSend paging message</string>
 
 
 </resources>

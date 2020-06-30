@@ -24,6 +24,13 @@
         android:id="@+id/include"
         layout="@layout/content_main" />
 
+    <!-- "New" fab -->
+    <Button
+        android:id="@+id/fab"
+        style="@style/FloatingActionButton"
+        android:contentDescription="@string/title_activity_postcall" />
+
+    <!--
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -34,18 +41,6 @@
         app:tint="@android:color/white"
         android:contentDescription="@string/title_activity_postcall"
         app:srcCompat="@mipmap/ic_radiotower_green" />
-
-    <!-- TODO: Unexpected appearance (drawable/floating_action_button.xml and styles.xml).
-            Use ExtendedFloatingActionButton after migrating to AndroidX. -->
-    <!--
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        style="@style/FloatingActionButton"
-        android:backgroundTint="@color/colorPrimary"
-        android:contentDescription="@string/title_activity_postcall"
-        app:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@mipmap/ic_radiotower_green"
-        app:tint="@android:color/white" />
         -->
 
 </android.support.design.widget.CoordinatorLayout>

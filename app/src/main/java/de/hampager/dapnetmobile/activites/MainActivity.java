@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -45,7 +46,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String SP = "sharedPref";
 
     private Toolbar toolbar;
-    private FloatingActionButton fab;
+    // private FloatingActionButton fab;
+    private Button fab; // "New" fab
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private FrameLayout frameLayout;
