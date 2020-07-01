@@ -52,9 +52,12 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
     private TableTypes selected = TableTypes.SUBSCRIBERS;
     private String addInfo ="";
     private RecyclerView.Adapter currentAdapter;
-    public TableFragment() {
-        // Empty constructor needed for android
+
+    public enum TableTypes {
+        CALLS, SUBSCRIBERS, RUBRICS, RUBRIC_CONTENT, TRANSMITTERS, TRANSMITTER_GROUPS, NODES, USERS
     }
+
+    public TableFragment() { /* Empty constructor needed for android */ }
 
     public static TableFragment newInstance(TableTypes tableType) {
         TableFragment fragment = new TableFragment();
@@ -63,6 +66,7 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
         fragment.setArguments(arguments);
         return fragment;
     }
+
     public static TableFragment newInstance(TableTypes tableType,String additionalInfo) {
         TableFragment fragment = new TableFragment();
         Bundle arguments = new Bundle();
@@ -89,69 +93,36 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
             case CALLS:
                 break;
             case SUBSCRIBERS:
-                mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        // Your code to refresh the list here.
-                        // Make sure you call swipeContainer.setRefreshing(false)
-                        // once the network request has completed successfully.
-                        fetchSubscribers();
-                    }
+                mSwipe.setOnRefreshListener(() -> {
+                    // Your code to refresh the list here.
+                    // TODO: Make sure you call swipeContainer.setRefreshing(false)
+                    //       once the network request has completed successfully.
+                    fetchSubscribers();
                 });
                 fetchSubscribers();
                 break;
             case RUBRICS:
-                mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        fetchRubrics();
-                    }
-                });
+                mSwipe.setOnRefreshListener(() -> fetchRubrics());
                 fetchRubrics();
                 break;
             case RUBRIC_CONTENT:
-                mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        fetchRubricContent();
-                    }
-                });
+                mSwipe.setOnRefreshListener(() -> fetchRubricContent());
                 fetchRubricContent();
                 break;
             case TRANSMITTERS:
-                mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        fetchTransmitters();
-                    }
-                });
+                mSwipe.setOnRefreshListener(() -> fetchTransmitters());
                 fetchTransmitters();
                 break;
             case TRANSMITTER_GROUPS:
-                mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        fetchTransmitterGroups();
-                    }
-                });
+                mSwipe.setOnRefreshListener(() -> fetchTransmitterGroups());
                 fetchTransmitterGroups();
                 break;
             case NODES:
-                mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        fetchNodes();
-                    }
-                });
+                mSwipe.setOnRefreshListener(() -> fetchNodes());
                 fetchNodes();
                 break;
             case USERS:
-                mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        fetchUsers();
-                    }
-                });
+                mSwipe.setOnRefreshListener(() -> fetchUsers());
                 fetchUsers();
                 break;
         }
@@ -184,7 +155,8 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                     Collections.sort(data, comparator);
                     adapter.setmValues(data);
                     adapter.notifyDataSetChanged();
-                } else {
+                }
+                else {
                     Log.e(TAG, "Error");
                     //TODO: .code,.message, UI
                 }
@@ -209,28 +181,20 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
         dapnet.getAllRubrics(new DapnetListener<List<Rubric>>() {
             @Override
             public void onResponse(DapnetResponse<List<Rubric>> dapnetResponse) {
-                if(dapnetResponse.isSuccessful()){
+                if(dapnetResponse.isSuccessful()) {
                     List<Rubric> data = dapnetResponse.body();
-
-                Comparator<Rubric> comparator = new Comparator<Rubric>() {
-                    @Override
-                    public int compare(Rubric o1, Rubric o2) {
-                        return o2.getName().compareTo(o1.getName());
-                    }
-                };
-                Collections.sort(data, comparator);
-                adapter.setmValues(data);
-                adapter.notifyDataSetChanged();
+                    Comparator<Rubric> comparator = (rubric1, rubric2) -> rubric2.getName().compareTo(rubric1.getName());
+                    Collections.sort(data, comparator);
+                    adapter.setmValues(data);
+                    adapter.notifyDataSetChanged();
                 }
                 mSwipe.setRefreshing(false);
-
             }
 
             @Override
             public void onFailure(Throwable throwable) {
                 Log.e(TAG, "Major connection error");
                 mSwipe.setRefreshing(false);
-
             }
         });
     }
@@ -245,19 +209,16 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
             public void onResponse(DapnetResponse<List<News>> dapnetResponse) {
                 if (dapnetResponse.isSuccessful()) {
                     List<News> data = dapnetResponse.body();
-                    Comparator<News> comparator = new Comparator<News>() {
-                        @Override
-                        public int compare(News o1, News o2) {
-                            String o1compareValue = "0";
-                            String o2compareValue = "0";
-                            if (o1 != null && o1.getTimestamp() != null) {
-                                o1compareValue = o1.getTimestamp();
-                            }
-                            if (o2 != null && o2.getTimestamp() != null) {
-                                o2compareValue = o2.getTimestamp();
-                            }
-                            return o1compareValue.compareTo(o2compareValue);
+                    Comparator<News> comparator = (o1, o2) -> {
+                        String o1compareValue = "0";
+                        String o2compareValue = "0";
+                        if (o1 != null && o1.getTimestamp() != null) {
+                            o1compareValue = o1.getTimestamp();
                         }
+                        if (o2 != null && o2.getTimestamp() != null) {
+                            o2compareValue = o2.getTimestamp();
+                        }
+                        return o1compareValue.compareTo(o2compareValue);
                     };
                     Collections.sort(data, comparator);
                     adapter.setmValues(data);
@@ -273,7 +234,6 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                 adapter.setmValues(data);
                 adapter.notifyDataSetChanged();
                 mSwipe.setRefreshing(false);
-
             }
         });
     }
@@ -291,14 +251,12 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                     adapter.notifyDataSetChanged();
                 }
                 mSwipe.setRefreshing(false);
-
             }
 
             @Override
             public void onFailure(Throwable throwable) {
                 Log.e(TAG, "Major connection error");
                 mSwipe.setRefreshing(false);
-
             }
         });
     }
@@ -316,14 +274,12 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                     adapter.notifyDataSetChanged();
                 }
                 mSwipe.setRefreshing(false);
-
             }
 
             @Override
             public void onFailure(Throwable throwable) {
                 Log.e(TAG, "Major connection error");
                 mSwipe.setRefreshing(false);
-
             }
         });
     }
@@ -341,14 +297,12 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                     adapter.notifyDataSetChanged();
                 }
                 mSwipe.setRefreshing(false);
-
             }
 
             @Override
             public void onFailure(Throwable throwable) {
                 Log.e(TAG, "Major connection error");
                 mSwipe.setRefreshing(false);
-
             }
         });
     }
@@ -366,14 +320,12 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                     adapter.notifyDataSetChanged();
                 }
                 mSwipe.setRefreshing(false);
-
             }
 
             @Override
             public void onFailure(Throwable throwable) {
                 Log.e(TAG, "Major connection error");
                 mSwipe.setRefreshing(false);
-
             }
         });
     }
@@ -384,9 +336,10 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
         Bundle arguments = this.getArguments();
         if (arguments != null) {
             selected = (TableTypes) arguments.getSerializable(TT);
-            try{
+            try {
                 addInfo = arguments.getString("AdditionalInfo");
-            }catch (Exception e){
+            }
+            catch (Exception e) {
                 addInfo = "";
             }
         }
@@ -401,7 +354,6 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
         mSwipe = v.findViewById(R.id.swipeRefreshCalls);
         initViews(v);
         // Setup refresh listener which triggers new data loading
-
         return v;
     }
 
@@ -465,5 +417,4 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
         return false;
     }
 
-    public enum TableTypes {CALLS, SUBSCRIBERS, RUBRICS, RUBRIC_CONTENT, TRANSMITTERS, TRANSMITTER_GROUPS, NODES, USERS}
 }

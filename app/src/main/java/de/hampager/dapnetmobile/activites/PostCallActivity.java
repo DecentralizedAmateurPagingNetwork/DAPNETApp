@@ -54,7 +54,6 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     private List<String> csnl = new ArrayList<>();
     private List<String> tgnl = new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,16 +78,10 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
     private void defineObjects() {
         message = findViewById(R.id.post_call_text);
         Switch emergency = findViewById(R.id.post_call_emergencyswitch);
-        String m = DapnetSingleton.getInstance().getUser().toUpperCase();
-        m += ": ";
+        String m = DapnetSingleton.getInstance().getUser().toUpperCase() + ": ";
         message.setText(m);
         message.requestFocus();
-        emergency.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                emergencyBool = isChecked;
-            }
-        });
+        emergency.setOnCheckedChangeListener((buttonView, isChecked) -> emergencyBool = isChecked);
     }
 
     private void getCallsigns() {
@@ -240,16 +233,13 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
     private FilteredArrayAdapter<TransmitterGroup> generateAdapter(TransmitterGroup[] transmittergroups) {
         return new FilteredArrayAdapter<TransmitterGroup>(this, R.layout.callsign_layout, transmittergroups) {
-
             @NonNull
             @Override
             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                 if (convertView == null) {
-
                     LayoutInflater l = (LayoutInflater) getContext().getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
                     convertView = l.inflate(R.layout.callsign_layout, parent, false);
                 }
-
                 TransmitterGroup p = getItem(position);
                 ((TextView) convertView.findViewById(R.id.name)).setText(p.getName());
                 ((TextView) convertView.findViewById(R.id.token_desc)).setText(p.getDescription());
@@ -274,13 +264,15 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                 callSignsCompletion.onFocusChanged(false, View.FOCUS_FORWARD, null);
                 transmitterGroupCompletion.onFocusChanged(false, View.FOCUS_FORWARD, null);
                 sendCallMethod(msg, csnl, tgnl, emergencyBool);
-            } else if (msg.length() == 0)
+            }
+            else if (msg.length() == 0)
                 genericSnackbar(getString(R.string.error_empty_msg));
             else if (msg.length() > 79)
                 genericSnackbar(getString(R.string.error_msg_too_long));
             else if (callSignsCompletion.getText().toString().length() == 0)
                 genericSnackbar(getString(R.string.error_empty_callsignlist));
-        } else {
+        }
+        else {
             genericSnackbar(getString(R.string.generic_error));
         }
     }
@@ -304,13 +296,12 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     Log.e(TAG, "Error.");
                     //TODO: implement .code,.message
                     //APIError error = ErrorUtils.parseError(response)
-
                 }
             }
 
             @Override
             public void onFailure(Throwable throwable) {
-// something went completely south (like no internet connection)
+                // something went completely south (like no internet connection)
                 Log.e(TAG, "Sending call seems to have failed");
                 Log.e(TAG, throwable.toString());
                 Snackbar.make(findViewById(R.id.postcallcoordinator), getString(R.string.error_no_internet), Snackbar.LENGTH_LONG).setAction("Action", null).show();

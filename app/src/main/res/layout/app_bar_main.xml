@@ -24,7 +24,7 @@
         android:id="@+id/include"
         layout="@layout/content_main" />
 
-    <!-- "New" fab -->
+    <!-- "New" fab- remains anchored to the bottom of the screen (Snackbar overlaps) -->
     <Button
         android:id="@+id/fab"
         style="@style/FloatingActionButton"

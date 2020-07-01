@@ -13,9 +13,10 @@
                 android:right="4dp"
                 android:bottom="4dp" />
 
+            <!--
             <stroke
                 android:width="4dp"
-                android:color="@color/colorPrimaryDark" />
+                android:color="@color/colorPrimaryDark" /> -->
         </shape>
     </item>
 

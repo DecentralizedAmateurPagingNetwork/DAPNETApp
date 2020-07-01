@@ -46,9 +46,7 @@ public class WelcomeFragment extends Fragment {
     private StatsAdapter adapter;
     private DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
 
-    public WelcomeFragment() {
-        // Required empty public constructor
-    }
+    public WelcomeFragment() { /* Required empty public constructor */ }
 
     /**
      * Use this factory method to create a new instance of
@@ -77,16 +75,19 @@ public class WelcomeFragment extends Fragment {
         /*
         muninImageView = v.findViewById(R.id.statsImage);
         if (server.contains("ampr.org"))
-            Picasso.with(muninImageView.getContext()).load("http://db0sda.ampr.org/munin-cgi/munin-cgi-graph/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png").into(muninImageView);
+            Picasso.with(muninImageView.getContext())
+                    .load("http://db0sda.ampr.org/munin-cgi/munin-cgi-graph/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png")
+                    .into(muninImageView);
         else
-            Picasso.with(muninImageView.getContext()).load("https://www.afu.rwth-aachen.de/munin-cgi/munin-cgi-graph/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png").into(muninImageView);
-        */
+            Picasso.with(muninImageView.getContext())
+                    .load("https://www.afu.rwth-aachen.de/munin-cgi/munin-cgi-graph/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png")
+                    .into(muninImageView);
+         */
         fetchJSON(server);
     }
 
 
     private void fetchJSON(String server) {
-
         dapnet.getStats(new DapnetListener<Stats>() {
             @Override
             public void onResponse(DapnetResponse<Stats> dapnetResponse) {
@@ -100,13 +101,13 @@ public class WelcomeFragment extends Fragment {
                 } else {
                     Log.e(TAG, "Error.");
                     //TODO: implement .code, .message
-
                     /*
                     APIError error = ErrorUtils.parseError(response);
                     Log.e(TAG,error.toString());
                     Log.e(TAG, "Error " + response.code());
                     Log.e(TAG, response.message());
-                    Snackbar.make(recyclerView, "Error! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();*/
+                    Snackbar.make(recyclerView, "Error! " + response.code() + " " + response.message(), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                     */
                 }
             }
 
@@ -122,8 +123,7 @@ public class WelcomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_welcome, container, false);
 
@@ -136,6 +136,5 @@ public class WelcomeFragment extends Fragment {
         initViews(v);
         return v;
     }
-
 
 }

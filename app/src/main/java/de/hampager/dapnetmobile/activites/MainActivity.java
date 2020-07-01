@@ -72,7 +72,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 MainActivity.this.startActivity(myIntent);
             }
             else {
-                Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
 
@@ -181,30 +182,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     ft.replace(R.id.container, new CallFragment()).addToBackStack("CALLS").commit();
                 }
                 else {
-                    Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                 }
                 break;
             case R.id.nav_subscribers:
-                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.SUBSCRIBERS)).addToBackStack("SUBSCRIBERS").commit();
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.SUBSCRIBERS))
+                        .addToBackStack("SUBSCRIBERS").commit();
                 break;
             case R.id.nav_rubrics:
-                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.RUBRICS)).addToBackStack("RUBRICS").commit();
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.RUBRICS))
+                        .addToBackStack("RUBRICS").commit();
                 break;
             case R.id.nav_transmitters:
-                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTERS)).addToBackStack("TRANSMITTERS").commit();
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTERS))
+                        .addToBackStack("TRANSMITTERS").commit();
                 break;
             case R.id.nav_map:
                 setActionBarTitle("DAPNET map");
                 ft.replace(R.id.container, new MapFragment()).addToBackStack("MAP").commit();
                 break;
             case R.id.nav_transmitterGroups:
-                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTER_GROUPS)).addToBackStack("TRANSMITTER_GROUPS").commit();
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTER_GROUPS))
+                        .addToBackStack("TRANSMITTER_GROUPS").commit();
                 break;
             case R.id.nav_nodes:
-                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.NODES)).addToBackStack("NODES").commit();
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.NODES))
+                        .addToBackStack("NODES").commit();
                 break;
             case R.id.nav_users:
-                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.USERS)).addToBackStack("USERS").commit();
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.USERS))
+                        .addToBackStack("USERS").commit();
                 break;
             case R.id.nav_githublink:
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_dapnet)));
@@ -232,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             default:
                 break;
         }
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         // item.setChecked(true)
         if (!isDrawerLocked) {
             drawer.closeDrawer(GravityCompat.START);
@@ -263,8 +271,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onResponse(DapnetResponse<Version> dapnetResponse) {
                 if (dapnetResponse.isSuccessful()) {
                     Log.i(TAG, "Connection was successful");
-                    try {TextView mNavHeadVersions = findViewById(R.id.navheadversions);
-                    mNavHeadVersions.setText(getString(R.string.app_v_core_v_api_v, BuildConfig.VERSION_NAME,
+                    try {
+                        TextView mNavHeadVersions = findViewById(R.id.navheadversions);
+                        mNavHeadVersions.setText(getString(R.string.app_v_core_v_api_v, BuildConfig.VERSION_NAME,
                             dapnetResponse.body().getCore(), dapnetResponse.body().getApi()));
                     }
                     catch (Exception e) {
