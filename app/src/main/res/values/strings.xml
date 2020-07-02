@@ -121,10 +121,40 @@
     <!-- MainActivity -->
     <string name="github_dapnet" translatable="false">https://github.com/DecentralizedAmateurPagingNetwork</string>
     <string name="github_feedback" translatable="false">https://github.com/DecentralizedAmateurPagingNetwork/DAPNETApp/issues</string>
-    <string name="app_v_core_v_api_v" translatable="false" formatted="true">App %1$s, Core v%2$s, API v%3$s,</string>
-    <string name="app_v" translatable="false" formatted="true">App v%1$s</string>
-
+    <string name="app_v_core_v_api_v" formatted="true" translatable="false">App %1$s, Core v%2$s, API v%3$s,</string>
+    <string name="app_v" formatted="true" translatable="false">App v%1$s</string>
+    <!-- "FloatingActionButton" -->
     <string name="send_paging_message">\t\tSend paging message</string>
 
+    <!-- Privacy -->
+    <string name="privacy_title"><b>Privacy</b></string>
+    <string name="privacy_content">The operators of these pages take the protection of your personal data very seriously.
+        We treat your personal data confidentiality and in accordance with the statutory data protection regulations and
+        this data protection declaration.
+
+        The use of our website is usually possible without providing personal data. Insofar as personal data (e.g. name,
+        address, ham radio call sign or email address) is collected on our website, this is always done on a voluntary
+        basis as far as possible. This data will not be passed on to third parties without your express consent. This does
+        not include the distribution of data within the network for its intended operation.
+
+        We would like to point out that data transmission over the Internet (e.g. when communicating by email) can have
+        security gaps. In HAMNET in particular, your personal data is also transmitted by law in open language, i.e. without
+        encryption. It is not possible to completely protect data from access by third parties. You expressly agree to
+        this. </string>
+    <string name="data_protection_regulation_title"><b>Special declaration under Regulation (EU) 2016/679 (General Data
+        Protection Regulation)</b></string>
+    <string name="data_protection_regulation_content">By participating in the paging network provided by this page, you
+        give a voluntary consent that your personal data and in particular also the paging that you send will be saved,
+        processed for the intended operation and shared within the DAPNET network. You can request information about the
+        data you have stored, its correction or deletion at any time. Please request this via the
+        &lt;a href="https://support.hampager.de/">support ticket system&lt;/a>.
+
+        Esp. Give the above voluntary consent by submitting a request in the ticket system to grant user access or access
+        from a broadcaster.</string>
+    <string name="special_use_title"><b>Special use of the data of a participating broadcaster</b></string>
+    <string name="special_use_content">If you have a transmitter entered in DAPNET, you voluntarily agree that the transmitter
+        data you provide (in particular the position, height and output power) on this website or in other networks or
+        platforms (e.g. the APRS network in the Amateur radio) are processed and / or published. This is defined as an
+        intended operation. You expressly accept this definition.</string>
 
 </resources>
