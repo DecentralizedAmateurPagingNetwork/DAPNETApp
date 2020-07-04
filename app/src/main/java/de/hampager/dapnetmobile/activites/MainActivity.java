@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
+            // Launch WelcomeFragment
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
             ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn));
@@ -109,21 +110,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setVersion();
 
         // temp
-        // Determine launch of PrivacyFragment - happens upon first launch of this app only
-        // TODO: Replace in SplashActivity
-        SharedPreferences pref = getSharedPreferences(SP, Context.MODE_PRIVATE);
-        if (pref.getBoolean("activity_executed", false)){
-            startActivity(new Intent(this, PrivacyActivity.class));
-
-            // TODO: replace with PrivacyFragment
-            // getSupportFragmentManager().beginTransaction().replace(R.id.container, PrivacyFragment.newInstance()).commit();
-        }
-        else {
-            SharedPreferences.Editor ed = pref.edit();
-            ed.putBoolean("activity_executed", true);
-            ed.apply();
-        }
-
         // Obtain login status
         if (savedInstanceState == null) {
             boolean loggedIn = getSharedPreferences(SP, Context.MODE_PRIVATE).getBoolean("isLoggedIn", false);
@@ -163,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mloginstatus.setTitle(R.string.nav_login);
             Log.i(TAG, "User is not logged in!");
         }
+        loginMenuItem.setVisible(!loggedIn);
 
         return true;
     }
@@ -170,17 +157,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        getMenuInflater().inflate(R.menu.login, menu);
-
         loginMenuItem = menu.findItem(R.id.action_login);
-        loginMenuItem.setVisible(loggedIn);
 
         return true;
     }
@@ -264,9 +247,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_loginstatus:
                 if (loggedIn) {
-                    SharedPreferences sharedPref = getSharedPreferences(SP, Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
+                    SharedPreferences pref = getSharedPreferences(SP, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
                     editor.clear();
+                    editor.putBoolean("privacy_activity_executed", true); // user has already seen PrivacyActivity upon 1st launch
                     editor.apply();
                 }
                 Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);

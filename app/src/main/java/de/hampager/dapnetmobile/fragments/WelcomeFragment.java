@@ -64,7 +64,6 @@ public class WelcomeFragment extends Fragment {
         return fragment;
     }
 
-
     private void initViews(View v) {
         recyclerView = v.findViewById(R.id.welcome_statslist);
         recyclerView.setHasFixedSize(true);
@@ -85,7 +84,6 @@ public class WelcomeFragment extends Fragment {
          */
         fetchJSON(server);
     }
-
 
     private void fetchJSON(String server) {
         dapnet.getStats(new DapnetListener<Stats>() {

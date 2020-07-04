@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         spinner = findViewById(R.id.spinner);
         addListeners();
         checkServers();
-        //mUsernameView.requestFocus();
+        mUsernameView.requestFocus();
     }
 
     public void addListeners() {

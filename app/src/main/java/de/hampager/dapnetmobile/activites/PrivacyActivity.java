@@ -1,13 +1,13 @@
 package de.hampager.dapnetmobile.activites;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -15,6 +15,11 @@ import android.widget.TextView;
 
 import de.hampager.dapnetmobile.R;
 
+/**
+ * PrivacyActivity : Adds View components dynamically.
+ * TODO: add to navigation drawer
+ * TODO: replace as fragment?
+ */
 public class PrivacyActivity extends AppCompatActivity {
 
     ImageView logoImageView;
@@ -48,10 +53,11 @@ public class PrivacyActivity extends AppCompatActivity {
         acceptButton.setOnClickListener(view -> {
             // Save preferences
             SharedPreferences.Editor prefEditor = getSharedPreferences(MainActivity.SP, Context.MODE_PRIVATE).edit();
-            prefEditor.putBoolean("activity_executed", false);
+            prefEditor.putBoolean("privacy_activity_executed", true);
             prefEditor.apply();
 
             // Send user to MainActivity
+            startActivity(new Intent(PrivacyActivity.this, MainActivity.class));
             finish();
         });
         privacyLinearLayout.addView(acceptButton);
