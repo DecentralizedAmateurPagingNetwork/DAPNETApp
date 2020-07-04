@@ -12,14 +12,12 @@ import android.widget.TextView;
 
 import de.hampager.dapnetmobile.R;
 
-
 /**
  * A simple {@link Fragment} subclass
  * Use the {@link HelpFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class HelpFragment extends Fragment {
-
 
     public HelpFragment() {
         // Required empty public constructor
@@ -35,10 +33,8 @@ public class HelpFragment extends Fragment {
         return new HelpFragment();
     }
 
-
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View result = inflater.inflate(R.layout.fragment_help, container, false);
         LinearLayout linearLayout = result.findViewById(R.id.helpLayout);

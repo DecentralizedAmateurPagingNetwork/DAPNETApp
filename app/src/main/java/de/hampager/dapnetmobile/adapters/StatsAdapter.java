@@ -51,7 +51,7 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.StatsViewHol
         }
 
     }
-    
+
     @Override
     public int getItemCount() {
         return map.size() - 2;

@@ -29,13 +29,15 @@ public class NodeFilter extends Filter {
             List<Node> filteredCallSigns = new ArrayList<>();
             for (Node node : filterList) {
                 //CHECK
-                String name= node.getName().toUpperCase();
-                String desc=node.getAddress().toString().toUpperCase();
-                String status=node.getStatus().toUpperCase();
-                String version=node.getVersion().toUpperCase();
+                String name = node.getName().toUpperCase();
+                String desc = node.getAddress().toString().toUpperCase();
+                String status = node.getStatus().toUpperCase();
+                String version = node.getVersion().toUpperCase();
                 List<String> ownerNames = node.getOwnerNames();
-                if(name.contains(constraintU)||(desc!=null&&desc.contains(constraintU))||status.contains(constraintU)||(version!=null&&version.contains(constraintU))||ownerNames.contains(constraint.toString()))
-                {
+                if(name.contains(constraintU)||(desc!=null&&desc.contains(constraintU))
+                        || status.contains(constraintU)
+                        || (version!=null&&version.contains(constraintU))
+                        || ownerNames.contains(constraint.toString())) {
                     //ADD CALL TO FILTERED
                     filteredCallSigns.add(node);
                 }
@@ -52,7 +54,6 @@ public class NodeFilter extends Filter {
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
         adapter.setmValues((ArrayList<Node>) results.values);
-        //REFRESH
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged(); // Refresh
     }
 }

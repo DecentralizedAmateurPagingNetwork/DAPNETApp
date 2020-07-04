@@ -8,7 +8,6 @@ import com.squareup.leakcanary.LeakCanary;
 
 import de.hampager.dap4j.DapnetSingleton;
 
-
 public class DAPNETApp extends Application {
     @Override
     public void onCreate() {

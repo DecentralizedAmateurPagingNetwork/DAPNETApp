@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -38,6 +40,7 @@ import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.fragments.CallFragment;
 import de.hampager.dapnetmobile.fragments.HelpFragment;
 import de.hampager.dapnetmobile.fragments.MapFragment;
+import de.hampager.dapnetmobile.fragments.PrivacyFragment;
 import de.hampager.dapnetmobile.fragments.TableFragment;
 import de.hampager.dapnetmobile.fragments.WelcomeFragment;
 
@@ -57,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private String mServer;
     private MenuItem mPreviousMenuItem;
     private boolean isDrawerLocked = false;
+
+    MenuItem loginMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +108,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         setVersion();
 
+        // temp
+        // Determine launch of PrivacyFragment - happens upon first launch of this app only
+        // TODO: Replace in SplashActivity
+        SharedPreferences pref = getSharedPreferences(SP, Context.MODE_PRIVATE);
+        if (pref.getBoolean("activity_executed", false)){
+            startActivity(new Intent(this, PrivacyActivity.class));
+
+            // TODO: replace with PrivacyFragment
+            // getSupportFragmentManager().beginTransaction().replace(R.id.container, PrivacyFragment.newInstance()).commit();
+        }
+        else {
+            SharedPreferences.Editor ed = pref.edit();
+            ed.putBoolean("activity_executed", true);
+            ed.apply();
+        }
+
         // Obtain login status
         if (savedInstanceState == null) {
             boolean loggedIn = getSharedPreferences(SP, Context.MODE_PRIVATE).getBoolean("isLoggedIn", false);
@@ -111,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(this, LoginActivity.class));
             }
         }
+        // temp
     }
 
     @Override
@@ -128,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        navigationView = findViewById(R.id.nav_view); // already created in onCreate?
+        navigationView = findViewById(R.id.nav_view);
         Menu nv = navigationView.getMenu();
         MenuItem mloginstatus = nv.findItem(R.id.nav_loginstatus);
         SharedPreferences sharedPref = getSharedPreferences(SP, Context.MODE_PRIVATE);
@@ -141,19 +163,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mloginstatus.setTitle(R.string.nav_login);
             Log.i(TAG, "User is not logged in!");
         }
+
         return true;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.login, menu);
+
+        loginMenuItem = menu.findItem(R.id.action_login);
+        loginMenuItem.setVisible(loggedIn);
+
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_login:
+                startActivity(new Intent(this, LoginActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**

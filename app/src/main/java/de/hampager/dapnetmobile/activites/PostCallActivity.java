@@ -177,8 +177,7 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
             }
         };
     }
-
-
+    
     private void getTransmitterGroups() {
         DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
         dapnet.getAllTransmitterGroups(new DapnetListener<List<TransmitterGroup>>() {
