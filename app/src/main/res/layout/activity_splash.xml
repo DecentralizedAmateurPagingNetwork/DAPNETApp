@@ -6,15 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".activites.SplashActivity">
 
+    <!-- android:background="@drawable/splash_background" -->
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="32dp"
+        android:layout_height="match_parent"
+        android:layout_margin="0dp"
         android:contentDescription="@string/rwth_afu_dapnet_logo_desc"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_afu_dapnet_logo" />
+        app:srcCompat="@drawable/ic_dapnet_logo" />
 
 </android.support.constraint.ConstraintLayout>

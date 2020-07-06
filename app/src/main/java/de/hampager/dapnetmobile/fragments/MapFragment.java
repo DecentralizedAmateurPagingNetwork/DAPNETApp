@@ -68,9 +68,8 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     private FolderOverlay offlinePersonalFolder = new FolderOverlay();
     private RadiusMarkerClusterer ofPClusterer;
 
-    public MapFragment() {
-        // Required empty public constructor
-    }
+    /** Required public constructor */
+    public MapFragment() { /* empty */ }
 
     /**
      * Use this factory method to create a new instance of
@@ -92,8 +91,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         Context ctx = Objects.requireNonNull(getActivity()).getApplicationContext();

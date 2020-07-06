@@ -12,6 +12,7 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MenuItem mPreviousMenuItem;
     private boolean isDrawerLocked = false;
 
-    MenuItem loginMenuItem;
+    MenuItem loginMenuItem, loginStatusMenuItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Log.i(TAG, "method: onCreate");
 
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
@@ -109,6 +112,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         setVersion();
 
+        //FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        //fragmentTransaction.replace(R.id.container, new PrivacyFragment()).addToBackStack("PRIVACY").commit();
+
         // temp
         // Obtain login status
         if (savedInstanceState == null) {
@@ -123,6 +129,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
+        Log.i(TAG, "method: onBackPressed");
+
         drawer = findViewById(R.id.drawer_layout); // already created in onCreate?
         if (drawer.isDrawerOpen(GravityCompat.START) && isDrawerLocked) {
             drawer.closeDrawer(GravityCompat.START);
@@ -136,17 +144,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        Log.i(TAG, "method: onPrepareOptionsMenu");
+
         navigationView = findViewById(R.id.nav_view);
         Menu nv = navigationView.getMenu();
-        MenuItem mloginstatus = nv.findItem(R.id.nav_loginstatus);
+        loginStatusMenuItem = nv.findItem(R.id.nav_loginstatus);
         SharedPreferences sharedPref = getSharedPreferences(SP, Context.MODE_PRIVATE);
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
+
+        // recycle this or place in helper method for when welcome screen is resumed
         if (loggedIn) {
-            mloginstatus.setTitle(R.string.nav_logout);
+            loginStatusMenuItem.setTitle(R.string.nav_logout);
             Log.i(TAG, "User is logged in!");
         }
         else {
-            mloginstatus.setTitle(R.string.nav_login);
+            loginStatusMenuItem.setTitle(R.string.nav_login);
             Log.i(TAG, "User is not logged in!");
         }
         loginMenuItem.setVisible(!loggedIn);
@@ -154,22 +166,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    /**
+     * Updates "Log in"/"Log out" menu item on left navigation drawer and
+     * shows/hides "Log in" menu item on top navigation bar.
+     *
+     * @param loggedIn  Flag set when user logs in/out
+     */
+    private void setLoginMenuItems(boolean loggedIn) {
+        loginStatusMenuItem.setTitle(((loggedIn) ? R.string.nav_logout : R.string.nav_login));
+        loginMenuItem.setVisible(!loggedIn);
+    }
+
     @Override
     public void onResume() {
+        Log.i(TAG, "method: onResume");
         super.onResume();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        Log.i(TAG, "method: onCreateOptionsMenu");
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         loginMenuItem = menu.findItem(R.id.action_login);
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.i(TAG, "method: onOptionsItemSelected");
+
         switch (item.getItemId()) {
             case R.id.action_login:
                 startActivity(new Intent(this, LoginActivity.class));
@@ -189,6 +215,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Log.i(TAG, "method: onNavigationItemSelected");
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         // item.setCheckable(true)
@@ -223,7 +251,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_map:
                 setActionBarTitle("DAPNET map");
-                ft.replace(R.id.container, new MapFragment()).addToBackStack("MAP").commit();
+                Fragment mapFragment = fragmentManager.findFragmentByTag("MAP");
+                if (mapFragment != null) {
+                    ft.replace(R.id.container, mapFragment).addToBackStack("MAP").commit();
+                }
+                else {
+                    ft.replace(R.id.container, new MapFragment()).addToBackStack("MAP").commit();
+                }
                 break;
             case R.id.nav_transmitterGroups:
                 ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTER_GROUPS))
@@ -246,20 +280,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(browserIntent);
                 break;
             case R.id.nav_loginstatus:
+                SharedPreferences pref = getSharedPreferences(SP, Context.MODE_PRIVATE);
                 if (loggedIn) {
-                    SharedPreferences pref = getSharedPreferences(SP, Context.MODE_PRIVATE);
+                    // Clear preferences
                     SharedPreferences.Editor editor = pref.edit();
                     editor.clear();
                     editor.putBoolean("privacy_activity_executed", true); // user has already seen PrivacyActivity upon 1st launch
+                    editor.putBoolean("isLoggedIn", false); // user is logging off
+                    loggedIn = false; // update flag
                     editor.apply();
                 }
-                Intent myIntent = new Intent(MainActivity.this, LoginActivity.class);
-                myIntent.putExtra("defServer", mServer);
-                MainActivity.this.startActivity(myIntent);
+                setLoginMenuItems(loggedIn); // update menu items (nav. drawer item to state "Log in" and show nav. bar item)
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                intent.putExtra("defServer", mServer);
+                startActivity(intent);
                 break;
             case R.id.nav_help:
                 setActionBarTitle("DAPNET help");
                 ft.replace(R.id.container, new HelpFragment()).addToBackStack("HELP").commit();
+                break;
+            case R.id.nav_privacy:
+                // TODO: replace with PrivacyFragment (should not populate with "Accept" button as the -Activity does)
+                // setActionBarTitle("Privacy");
+                // ft.replace(R.id.container, new PrivacyFragment()).addToBackStack("PRIVACY").commit();
+                startActivity(new Intent(this, PrivacyActivity.class));
                 break;
             default:
                 break;
@@ -273,6 +317,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
     
     public boolean onNavHeaderSelected() {
+        Log.i(TAG, "method: onNavHeaderSelected");
+
         setActionBarTitle("DAPNET");
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -305,8 +351,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
                 else {
-                    // TODO: implement .code,.message, snackbar
-                    Log.e(TAG, "Error.");
+                    // TODO: implement .code, .message, snackbar
+                    Log.e(TAG, "Error obtaining DAPNET version.");
                 }
             }
 
@@ -317,6 +363,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Snackbar.make(findViewById(R.id.container), "Fatal connection error.. " + throwable.getMessage(), Snackbar.LENGTH_LONG).show();
             }
         });
+
         mNavHeadVersions = findViewById(R.id.navheadversions);
         if (mNavHeadVersions != null) {
             mNavHeadVersions.setText(getString(R.string.app_v, BuildConfig.VERSION_NAME));

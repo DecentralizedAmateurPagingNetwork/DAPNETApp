@@ -31,7 +31,6 @@ import de.hampager.dap4j.models.Stats;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.adapters.StatsAdapter;
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link WelcomeFragment#newInstance} factory method to
@@ -72,6 +71,7 @@ public class WelcomeFragment extends Fragment {
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         String server = sharedPref.getString("server", getResources().getString(R.string.ClearNetURL));
         /*
+        // note: stats graph no longer updates from site
         muninImageView = v.findViewById(R.id.statsImage);
         if (server.contains("ampr.org"))
             Picasso.with(muninImageView.getContext())

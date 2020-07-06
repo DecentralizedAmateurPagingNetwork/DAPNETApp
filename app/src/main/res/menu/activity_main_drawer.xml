@@ -17,29 +17,28 @@
 
     <group android:id="@+id/nav_group_2">
         <item
-        android:id="@+id/nav_rubrics"
-        android:checkable="true"
-        android:icon="@drawable/ic_shape_black_48dp"
-        android:title="@string/rubrics" />
-    </group>
-    <group android:id="@+id/nav_group_3">
-
+            android:id="@+id/nav_map"
+            android:checkable="true"
+            android:icon="@mipmap/ic_map_black"
+            android:title="@string/map" />
         <item
             android:id="@+id/nav_transmitters"
             android:checkable="true"
             android:icon="@drawable/ic_radio_tower_black_48dp"
             android:title="@string/transmitters" />
         <item
-            android:id="@+id/nav_map"
-            android:checkable="true"
-            android:icon="@mipmap/ic_map_black"
-            android:title="@string/map" />
-
-        <item
             android:id="@+id/nav_transmitterGroups"
             android:checkable="true"
             android:icon="@drawable/ic_forum_black_48dp"
             android:title="@string/transmitter_groups" />
+    </group>
+
+    <group android:id="@+id/nav_group_3">
+        <item
+            android:id="@+id/nav_rubrics"
+            android:checkable="true"
+            android:icon="@drawable/ic_shape_black_48dp"
+            android:title="@string/rubrics" />
     </group>
 
     <group android:id="@+id/nav_group_4">
@@ -49,6 +48,7 @@
             android:icon="@drawable/ic_server_black_48dp"
             android:title="@string/nodes" />
     </group>
+
     <group android:id="@+id/nav_group_5">
         <item
             android:id="@+id/nav_users"
@@ -60,8 +60,10 @@
         android:icon="@android:drawable/ic_lock_power_off"
         android:title="@string/login" />
     </group>
+
     <group>
         <item android:title="@string/miscellaneous">
+
         <menu android:id="@+id/nav_misc_menu">
             <item
                 android:id="@+id/nav_help"
@@ -81,6 +83,12 @@
                 android:icon="@mipmap/ic_githubmark"
                 android:linksClickable="true"
                 android:title="@string/github" />
+            <item
+                android:id="@+id/nav_privacy"
+                android:checkable="true"
+                android:icon="@android:drawable/ic_secure"
+                android:linksClickable="true"
+                android:title="@string/privacy" />
         </menu>
         </item>
     </group>

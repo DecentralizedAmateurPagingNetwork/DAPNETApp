@@ -125,6 +125,8 @@
     <string name="app_v" formatted="true" translatable="false">App v%1$s</string>
     <!-- "FloatingActionButton" -->
     <string name="send_paging_message">\t\tSend paging message</string>
+    <!-- Navigation drawer -->
+    <string name="privacy">Privacy</string>
 
     <!-- Privacy (mind the formatting) -->
     <string name="privacy_title">&lt;br>&lt;b>&lt;u>Privacy&lt;/b>&lt;/u>&lt;br></string>

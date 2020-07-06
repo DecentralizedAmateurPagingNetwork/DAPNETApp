@@ -6,12 +6,11 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.squareup.haha.perflib.Main;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
 import de.hampager.dapnetmobile.R;
+import de.hampager.dapnetmobile.fragments.PrivacyFragment;
 
 /**
  * SplashActivity : displays app logo upon startup.
@@ -43,7 +42,6 @@ public class SplashActivity extends AppCompatActivity {
                 finish();
             }
         };
-
         // Timer to execute task after 3 seconds
         Timer t = new Timer();
         t.schedule(task, 3000);
