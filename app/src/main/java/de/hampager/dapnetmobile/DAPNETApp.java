@@ -17,7 +17,7 @@ public class DAPNETApp extends Application {
             // You should not init your app in this process.
             return;
         }
-        LeakCanary.install(this);
+        //LeakCanary.install(this);
         // Normal app init code...
         SharedPreferences sharedPref = getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         String url = sharedPref.getString("server", getResources().getString(R.string.ClearNetURL));

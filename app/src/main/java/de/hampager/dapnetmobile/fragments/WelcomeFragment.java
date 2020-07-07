@@ -22,6 +22,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import de.hampager.dap4j.DAPNET;
 import de.hampager.dap4j.DapnetSingleton;
@@ -42,6 +43,7 @@ public class WelcomeFragment extends Fragment {
     List<CardView> listItems = new ArrayList<>();
     //ImageView muninImageView;
     private RecyclerView recyclerView;
+    private MapFragment map;
     private StatsAdapter adapter;
     private DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
 
@@ -59,7 +61,6 @@ public class WelcomeFragment extends Fragment {
         Bundle args = new Bundle();
         args.putBoolean(ARG_PARAM1, loggedIn);
         fragment.setArguments(args);
-
         return fragment;
     }
 
@@ -82,6 +83,7 @@ public class WelcomeFragment extends Fragment {
                     .load("https://www.afu.rwth-aachen.de/munin-cgi/munin-cgi-graph/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png")
                     .into(muninImageView);
          */
+        map = new MapFragment();
         fetchJSON(server);
     }
 

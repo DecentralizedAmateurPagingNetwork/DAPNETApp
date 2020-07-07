@@ -34,7 +34,7 @@ public class SplashActivity extends AppCompatActivity {
 
                     /* TODO: replace with PrivacyFragment?
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.container, PrivacyFragment.newInstance()).commit(); */
+                            .replace(R.id.container, PrivacyFragment.newInstance(true)).commit(); */
                 }
                 else {
                     startActivity(new Intent(SplashActivity.this, MainActivity.class));

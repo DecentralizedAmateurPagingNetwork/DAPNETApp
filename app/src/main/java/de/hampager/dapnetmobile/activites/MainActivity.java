@@ -241,14 +241,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.SUBSCRIBERS))
                         .addToBackStack("SUBSCRIBERS").commit();
                 break;
-            case R.id.nav_rubrics:
-                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.RUBRICS))
-                        .addToBackStack("RUBRICS").commit();
-                break;
-            case R.id.nav_transmitters:
-                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTERS))
-                        .addToBackStack("TRANSMITTERS").commit();
-                break;
             case R.id.nav_map:
                 setActionBarTitle("DAPNET map");
                 Fragment mapFragment = fragmentManager.findFragmentByTag("MAP");
@@ -259,9 +251,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     ft.replace(R.id.container, new MapFragment()).addToBackStack("MAP").commit();
                 }
                 break;
+            case R.id.nav_transmitters:
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTERS))
+                        .addToBackStack("TRANSMITTERS").commit();
+                break;
             case R.id.nav_transmitterGroups:
                 ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTER_GROUPS))
                         .addToBackStack("TRANSMITTER_GROUPS").commit();
+                break;
+            case R.id.nav_rubrics:
+                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.RUBRICS))
+                        .addToBackStack("RUBRICS").commit();
                 break;
             case R.id.nav_nodes:
                 ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.NODES))
@@ -270,14 +270,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_users:
                 ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.USERS))
                         .addToBackStack("USERS").commit();
-                break;
-            case R.id.nav_githublink:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_dapnet)));
-                startActivity(browserIntent);
-                break;
-            case R.id.nav_feedbacklink:
-                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_feedback)));
-                startActivity(browserIntent);
                 break;
             case R.id.nav_loginstatus:
                 SharedPreferences pref = getSharedPreferences(SP, Context.MODE_PRIVATE);
@@ -299,11 +291,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 setActionBarTitle("DAPNET help");
                 ft.replace(R.id.container, new HelpFragment()).addToBackStack("HELP").commit();
                 break;
+            case R.id.nav_feedbacklink:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_feedback)));
+                startActivity(browserIntent);
+                break;
+            case R.id.nav_githublink:
+                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_dapnet)));
+                startActivity(browserIntent);
+                break;
             case R.id.nav_privacy:
-                // TODO: replace with PrivacyFragment (should not populate with "Accept" button as the -Activity does)
-                // setActionBarTitle("Privacy");
-                // ft.replace(R.id.container, new PrivacyFragment()).addToBackStack("PRIVACY").commit();
-                startActivity(new Intent(this, PrivacyActivity.class));
+                // startActivity(new Intent(this, PrivacyActivity.class));
+                setActionBarTitle("Privacy");
+                ft.replace(R.id.container, PrivacyFragment.newInstance(false)).addToBackStack("PRIVACY").commit();
                 break;
             default:
                 break;

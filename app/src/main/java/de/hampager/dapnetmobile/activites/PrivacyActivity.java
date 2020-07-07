@@ -17,8 +17,7 @@ import de.hampager.dapnetmobile.R;
 
 /**
  * PrivacyActivity : Adds View components dynamically.
- * TODO: add to navigation drawer
- * TODO: replace as fragment?
+ * TODO: replace launch from SplashActivity with PrivacyFragment instead
  */
 public class PrivacyActivity extends AppCompatActivity {
 
