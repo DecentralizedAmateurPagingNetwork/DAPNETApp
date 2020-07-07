@@ -115,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         //fragmentTransaction.replace(R.id.container, new PrivacyFragment()).addToBackStack("PRIVACY").commit();
 
-        // temp
         // Obtain login status
         if (savedInstanceState == null) {
             boolean loggedIn = getSharedPreferences(SP, Context.MODE_PRIVATE).getBoolean("isLoggedIn", false);
@@ -124,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(this, LoginActivity.class));
             }
         }
-        // temp
     }
 
     @Override
@@ -152,16 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences sharedPref = getSharedPreferences(SP, Context.MODE_PRIVATE);
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
 
-        // recycle this or place in helper method for when welcome screen is resumed
-        if (loggedIn) {
-            loginStatusMenuItem.setTitle(R.string.nav_logout);
-            Log.i(TAG, "User is logged in!");
-        }
-        else {
-            loginStatusMenuItem.setTitle(R.string.nav_login);
-            Log.i(TAG, "User is not logged in!");
-        }
-        loginMenuItem.setVisible(!loggedIn);
+        setLoginMenuItems(loggedIn);
 
         return true;
     }
@@ -173,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * @param loggedIn  Flag set when user logs in/out
      */
     private void setLoginMenuItems(boolean loggedIn) {
+        Log.i(TAG, (loggedIn) ? "User is logged in!" : "User is not logged in!");
         loginStatusMenuItem.setTitle(((loggedIn) ? R.string.nav_logout : R.string.nav_login));
         loginMenuItem.setVisible(!loggedIn);
     }
