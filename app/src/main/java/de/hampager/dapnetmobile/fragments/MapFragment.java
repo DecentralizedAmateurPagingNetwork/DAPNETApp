@@ -225,7 +225,6 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                 // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, throwable.getMessage());
             }
-
         });
     }
 

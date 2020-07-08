@@ -42,8 +42,9 @@ public class WelcomeFragment extends Fragment {
     private static final String TAG = "WelcomeFragment";
     List<CardView> listItems = new ArrayList<>();
     //ImageView muninImageView;
+    ImageView logoImageView;
     private RecyclerView recyclerView;
-    private MapFragment map;
+    private Fragment mapFragment;
     private StatsAdapter adapter;
     private DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
 
@@ -65,6 +66,7 @@ public class WelcomeFragment extends Fragment {
     }
 
     private void initViews(View v) {
+        logoImageView = v.findViewById(R.id.logo_imageview);
         recyclerView = v.findViewById(R.id.welcome_statslist);
         recyclerView.setHasFixedSize(true);
         GridLayoutManager mLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 2);
@@ -83,7 +85,6 @@ public class WelcomeFragment extends Fragment {
                     .load("https://www.afu.rwth-aachen.de/munin-cgi/munin-cgi-graph/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png")
                     .into(muninImageView);
          */
-        map = new MapFragment();
         fetchJSON(server);
     }
 
@@ -135,6 +136,18 @@ public class WelcomeFragment extends Fragment {
          */
         initViews(v);
         return v;
+    }
+
+    /**
+     * Hides image logo and stats table for the map to take up most of the screen.
+     *
+     * @param full  flag for expanding the map throughout the view
+     * @return full
+     */
+    public boolean setMapFull(boolean full) {
+        recyclerView.setVisibility((full) ? View.GONE : View.VISIBLE);
+        logoImageView.setVisibility((full) ? View.GONE : View.VISIBLE);
+        return full;
     }
 
 }

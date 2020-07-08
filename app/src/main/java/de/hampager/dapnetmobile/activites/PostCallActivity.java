@@ -84,6 +84,28 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         emergency.setOnCheckedChangeListener((buttonView, isChecked) -> emergencyBool = isChecked);
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sendbutton, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_send) {
+            // Check if no view has focus:
+            View view = this.getCurrentFocus();
+            if (view != null) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+            sendCall();
+            return true;
+        }
+        else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void getCallsigns() {
         DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
         dapnet.getAllCallSigns(new DapnetListener<List<CallSign>>() {
@@ -93,15 +115,12 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     Log.i(TAG, "Connection getting Callsigns was successful");
                     // tasks available
                     List<CallSign> data = dapnetResponse.body();
-                    Collections.sort(data, new Comparator<CallSign>() {
-                        @Override
-                        public int compare(CallSign o1, CallSign o2) {
-                            int n = o1.getName().compareTo(o2.getName());
-                            if (n == 0)
-                                return o1.getDescription().compareTo(o2.getDescription());
-                            else
-                                return n;
-                        }
+                    Collections.sort(data, (cs1, cs2) -> {
+                        int n = cs1.getName().compareTo(cs2.getName());
+                        if (n == 0)
+                            return cs1.getDescription().compareTo(cs2.getDescription());
+                        else
+                            return n;
                     });
                     CallSign[] dataArray = data.toArray(new CallSign[data.size()]);
                     saveData(dataArray);
@@ -116,7 +135,6 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
             public void onFailure(Throwable throwable) {
                 // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, "Error... Do you have internet? " + throwable.getMessage());
-
             }
         });
 
@@ -153,7 +171,6 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
     private FilteredArrayAdapter<CallSign> generateAdapter(CallSign[] callsigns) {
         return new FilteredArrayAdapter<CallSign>(this, R.layout.callsign_layout, callsigns) {
-
             @NonNull
             @Override
             public View getView(int position, View convertView, @NonNull ViewGroup parent) {
@@ -200,7 +217,8 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                     TransmitterGroup[] transmitterGroupResources = data.toArray(new TransmitterGroup[data.size()]);
                     saveData(transmitterGroupResources);
                     setTransmittergroups(transmitterGroupResources);
-                } else {
+                }
+                else {
                     //TODO: implement .code,message
                     Log.e(TAG, "Error.");
 
@@ -209,7 +227,6 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
 
             @Override
             public void onFailure(Throwable throwable) {
-
                 // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, "Error... Do you have internet? " + throwable.getMessage());
             }
@@ -276,10 +293,6 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
         }
     }
 
-    private void genericSnackbar(String s) {
-        Snackbar.make(findViewById(R.id.postcallcoordinator), s, Snackbar.LENGTH_LONG).setAction("Action", null).show();
-    }
-
     private void sendCallMethod(String msg, List<String> csnl, List<String> tgnl, boolean e) {
         CallResource sendvalue = new CallResource(msg, csnl, tgnl, e);
         DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
@@ -287,7 +300,6 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
             @Override
             public void onResponse(DapnetResponse<CallResource> dapnetResponse) {
                 if (dapnetResponse.isSuccessful()) {
-
                     Log.i(TAG, "Sending call worked with successful response");
                     Toast.makeText(PostCallActivity.this, getString(R.string.successfully_sent_message), Toast.LENGTH_SHORT).show();
                     finish();
@@ -303,31 +315,13 @@ public class PostCallActivity extends AppCompatActivity implements TokenComplete
                 // something went completely south (like no internet connection)
                 Log.e(TAG, "Sending call seems to have failed");
                 Log.e(TAG, throwable.toString());
-                Snackbar.make(findViewById(R.id.postcallcoordinator), getString(R.string.error_no_internet), Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                genericSnackbar(getString(R.string.error_no_internet));
             }
         });
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.sendbutton, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_send) {
-            // Check if no view has focus:
-            View view = this.getCurrentFocus();
-            if (view != null) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
-            sendCall();
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
+    private void genericSnackbar(String s) {
+        Snackbar.make(findViewById(R.id.postcallcoordinator), s, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
     @Override

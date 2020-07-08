@@ -47,10 +47,11 @@ public class TransmitterGroupCompletionView extends TokenCompleteTextView<Transm
     public void onFocusChanged(boolean hasFocus, int direction, Rect previous) {
         super.onFocusChanged(hasFocus, direction, previous);
 
-        if (hasFocus && getObjects().size() == 1
-                && getObjects().get(0).getName().equalsIgnoreCase("ALL")) {
+        /* keep "ALL"
+        if (hasFocus && getObjects().size() == 1 && getObjects().get(0).getName().equalsIgnoreCase("ALL")) {
             removeObject(getObjects().get(0));
         }
+        */
     }
 
 }

@@ -45,7 +45,6 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
         return new CallFragment();
     }
 
-
     private void initViews(View v) {
         adapter = new CallAdapter(new ArrayList<CallResource>());
         RecyclerView recyclerView = v.findViewById(R.id.item_recycler_view);
@@ -57,7 +56,6 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
         recyclerView.setLayoutManager(mLayoutManager);
         ((MainActivity) getActivity()).setActionBarTitle("DAPNET calls");
         fetchJSON();
-
     }
 
     private void fetchJSON() {
@@ -93,15 +91,13 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
                 // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, throwable.getMessage());
                 mSwipe.setRefreshing(false);
-
             }
         });
 
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_call, container, false);
         v.setTag(TAG);
@@ -109,24 +105,12 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
         mSwipe = v.findViewById(R.id.swipeRefreshCalls);
         initViews(v);
 
-
         // Setup refresh listener which triggers new data loading
-
-        mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-
-            @Override
-
-            public void onRefresh() {
-
-                // Your code to refresh the list here.
-
-                // Make sure you call swipeContainer.setRefreshing(false)
-
-                // once the network request has completed successfully.
-
-                fetchJSON();
-
-            }
+        mSwipe.setOnRefreshListener(() -> {
+            // Your code to refresh the list here.
+            // Make sure you call swipeContainer.setRefreshing(false)
+            // once the network request has completed successfully.
+            fetchJSON();
 
         });
         return v;
@@ -140,8 +124,6 @@ public class CallFragment extends Fragment implements SearchView.OnQueryTextList
         final MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setOnQueryTextListener(this);
-
-
     }
 
     @Override

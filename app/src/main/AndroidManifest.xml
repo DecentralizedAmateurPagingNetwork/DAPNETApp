@@ -57,6 +57,7 @@
         <activity
             android:name=".activites.PostCallActivity"
             android:label="@string/title_activity_postcall"
+            android:theme="@style/AppTheme"
             android:parentActivityName=".activites.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

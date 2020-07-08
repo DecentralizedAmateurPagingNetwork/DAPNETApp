@@ -5,11 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -62,7 +59,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private MenuItem mPreviousMenuItem;
     private boolean isDrawerLocked = false;
 
-    MenuItem loginMenuItem, loginStatusMenuItem;
+    private MenuItem loginMenuItem, loginStatusMenuItem;
+
+    private WelcomeFragment welcomeFragment;
+    private boolean isMapFull = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 MainActivity.this.startActivity(myIntent);
             }
             else {
-                Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                genericSnackbar(getString(R.string.error_logged_in));
             }
         });
 
@@ -93,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // Launch WelcomeFragment
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn));
+            ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn), "WelcomeFragment");
             ft.commit();
         }
 
@@ -111,9 +110,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             toggle.syncState();
         }
         setVersion();
-
-        //FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        //fragmentTransaction.replace(R.id.container, new PrivacyFragment()).addToBackStack("PRIVACY").commit();
 
         // Obtain login status
         if (savedInstanceState == null) {
@@ -136,7 +132,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else {
             SharedPreferences sharedPref = getSharedPreferences(SP, Context.MODE_PRIVATE);
             loggedIn = sharedPref.getBoolean("isLoggedIn", false);
-            super.onBackPressed();
+            if (isMapFull) {
+                isMapFull = welcomeFragment.setMapFull(false);
+            }
+            else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -151,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
 
         setLoginMenuItems(loggedIn);
-
         return true;
     }
 
@@ -170,6 +170,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onResume() {
         Log.i(TAG, "method: onResume");
+        // temp
+        welcomeFragment =  (WelcomeFragment) getSupportFragmentManager().findFragmentByTag("WelcomeFragment");
         super.onResume();
     }
 
@@ -207,6 +209,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.i(TAG, "method: onNavigationItemSelected");
 
+        if (isMapFull) {
+            isMapFull = welcomeFragment.setMapFull(false);
+        }
+
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         // item.setCheckable(true)
@@ -223,23 +229,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     ft.replace(R.id.container, new CallFragment()).addToBackStack("CALLS").commit();
                 }
                 else {
-                    Snackbar.make(findViewById(R.id.container), getString(R.string.error_logged_in), Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    genericSnackbar(getString(R.string.error_logged_in));
                 }
                 break;
             case R.id.nav_subscribers:
-                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.SUBSCRIBERS))
-                        .addToBackStack("SUBSCRIBERS").commit();
-                break;
-            case R.id.nav_map:
-                setActionBarTitle("DAPNET map");
-                Fragment mapFragment = fragmentManager.findFragmentByTag("MAP");
-                if (mapFragment != null) {
-                    ft.replace(R.id.container, mapFragment).addToBackStack("MAP").commit();
+                if (loggedIn) {
+                    ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.SUBSCRIBERS))
+                            .addToBackStack("SUBSCRIBERS").commit();
                 }
                 else {
-                    ft.replace(R.id.container, new MapFragment()).addToBackStack("MAP").commit();
+                    genericSnackbar(getString(R.string.error_logged_in));
                 }
+                break;
+            case R.id.nav_map:
+                // setActionBarTitle("DAPNET map");
+                // ft.replace(R.id.container, new MapFragment()).addToBackStack("MAP").commit();
+                isMapFull = welcomeFragment.setMapFull(true);
                 break;
             case R.id.nav_transmitters:
                 ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTERS))
@@ -250,16 +255,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .addToBackStack("TRANSMITTER_GROUPS").commit();
                 break;
             case R.id.nav_rubrics:
-                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.RUBRICS))
-                        .addToBackStack("RUBRICS").commit();
+                if (loggedIn) {
+                    ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.RUBRICS))
+                            .addToBackStack("RUBRICS").commit();
+                }
+                else {
+                    genericSnackbar(getString(R.string.error_logged_in));
+                }
                 break;
             case R.id.nav_nodes:
-                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.NODES))
-                        .addToBackStack("NODES").commit();
+                if (loggedIn) {
+                    ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.NODES))
+                            .addToBackStack("NODES").commit();
+                }
+                else {
+                    genericSnackbar(getString(R.string.error_logged_in));
+                }
                 break;
             case R.id.nav_users:
-                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.USERS))
-                        .addToBackStack("USERS").commit();
+                if (loggedIn) {
+                    ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.USERS))
+                            .addToBackStack("USERS").commit();
+                }
+                else {
+                    genericSnackbar(getString(R.string.error_logged_in));
+                }
                 break;
             case R.id.nav_loginstatus:
                 SharedPreferences pref = getSharedPreferences(SP, Context.MODE_PRIVATE);
@@ -290,9 +310,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(browserIntent);
                 break;
             case R.id.nav_privacy:
-                // startActivity(new Intent(this, PrivacyActivity.class));
-                setActionBarTitle("Privacy");
-                ft.replace(R.id.container, PrivacyFragment.newInstance(false)).addToBackStack("PRIVACY").commit();
+                startActivity(new Intent(this, PrivacyActivity.class));
+                // setActionBarTitle("Privacy");
+                // ft.replace(R.id.container, PrivacyFragment.newInstance(false)).addToBackStack("PRIVACY").commit();
                 break;
             default:
                 break;
@@ -357,6 +377,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (mNavHeadVersions != null) {
             mNavHeadVersions.setText(getString(R.string.app_v, BuildConfig.VERSION_NAME));
         }
+    }
+
+    private void genericSnackbar(String message) {
+        Snackbar.make(findViewById(R.id.container), message, Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 
     public void onNavHeaderSelected(View view) {
