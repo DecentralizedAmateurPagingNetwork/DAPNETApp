@@ -11,13 +11,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:contentDescription="@string/rwth_afu_dapnet_logo_desc"
-        app:layout_constraintBottom_toTopOf="@+id/map_fragment"
+        app:layout_constraintBottom_toTopOf="@+id/map_container"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_afu_dapnet_logo" />
 
-    <!--
+    <!-- not used
+
         <TextView
             android:id="@+id/loggedinmessage"
             android:layout_width="match_parent"
@@ -25,9 +26,21 @@
             android:text="@string/in_order_to_use_this_service_please_login" />
             -->
 
+    <!-- using FrameLayout container below to dynamically load MapFragment
+
     <fragment
         android:id="@+id/map_fragment"
         android:name="de.hampager.dapnetmobile.fragments.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/welcome_statslist"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/welcome_statslist"
+        app:layout_constraintTop_toBottomOf="@+id/logo_imageview" />
+        -->
+
+    <FrameLayout
+        android:id="@+id/map_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/welcome_statslist"
@@ -43,6 +56,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map_fragment" />
+        app:layout_constraintTop_toBottomOf="@+id/map_container" />
 
 </android.support.constraint.ConstraintLayout>

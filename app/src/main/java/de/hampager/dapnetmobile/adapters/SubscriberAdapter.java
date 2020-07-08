@@ -21,7 +21,7 @@ public class SubscriberAdapter extends RecyclerView.Adapter<SubscriberAdapter.Ta
     private List<CallSign> mValues;
     private List<CallSign> filterValues;
     private de.hampager.dapnetmobile.filters.SubscriberFilter subscriberFilter;
-    private static final String TAG="SubscriberAdapter";
+    private static final String TAG = "SubscriberAdapter";
 
     public SubscriberAdapter(List<CallSign> mValues) {
         this.mValues = mValues;
@@ -55,22 +55,25 @@ public class SubscriberAdapter extends RecyclerView.Adapter<SubscriberAdapter.Ta
                 lowerLeft.append(temp.getNumber());
                 lowerLeft.append(")");
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             Log.e(TAG,"Adapter error");
         }
         viewHolder.mLowerLeft.setText(lowerLeft.toString());
         try {
             viewHolder.mUpperRight.setText(hamnetCall.getOwnerNames().toString().toUpperCase());
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             Log.e(TAG,"Adapter error, setting text failed");
         }
     }
 
     @Override
     public int getItemCount() {
-        try{
+        try {
             return mValues.size();
-        } catch (Exception e){
+        }
+        catch (Exception e) {
             Log.e(TAG,"Error filtering");
             return 0;
         }

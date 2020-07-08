@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -44,6 +47,7 @@ public class WelcomeFragment extends Fragment {
     //ImageView muninImageView;
     ImageView logoImageView;
     private RecyclerView recyclerView;
+    private FrameLayout mapFrameLayout;
     private Fragment mapFragment;
     private StatsAdapter adapter;
     private DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
@@ -73,8 +77,9 @@ public class WelcomeFragment extends Fragment {
         recyclerView.setLayoutManager(mLayoutManager);
         SharedPreferences sharedPref = this.getActivity().getSharedPreferences("sharedPref", Context.MODE_PRIVATE);
         String server = sharedPref.getString("server", getResources().getString(R.string.ClearNetURL));
-        /*
-        // note: stats graph no longer updates from site
+
+        /* note: stats graph no longer updates from site
+        
         muninImageView = v.findViewById(R.id.statsImage);
         if (server.contains("ampr.org"))
             Picasso.with(muninImageView.getContext())
@@ -85,6 +90,15 @@ public class WelcomeFragment extends Fragment {
                     .load("https://www.afu.rwth-aachen.de/munin-cgi/munin-cgi-graph/db0sda.ampr.org/dapnet.db0sda.ampr.org/dapnet-week.png")
                     .into(muninImageView);
          */
+
+        // Initialize map
+        mapFrameLayout = v.findViewById(R.id.map_container);
+        this.getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.map_container, MapFragment.newInstance(), "MapFragment")
+                .commit();
+
+        // Initialize stats table
         fetchJSON(server);
     }
 

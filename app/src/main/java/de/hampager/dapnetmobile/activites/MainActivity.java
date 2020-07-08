@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         Log.i(TAG, "method: onCreate");
 
+        // "FloatingActionButton"
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             if (loggedIn) {
@@ -224,9 +225,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         switch (id) {
+            case R.id.nav_home:
+                // todo: define behavior
+                break;
             case R.id.nav_calls:
                 if (loggedIn) {
                     ft.replace(R.id.container, new CallFragment()).addToBackStack("CALLS").commit();
+                    //ft.replace(R.id.container, new CallFragment()).commit();
                 }
                 else {
                     genericSnackbar(getString(R.string.error_logged_in));
@@ -236,6 +241,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (loggedIn) {
                     ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.SUBSCRIBERS))
                             .addToBackStack("SUBSCRIBERS").commit();
+                    //ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.SUBSCRIBERS)).commit();
                 }
                 else {
                     genericSnackbar(getString(R.string.error_logged_in));

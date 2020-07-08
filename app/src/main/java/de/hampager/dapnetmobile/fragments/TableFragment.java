@@ -170,7 +170,6 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                 mSwipe.setRefreshing(false);
             }
         });
-
     }
 
     private void fetchRubrics() {

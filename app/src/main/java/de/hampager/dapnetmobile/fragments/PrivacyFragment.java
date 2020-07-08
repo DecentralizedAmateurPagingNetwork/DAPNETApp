@@ -93,7 +93,6 @@ public class PrivacyFragment extends Fragment {
             });
             privacyLinearLayout.addView(acceptButton);
         }
-
         return view;
     }
 

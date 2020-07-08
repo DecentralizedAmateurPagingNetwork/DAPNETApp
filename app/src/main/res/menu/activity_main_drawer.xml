@@ -2,17 +2,25 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawerMenu">
 
+    <group android:id="@+id/nav_group_0">
+        <item
+            android:id="@+id/nav_home"
+            android:checkable="true"
+            android:icon="@mipmap/ic_dapnetlogosmall"
+            android:title="@string/home" />
+    </group>
+
     <group android:id="@+id/nav_group_1">
-            <item
-                android:id="@+id/nav_calls"
-                android:checkable="true"
-                android:icon="@drawable/ic_textsms"
-                android:title="@string/calls" />
-            <item
-                android:id="@+id/nav_subscribers"
-                android:checkable="true"
-                android:icon="@drawable/ic_playlist_check_black_48dp"
-                android:title="@string/subscribers" />
+        <item
+            android:id="@+id/nav_calls"
+            android:checkable="true"
+            android:icon="@drawable/ic_textsms"
+            android:title="@string/calls" />
+        <item
+            android:id="@+id/nav_subscribers"
+            android:checkable="true"
+            android:icon="@drawable/ic_playlist_check_black_48dp"
+            android:title="@string/subscribers" />
     </group>
 
     <group android:id="@+id/nav_group_2">
@@ -56,9 +64,9 @@
             android:icon="@drawable/ic_account_multiple_black_48dp"
             android:title="@string/users" />
         <item
-        android:id="@+id/nav_loginstatus"
-        android:icon="@android:drawable/ic_lock_power_off"
-        android:title="@string/login" />
+            android:id="@+id/nav_loginstatus"
+            android:icon="@android:drawable/ic_lock_power_off"
+            android:title="@string/login" />
     </group>
 
     <group>

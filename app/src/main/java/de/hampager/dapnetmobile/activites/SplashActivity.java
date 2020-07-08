@@ -11,6 +11,7 @@ import java.util.TimerTask;
 
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.fragments.PrivacyFragment;
+import de.hampager.dapnetmobile.fragments.WelcomeFragment;
 
 /**
  * SplashActivity : displays app logo upon startup.
