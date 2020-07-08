@@ -79,7 +79,7 @@ public class WelcomeFragment extends Fragment {
         String server = sharedPref.getString("server", getResources().getString(R.string.ClearNetURL));
 
         /* note: stats graph no longer updates from site
-        
+
         muninImageView = v.findViewById(R.id.statsImage);
         if (server.contains("ampr.org"))
             Picasso.with(muninImageView.getContext())
@@ -113,7 +113,8 @@ public class WelcomeFragment extends Fragment {
                     adapter = new StatsAdapter(data);
                     recyclerView.setAdapter(adapter);
 
-                } else {
+                }
+                else {
                     Log.e(TAG, "Error.");
                     //TODO: implement .code, .message
                     /*

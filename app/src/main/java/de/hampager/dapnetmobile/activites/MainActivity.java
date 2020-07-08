@@ -77,8 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab = findViewById(R.id.fab);
         fab.setOnClickListener(view -> {
             if (loggedIn) {
-                Intent myIntent = new Intent(MainActivity.this, PostCallActivity.class);
-                MainActivity.this.startActivity(myIntent);
+                this.startActivity(new Intent(MainActivity.this, PostCallActivity.class));
             }
             else {
                 genericSnackbar(getString(R.string.error_logged_in));
@@ -91,10 +90,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (savedInstanceState == null) {
             // Launch WelcomeFragment
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-            ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn), "WelcomeFragment");
-            ft.commit();
+            this.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, WelcomeFragment.newInstance(loggedIn), "WelcomeFragment")
+                    .commit();
+        }
+        else {
+            this.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, welcomeFragment, "WelcomeFragment")
+                    .commit();
         }
 
         frameLayout = findViewById(R.id.content_frame);
@@ -112,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         setVersion();
 
-        // Obtain login status
+        // Check login status
         if (savedInstanceState == null) {
             boolean loggedIn = getSharedPreferences(SP, Context.MODE_PRIVATE).getBoolean("isLoggedIn", false);
             // User is not logged in- start LoginActivity
@@ -156,23 +159,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    /**
-     * Updates "Log in"/"Log out" menu item on left navigation drawer and
-     * shows/hides "Log in" menu item on top navigation bar.
-     *
-     * @param loggedIn  Flag set when user logs in/out
-     */
-    private void setLoginMenuItems(boolean loggedIn) {
-        Log.i(TAG, (loggedIn) ? "User is logged in!" : "User is not logged in!");
-        loginStatusMenuItem.setTitle(((loggedIn) ? R.string.nav_logout : R.string.nav_login));
-        loginMenuItem.setVisible(!loggedIn);
-    }
-
     @Override
     public void onResume() {
         Log.i(TAG, "method: onResume");
-        // temp
-        welcomeFragment =  (WelcomeFragment) getSupportFragmentManager().findFragmentByTag("WelcomeFragment");
+        welcomeFragment = (WelcomeFragment) getSupportFragmentManager().findFragmentByTag("WelcomeFragment");
+        setFABandTitle(true, "DAPNET");
         super.onResume();
     }
 
@@ -226,12 +217,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction ft = fragmentManager.beginTransaction();
         switch (id) {
             case R.id.nav_home:
-                // todo: define behavior
+                goToWelcomeFragment();
                 break;
             case R.id.nav_calls:
                 if (loggedIn) {
+                    // TODO: use string resources
+                    setFABandTitle(true, "DAPNET Calls");
                     ft.replace(R.id.container, new CallFragment()).addToBackStack("CALLS").commit();
-                    //ft.replace(R.id.container, new CallFragment()).commit();
                 }
                 else {
                     genericSnackbar(getString(R.string.error_logged_in));
@@ -239,28 +231,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_subscribers:
                 if (loggedIn) {
+                    setFABandTitle(false, "DAPNET Subscribers");
                     ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.SUBSCRIBERS))
                             .addToBackStack("SUBSCRIBERS").commit();
-                    //ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.SUBSCRIBERS)).commit();
                 }
                 else {
                     genericSnackbar(getString(R.string.error_logged_in));
                 }
                 break;
             case R.id.nav_map:
-                // setActionBarTitle("DAPNET map");
-                // ft.replace(R.id.container, new MapFragment()).addToBackStack("MAP").commit();
+                if (!welcomeFragmentVisible()) {
+                    // Go to WelcomeFragment if it is not currently displayed
+                    goToWelcomeFragment();
+                }
+                // Set map to fill container
+                setFABandTitle(false, "DAPNET Map");
                 isMapFull = welcomeFragment.setMapFull(true);
                 break;
             case R.id.nav_transmitters:
+                setFABandTitle(false, "Transmitters");
                 ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTERS))
                         .addToBackStack("TRANSMITTERS").commit();
                 break;
             case R.id.nav_transmitterGroups:
+                setFABandTitle(false, "Transmitter Groups");
                 ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTER_GROUPS))
                         .addToBackStack("TRANSMITTER_GROUPS").commit();
                 break;
             case R.id.nav_rubrics:
+                setFABandTitle(false, "DAPNET Rubrics");
                 if (loggedIn) {
                     ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.RUBRICS))
                             .addToBackStack("RUBRICS").commit();
@@ -271,6 +270,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_nodes:
                 if (loggedIn) {
+                    setFABandTitle(false, "DAPNET Nodes");
                     ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.NODES))
                             .addToBackStack("NODES").commit();
                 }
@@ -280,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_users:
                 if (loggedIn) {
+                    setFABandTitle(false, "DAPNET Users");
                     ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.USERS))
                             .addToBackStack("USERS").commit();
                 }
@@ -304,7 +305,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
                 break;
             case R.id.nav_help:
-                setActionBarTitle("DAPNET help");
+                setFABandTitle(false, "DAPNET Help");
                 ft.replace(R.id.container, new HelpFragment()).addToBackStack("HELP").commit();
                 break;
             case R.id.nav_feedbacklink:
@@ -316,9 +317,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(browserIntent);
                 break;
             case R.id.nav_privacy:
-                startActivity(new Intent(this, PrivacyActivity.class));
-                // setActionBarTitle("Privacy");
-                // ft.replace(R.id.container, PrivacyFragment.newInstance(false)).addToBackStack("PRIVACY").commit();
+                // startActivity(new Intent(this, PrivacyActivity.class));
+                setFABandTitle(false, "Privacy");
+                ft.replace(R.id.container, PrivacyFragment.newInstance(false)).addToBackStack("PRIVACY").commit();
                 break;
             default:
                 break;
@@ -330,15 +331,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         return true;
     }
-    
+
     public boolean onNavHeaderSelected() {
         Log.i(TAG, "method: onNavHeaderSelected");
 
-        setActionBarTitle("DAPNET");
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.replace(R.id.container, WelcomeFragment.newInstance(loggedIn));
-        ft.commit();
+        /*
+        this.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, WelcomeFragment.newInstance(loggedIn))
+                .commit(); */
+
+        goToWelcomeFragment();
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         // TODO: Find which item is checked and uncheck it
         navigationView.getMenu().findItem(R.id.nav_calls).setChecked(false);
@@ -347,6 +350,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         }
         return true;
+    }
+
+    private void goToWelcomeFragment() {
+        setFABandTitle(true, "DAPNET");
+        this.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, welcomeFragment)
+                .addToBackStack("WelcomeFragment")
+                .commit();
     }
 
     private void setVersion() {
@@ -395,6 +406,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void setActionBarTitle(String title) {
         Objects.requireNonNull(getSupportActionBar()).setTitle(title);
+    }
+
+    /**
+     * @return true if WelcomeFragment is the active frame, false otherwise
+     */
+    private boolean welcomeFragmentVisible() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.container);
+        return (currentFragment instanceof WelcomeFragment);
+    }
+
+    /**
+     * Updates "Log in"/"Log out" menu item on left navigation drawer and shows/hides "Log in" menu item on top
+     * navigation bar.
+     *
+     * @param loggedIn  Flag set when user logs in/out
+     */
+    private void setLoginMenuItems(boolean loggedIn) {
+        Log.i(TAG, (loggedIn) ? "User is logged in!" : "User is not logged in!");
+        loginStatusMenuItem.setTitle(((loggedIn) ? R.string.nav_logout : R.string.nav_login));
+        loginMenuItem.setVisible(!loggedIn);
+    }
+
+    /**
+     * The "FloatingActionButton" is preferably hidden when selecting menu items that correspond to Fragments that
+     * display information (Tx/groups, users, subscribers, ..., help and privacy pages).
+     *
+     * @param visible  flag for "FloatingActionButton" visibility
+     * @param title  the title of a Fragment
+     */
+    private void setFABandTitle(boolean visible, String title) {
+        this.setActionBarTitle(title);
+        fab.setVisibility((visible) ? View.VISIBLE : View.GONE);
     }
 
 }
