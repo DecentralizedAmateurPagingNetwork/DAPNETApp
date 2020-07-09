@@ -1,12 +1,12 @@
 package de.hampager.dapnetmobile.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +16,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import de.hampager.dapnetmobile.R;
+import de.hampager.dapnetmobile.activites.FragmentInteractionListener;
 import de.hampager.dapnetmobile.activites.MainActivity;
-import de.hampager.dapnetmobile.activites.PrivacyActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,6 +25,12 @@ import de.hampager.dapnetmobile.activites.PrivacyActivity;
  * create an instance of this fragment.
  */
 public class PrivacyFragment extends Fragment {
+    private static final String TAG = "PrivacyFragment";
+
+    private static final boolean FAB_VISIBLE = false;
+    private static final int TITLE_ID = R.string.privacy;
+
+    private FragmentInteractionListener mListener;
 
     private ImageView logoImageView;
     private LinearLayout privacyLinearLayout;
@@ -95,5 +101,34 @@ public class PrivacyFragment extends Fragment {
         }
         return view;
     }
+
+    // region for listener
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            mListener = (FragmentInteractionListener) getActivity();
+            mListener.onFragmentInteraction(FAB_VISIBLE, TITLE_ID);
+        }
+        catch (ClassCastException cce) {
+            Log.e(TAG, cce.getMessage());
+            //throw new ClassCastException(getActivity().toString() + " must implement FragmentInteractionListener.");
+        }
+        catch (NullPointerException npe) {
+            Log.e(TAG, npe.getMessage());
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+    // endregion for listener
 
 } // End of class PrivacyFragment

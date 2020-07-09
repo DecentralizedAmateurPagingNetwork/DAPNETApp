@@ -33,6 +33,7 @@ import de.hampager.dap4j.callbacks.DapnetListener;
 import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.Stats;
 import de.hampager.dapnetmobile.R;
+import de.hampager.dapnetmobile.activites.FragmentInteractionListener;
 import de.hampager.dapnetmobile.adapters.StatsAdapter;
 
 /**
@@ -43,6 +44,12 @@ import de.hampager.dapnetmobile.adapters.StatsAdapter;
 public class WelcomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String TAG = "WelcomeFragment";
+
+    private static final boolean FAB_VISIBLE = true;
+    private static final int TITLE_ID = R.string.dapnet;
+
+    private FragmentInteractionListener mListener;
+
     List<CardView> listItems = new ArrayList<>();
     //ImageView muninImageView;
     ImageView logoImageView;
@@ -50,9 +57,11 @@ public class WelcomeFragment extends Fragment {
     private FrameLayout mapFrameLayout;
     private Fragment mapFragment;
     private StatsAdapter adapter;
+
     private DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
 
-    public WelcomeFragment() { /* Required empty public constructor */ }
+    /** Required empty public constructor */
+    public WelcomeFragment() { /* empty */ }
 
     /**
      * Use this factory method to create a new instance of
@@ -164,5 +173,34 @@ public class WelcomeFragment extends Fragment {
         logoImageView.setVisibility((full) ? View.GONE : View.VISIBLE);
         return full;
     }
+
+    // region for listener
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            mListener = (FragmentInteractionListener) getActivity();
+            mListener.onFragmentInteraction(FAB_VISIBLE, TITLE_ID);
+        }
+        catch (ClassCastException cce) {
+            Log.e(TAG, cce.getMessage());
+            //throw new ClassCastException(getActivity().toString() + " must implement FragmentInteractionListener.");
+        }
+        catch (NullPointerException npe) {
+            Log.e(TAG, npe.getMessage());
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+    // endregion for listener
 
 }

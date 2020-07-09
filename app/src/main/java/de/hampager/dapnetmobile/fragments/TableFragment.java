@@ -1,5 +1,6 @@
 package de.hampager.dapnetmobile.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -33,6 +34,7 @@ import de.hampager.dap4j.models.Transmitter;
 import de.hampager.dap4j.models.TransmitterGroup;
 import de.hampager.dap4j.models.User;
 import de.hampager.dapnetmobile.R;
+import de.hampager.dapnetmobile.activites.FragmentInteractionListener;
 import de.hampager.dapnetmobile.activites.MainActivity;
 import de.hampager.dapnetmobile.adapters.NodeAdapter;
 import de.hampager.dapnetmobile.adapters.RubricAdapter;
@@ -46,6 +48,12 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
     //TODO: Fix Class format, extract Tabletypes properly
     private static final String TAG = "TableFragment";
     public static final String TT = "tableType";
+
+    private static final boolean FAB_VISIBLE = false;
+    //private static final int TITLE_ID = R.string.dapnet; // variable
+
+    private FragmentInteractionListener mListener;
+
     private RecyclerView recyclerView;
     private SwipeRefreshLayout mSwipe;
     private DAPNET dapnet;
@@ -87,8 +95,8 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
         recyclerView.setLayoutManager(mLayoutManager);
         dapnet = DapnetSingleton.getInstance().getDapnet();
         //Set titlebar
-        MainActivity activity=((MainActivity) getActivity());
-        activity.setActionBarTitle("DAPNET " + selected.toString().toLowerCase());
+        //MainActivity activity=((MainActivity) getActivity());
+        //activity.setActionBarTitle("DAPNET " + selected.toString().toLowerCase());
         switch (selected) {
             case CALLS:
                 break;
@@ -140,17 +148,14 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
                     Log.i(TAG, "Connection was successful");
                     // tasks available
                     List<CallSign> data = dapnetResponse.body();
-                    Comparator<CallSign> comparator = new Comparator<CallSign>() {
-                        @Override
-                        public int compare(CallSign o1, CallSign o2) {
-                            String n1="Z";
-                            String n2="Z";
-                            if (o1!=null&&o1.getName()!=null)
-                                n1=o1.getName();
-                            if (o2!=null&&o2.getName()!=null)
-                                n2=o2.getName();
-                            return n2.compareTo(n1);
-                        }
+                    Comparator<CallSign> comparator = (callSign1, callSign2) -> {
+                        String n1="Z";
+                        String n2="Z";
+                        if (callSign1!=null&&callSign1.getName()!=null)
+                            n1=callSign1.getName();
+                        if (callSign2!=null&&callSign2.getName()!=null)
+                            n2=callSign2.getName();
+                        return n2.compareTo(n1);
                     };
                     Collections.sort(data, comparator);
                     adapter.setmValues(data);
@@ -415,5 +420,61 @@ public class TableFragment extends Fragment implements SearchView.OnQueryTextLis
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
+
+    // region for listener
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            int titleID = R.string.dapnet;
+            switch (selected) {
+                case CALLS:
+                    titleID = R.string.calls;
+                    break;
+                case SUBSCRIBERS:
+                    titleID = R.string.subscribers;
+                    break;
+                case RUBRICS:
+                case RUBRIC_CONTENT:
+                    titleID = R.string.rubrics;
+                    break;
+                case TRANSMITTERS:
+                    titleID = R.string.transmitters;
+                    break;
+                case TRANSMITTER_GROUPS:
+                    titleID = R.string.transmitter_groups;
+                    break;
+                case NODES:
+                    titleID = R.string.nodes;
+                    break;
+                case USERS:
+                    titleID = R.string.users;
+                    break;
+                default:
+                    break;
+            }
+            mListener = (FragmentInteractionListener) getActivity();
+            mListener.onFragmentInteraction(FAB_VISIBLE, titleID);
+        }
+        catch (ClassCastException cce) {
+            Log.e(TAG, cce.getMessage());
+            //throw new ClassCastException(getActivity().toString() + " must implement FragmentInteractionListener.");
+        }
+        catch (NullPointerException npe) {
+            Log.e(TAG, npe.getMessage());
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+    // endregion for listener
 
 }

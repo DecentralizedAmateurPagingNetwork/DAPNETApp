@@ -37,32 +37,30 @@ import de.hampager.dapnetmobile.BuildConfig;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.fragments.CallFragment;
 import de.hampager.dapnetmobile.fragments.HelpFragment;
-import de.hampager.dapnetmobile.fragments.MapFragment;
 import de.hampager.dapnetmobile.fragments.PrivacyFragment;
 import de.hampager.dapnetmobile.fragments.TableFragment;
 import de.hampager.dapnetmobile.fragments.WelcomeFragment;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentInteractionListener {
     private static final String TAG = "MainActivity";
     public static final String SP = "sharedPref";
 
+    private TextView mNavHeadVersions;
     private Toolbar toolbar;
-    // private FloatingActionButton fab;
-    private Button fab; // "New" fab
+    private FrameLayout frameLayout;
+    private Button fab; // a "FloatingActionButton"; TODO: may replace with FAB or ExtendedFAB (req. AndroidX migration)
     private DrawerLayout drawer;
     private NavigationView navigationView;
-    private FrameLayout frameLayout;
-    private TextView mNavHeadVersions;
 
-    boolean loggedIn = false;
+    private boolean loggedIn; // Flag for login status
     private String mServer;
-    private MenuItem mPreviousMenuItem;
+
     private boolean isDrawerLocked = false;
+    private boolean isMapFull = false; // Flag for WelcomeFragment#setMapFull(boolean)
 
+    private MenuItem mPreviousMenuItem;
     private MenuItem loginMenuItem, loginStatusMenuItem;
-
     private WelcomeFragment welcomeFragment;
-    private boolean isMapFull = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         if (savedInstanceState == null) {
-            // Launch WelcomeFragment
+            // Launch new WelcomeFragment
             this.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, WelcomeFragment.newInstance(loggedIn), "WelcomeFragment")
                     .commit();
@@ -117,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Check login status
         if (savedInstanceState == null) {
-            boolean loggedIn = getSharedPreferences(SP, Context.MODE_PRIVATE).getBoolean("isLoggedIn", false);
+            loggedIn = getSharedPreferences(SP, Context.MODE_PRIVATE).getBoolean("isLoggedIn", false);
             // User is not logged in- start LoginActivity
             if (!loggedIn) {
                 startActivity(new Intent(this, LoginActivity.class));
@@ -129,13 +127,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         Log.i(TAG, "method: onBackPressed");
 
-        drawer = findViewById(R.id.drawer_layout); // already created in onCreate?
+        drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START) && isDrawerLocked) {
             drawer.closeDrawer(GravityCompat.START);
         }
         else {
-            SharedPreferences sharedPref = getSharedPreferences(SP, Context.MODE_PRIVATE);
-            loggedIn = sharedPref.getBoolean("isLoggedIn", false);
+            loggedIn = getSharedPreferences(SP, Context.MODE_PRIVATE).getBoolean("isLoggedIn", false);
             if (isMapFull) {
                 isMapFull = welcomeFragment.setMapFull(false);
             }
@@ -207,23 +204,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        // item.setCheckable(true)
+        //item.setCheckable(true)
         item.setChecked(true);
         if (mPreviousMenuItem != null && !(mPreviousMenuItem.equals(item))) {
             mPreviousMenuItem.setChecked(false);
         }
         mPreviousMenuItem = item;
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
+
         switch (id) {
             case R.id.nav_home:
                 goToWelcomeFragment();
                 break;
             case R.id.nav_calls:
                 if (loggedIn) {
-                    // TODO: use string resources
-                    setFABandTitle(true, "DAPNET Calls");
-                    ft.replace(R.id.container, new CallFragment()).addToBackStack("CALLS").commit();
+                    setFragment(new CallFragment(), "CALLS");
                 }
                 else {
                     genericSnackbar(getString(R.string.error_logged_in));
@@ -231,38 +225,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_subscribers:
                 if (loggedIn) {
-                    setFABandTitle(false, "DAPNET Subscribers");
-                    ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.SUBSCRIBERS))
-                            .addToBackStack("SUBSCRIBERS").commit();
+                    setFragment(TableFragment.newInstance(TableFragment.TableTypes.SUBSCRIBERS), "SUBSCRIBERS");
                 }
                 else {
                     genericSnackbar(getString(R.string.error_logged_in));
                 }
                 break;
             case R.id.nav_map:
-                if (!welcomeFragmentVisible()) {
+                if (!isWelcomeFragmentVisible()) {
                     // Go to WelcomeFragment if it is not currently displayed
                     goToWelcomeFragment();
                 }
                 // Set map to fill container
-                setFABandTitle(false, "DAPNET Map");
                 isMapFull = welcomeFragment.setMapFull(true);
                 break;
             case R.id.nav_transmitters:
-                setFABandTitle(false, "Transmitters");
-                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTERS))
-                        .addToBackStack("TRANSMITTERS").commit();
+                setFragment(TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTERS), "TRANSMITTERS");
                 break;
             case R.id.nav_transmitterGroups:
-                setFABandTitle(false, "Transmitter Groups");
-                ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTER_GROUPS))
-                        .addToBackStack("TRANSMITTER_GROUPS").commit();
+                setFragment(TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTER_GROUPS), "TRANSMITTER_GROUPS");
                 break;
             case R.id.nav_rubrics:
-                setFABandTitle(false, "DAPNET Rubrics");
+                setFABandTitle(false, getString(R.string.rubrics));
                 if (loggedIn) {
-                    ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.RUBRICS))
-                            .addToBackStack("RUBRICS").commit();
+                    setFragment(TableFragment.newInstance(TableFragment.TableTypes.RUBRICS), "RUBRICS");
                 }
                 else {
                     genericSnackbar(getString(R.string.error_logged_in));
@@ -270,9 +256,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_nodes:
                 if (loggedIn) {
-                    setFABandTitle(false, "DAPNET Nodes");
-                    ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.NODES))
-                            .addToBackStack("NODES").commit();
+                    setFragment(TableFragment.newInstance(TableFragment.TableTypes.NODES), "NODES");
                 }
                 else {
                     genericSnackbar(getString(R.string.error_logged_in));
@@ -280,9 +264,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_users:
                 if (loggedIn) {
-                    setFABandTitle(false, "DAPNET Users");
-                    ft.replace(R.id.container, TableFragment.newInstance(TableFragment.TableTypes.USERS))
-                            .addToBackStack("USERS").commit();
+                    setFragment(TableFragment.newInstance(TableFragment.TableTypes.USERS), "USERS");
                 }
                 else {
                     genericSnackbar(getString(R.string.error_logged_in));
@@ -291,44 +273,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_loginstatus:
                 SharedPreferences pref = getSharedPreferences(SP, Context.MODE_PRIVATE);
                 if (loggedIn) {
+                    loggedIn = false; // Update flag
                     // Clear preferences
-                    SharedPreferences.Editor editor = pref.edit();
-                    editor.clear();
-                    editor.putBoolean("privacy_activity_executed", true); // user has already seen PrivacyActivity upon 1st launch
-                    editor.putBoolean("isLoggedIn", false); // user is logging off
-                    loggedIn = false; // update flag
-                    editor.apply();
+                    pref.edit().clear()
+                            .putBoolean("privacy_activity_executed", true) // user has already seen PrivacyActivity
+                            .putBoolean("isLoggedIn", false)               // user is logging off
+                            .apply();
                 }
                 setLoginMenuItems(loggedIn); // update menu items (nav. drawer item to state "Log in" and show nav. bar item)
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                intent.putExtra("defServer", mServer);
-                startActivity(intent);
+                startActivity(new Intent(MainActivity.this, LoginActivity.class).putExtra("defServer", mServer));
                 break;
             case R.id.nav_help:
-                setFABandTitle(false, "DAPNET Help");
-                ft.replace(R.id.container, new HelpFragment()).addToBackStack("HELP").commit();
+                setFragment(new HelpFragment(), "HELP");
                 break;
             case R.id.nav_feedbacklink:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_feedback)));
-                startActivity(browserIntent);
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_feedback))));
                 break;
             case R.id.nav_githublink:
-                browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_dapnet)));
-                startActivity(browserIntent);
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.github_dapnet))));
                 break;
             case R.id.nav_privacy:
-                // startActivity(new Intent(this, PrivacyActivity.class));
-                setFABandTitle(false, "Privacy");
-                ft.replace(R.id.container, PrivacyFragment.newInstance(false)).addToBackStack("PRIVACY").commit();
+                //startActivity(new Intent(this, PrivacyActivity.class));
+                setFragment(PrivacyFragment.newInstance(false), "PRIVACY");
                 break;
             default:
                 break;
         }
+
         drawer = findViewById(R.id.drawer_layout);
         // item.setChecked(true)
         if (!isDrawerLocked) {
             drawer.closeDrawer(GravityCompat.START);
         }
+
         return true;
     }
 
@@ -350,14 +327,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         }
         return true;
-    }
-
-    private void goToWelcomeFragment() {
-        setFABandTitle(true, "DAPNET");
-        this.getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, welcomeFragment)
-                .addToBackStack("WelcomeFragment")
-                .commit();
     }
 
     private void setVersion() {
@@ -409,11 +378,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     * @return true if WelcomeFragment is the active frame, false otherwise
+     * The "FloatingActionButton" is preferably hidden when selecting menu items that correspond to Fragments that
+     * display information (Tx/groups, users, subscribers, ..., help and privacy pages).
+     *
+     * @param visible  Flag for "FloatingActionButton" visibility
+     * @param title  The title of the Fragment
      */
-    private boolean welcomeFragmentVisible() {
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.container);
-        return (currentFragment instanceof WelcomeFragment);
+    private void setFABandTitle(boolean visible, String title) {
+        this.setActionBarTitle(title);
+        fab.setVisibility((visible) ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -429,15 +402,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
-     * The "FloatingActionButton" is preferably hidden when selecting menu items that correspond to Fragments that
-     * display information (Tx/groups, users, subscribers, ..., help and privacy pages).
-     *
-     * @param visible  flag for "FloatingActionButton" visibility
-     * @param title  the title of a Fragment
+     * @return true if WelcomeFragment is the active frame, false otherwise
      */
-    private void setFABandTitle(boolean visible, String title) {
-        this.setActionBarTitle(title);
-        fab.setVisibility((visible) ? View.VISIBLE : View.GONE);
+    private boolean isWelcomeFragmentVisible() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.container);
+        return (currentFragment instanceof WelcomeFragment);
+    }
+
+    /**
+     * @param fragment  The new fragment to place in the main container
+     * @param tag   Optional tag name for the fragment,
+     *              to later retrieve the fragment with FragmentManager#findFragmentByTag(String).
+     */
+    private void setFragment(Fragment fragment, String tag) {
+        this.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, fragment)
+                .addToBackStack(tag)
+                .commit();
+    }
+
+    private void goToWelcomeFragment() {
+        setFABandTitle(true, "DAPNET");
+        setFragment(welcomeFragment, "WelcomeFragment");
+    }
+
+    @Override
+    public void onFragmentInteraction(boolean fabVisible, int titleID) {
+        Log.i(TAG, "method: onFragmentInteraction");
+        setFABandTitle(fabVisible, getString(titleID));
     }
 
 }
