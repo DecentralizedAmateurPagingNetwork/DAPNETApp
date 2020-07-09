@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,10 +78,11 @@ public class PrivacyFragment extends Fragment {
         for (String s : getResources().getStringArray(R.array.privacy)) {
             TextView tv = new TextView(getActivity());
             tv.setText(Html.fromHtml(s));
+            tv.setMovementMethod(LinkMovementMethod.getInstance()); // enables interaction with HTML link
             privacyLinearLayout.addView(tv);
         }
 
-        // If fragment is being launched from SplashActivity
+        // If fragment is being launched from SplashActivity (?)
         if (fromLaunch) {
             // Add Button dynamically
             acceptButton = new Button(getActivity());

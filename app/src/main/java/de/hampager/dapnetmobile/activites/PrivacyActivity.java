@@ -8,6 +8,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,6 +42,7 @@ public class PrivacyActivity extends AppCompatActivity {
         for (String s : getResources().getStringArray(R.array.privacy)) {
             TextView tv = new TextView(this);
             tv.setText(Html.fromHtml(s));
+            tv.setMovementMethod(LinkMovementMethod.getInstance()); // enables interaction with HTML link
             privacyLinearLayout.addView(tv);
         }
 
