@@ -159,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onResume() {
         Log.i(TAG, "method: onResume");
         welcomeFragment = (WelcomeFragment) getSupportFragmentManager().findFragmentByTag("WelcomeFragment");
-        setFABandTitle(true, "DAPNET");
         super.onResume();
     }
 
@@ -207,11 +206,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         mPreviousMenuItem = item;
 
-        // Handle navigation view item clicks here.
+        // Navigation item selection
         int id = item.getItemId();
-        //item.setCheckable(true)
+        //item.setCheckable(true);
         //item.setChecked(true);
-
         switch (id) {
             case R.id.nav_home:
                 goToWelcomeFragment();
@@ -247,7 +245,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 setFragment(TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTER_GROUPS), "TRANSMITTER_GROUPS");
                 break;
             case R.id.nav_rubrics:
-                setFABandTitle(false, getString(R.string.rubrics));
                 if (loggedIn) {
                     setFragment(TableFragment.newInstance(TableFragment.TableTypes.RUBRICS), "RUBRICS");
                 }
@@ -275,10 +272,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 SharedPreferences pref = getSharedPreferences(SP, Context.MODE_PRIVATE);
                 if (loggedIn) {
                     loggedIn = false; // Update flag
-                    // Clear preferences
-                    pref.edit().clear()
+                    pref.edit().clear() // Clear preferences
                             .putBoolean("privacy_activity_executed", true) // user has already seen PrivacyActivity
-                            .putBoolean("isLoggedIn", false)               // user is logging off
+                            .putBoolean("isLoggedIn", false) // user is logging off
                             .apply();
                 }
                 setLoginMenuItems(loggedIn); // update menu items (nav. drawer item to state "Log in" and show nav. bar item)
@@ -306,17 +302,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (!isDrawerLocked) {
             drawer.closeDrawer(GravityCompat.START);
         }
-
         return true;
     }
 
     public boolean onNavHeaderSelected() {
         Log.i(TAG, "method: onNavHeaderSelected");
-
-        /*
-        this.getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, WelcomeFragment.newInstance(loggedIn))
-                .commit(); */
 
         goToWelcomeFragment();
 
@@ -330,6 +320,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    /**
+     * Communicates with DAPNET server to set version information on the navigation head.
+     */
     private void setVersion() {
         DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
         dapnet.getVersion(new DapnetListener<Version>() {
@@ -403,6 +396,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
+     * Used to check if WelcomeFragment is the current Fragment before setting the map's visibility.
+     *
      * @return true if WelcomeFragment is the active frame, false otherwise
      */
     private boolean isWelcomeFragmentVisible() {
@@ -411,6 +406,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     /**
+     * Adds the given Fragment to the stack.
+     *
      * @param fragment  The new fragment to place in the main container
      * @param tag   Optional tag name for the fragment,
      *              to later retrieve the fragment with FragmentManager#findFragmentByTag(String).
@@ -427,6 +424,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setFragment(welcomeFragment, "WelcomeFragment");
     }
 
+    /**
+     * FragmentInteractionListener method to set the "FAB" and action bar title to those specified by the
+     * given fragment.
+     *
+     * @param fabVisible  Shows/hides "FloatingActionButton"
+     * @param titleID  Name for action bar title
+     */
     @Override
     public void onFragmentInteraction(boolean fabVisible, int titleID) {
         Log.i(TAG, "method: onFragmentInteraction");

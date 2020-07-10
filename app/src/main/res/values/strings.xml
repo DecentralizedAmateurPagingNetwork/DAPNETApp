@@ -91,22 +91,14 @@
     <string name="name">NAME</string>
     <string name="miniature_logo">Miniature Logo</string>
     <string name="DAPscription" translatable="false">&lt;p style="text-align:center">DAPNET is an international amateur radio paging network developed by the Amateur Radio Group at the RWTH Aachen University. In order to participate and use this app, you need to be a valid amateur radio operator and have an account at &lt;a href="http://www.hampager.de">hampager.de&lt;/a>. If you do not have a an account yet, visit our Website now and follow the instructions for subscription. You should also check out our Help/FAQ.&lt;br> This App has been created by &lt;a href=https://github.com/IHFSchwarz>IHFSchwarz&lt;/a> under supervision of &lt;a href=https://github.com/dh3wr>DH3WR&lt;/a>&lt;/p></string>
-
     <string name="compose_shortcut_short_label1" translatable="false">Compose</string>
     <string name="compose_shortcut_long_label1" translatable="false">Compose Call</string>
     <string name="compose_disabled_message1" translatable="false">Compose disabled</string>
-    <string name="subscribers">Subscribers</string>
-    <string name="rubrics">Rubrics</string>
-    <string name="transmitters">Transmitters</string>
-    <string name="transmitter_groups">Transmitter Groups</string>
-    <string name="nodes">Nodes</string>
-    <string name="users">Users</string>
     <string name="bubble" translatable="false">Bubble</string>
     <string name="title" translatable="false">Title</string>
     <string name="description">Description</string>
     <string name="address" translatable="false">Address</string>
 
-    <!-- Temp location -->
     <!-- activity_post_call -->
     <string name="callsigns">Call Signs</string>
     <!-- activity_login -->
@@ -117,7 +109,7 @@
     <string name="continue_without_signing_in">Continue without signing in</string>
     <string name="action_sign_up">Sign up</string>
     <string name="action_sign_up_short">Sign up</string>
-    <string name="dapnet_support">https://support.hampager.de</string>
+    <string name="dapnet_support" translatable="false">https://support.hampager.de</string>
     <!-- MainActivity -->
     <string name="github_dapnet" translatable="false">https://github.com/DecentralizedAmateurPagingNetwork</string>
     <string name="github_feedback" translatable="false">https://github.com/DecentralizedAmateurPagingNetwork/DAPNETApp/issues</string>
@@ -128,6 +120,12 @@
     <!-- Navigation drawer -->
     <string name="privacy">Privacy</string>
     <string name="home">Home</string>
+    <string name="subscribers">Subscribers</string>
+    <string name="rubrics">Rubrics</string>
+    <string name="transmitters">Transmitters</string>
+    <string name="transmitter_groups">Transmitter Groups</string>
+    <string name="nodes">Nodes</string>
+    <string name="users">Users</string>
 
     <!-- Privacy (mind the formatting) -->
     <string name="privacy_title">&lt;br>&lt;b>&lt;u>Privacy&lt;/b>&lt;/u>&lt;br></string>

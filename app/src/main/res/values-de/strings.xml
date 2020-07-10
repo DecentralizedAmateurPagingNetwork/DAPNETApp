@@ -38,7 +38,6 @@
     <string name="error_msg_too_long">Fehler: Nachricht enthält mehr als 80 Zeichen</string>
     <string name="error_empty_callsignlist">Fehler: Kein Empfänger-Rufzeichen angegeben"</string>
 
-
     <string name="help">Hilfe</string>
     <string name="success_welcome">"Erfolg! Wilkommen "</string>
     <string name="error_credentials">Fehler. Sind Ihre Anmeldedaten richtig?</string>
@@ -86,7 +85,27 @@
     <string name="description">Description</string>
     <string name="miniature_logo">Miniature Logo</string>
 
-    <!-- temp location -->
+    <!-- activity_post_call -->
+    <string name="callsigns">Rufzeichen</string>
+    <!-- activity_login -->
+    <string name="DAPscription2">DAPNET is an international amateur radio paging network developed by the Amateur
+        Radio Group at the RWTH Aachen University. In order to participate and use this app, you need to be a
+        valid amateur radio operator and have an account at hampager.de. If you do not have a an account yet, sign
+        up below for a new ticket with \"New DAPNET Account\" as the help topic.</string>
+    <string name="continue_without_signing_in">Continue without signing in</string>
+    <string name="action_sign_up">Anmelden</string>
+    <string name="action_sign_up_short">Anmelden</string>
+    <!-- "FloatingActionButton" -->
+    <string name="send_paging_message">\t\tNachricht senden</string>
+    <!-- Navigation drawer -->
+    <string name="privacy">Datenschutz</string>
+    <string name="home">Startseite</string>
+    <string name="subscribers">Abonnenten</string>
+    <string name="rubrics">Rubriken</string>
+    <string name="transmitters">Sender</string>
+    <string name="transmitter_groups">Sendergruppen</string>
+    <string name="nodes">Netzknoten</string>
+    <string name="users">Benutzer</string>
     <!-- Privacy -->
     <string name="privacy_title"><b>Datenschutz</b></string>
     <string name="privacy_content">Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst.
@@ -121,5 +140,7 @@
         auf dieser Webseite oder in anderen Netzwerken oder Plattformen (z.B. das APRS-Netzwerk im Amateurfunk)
         verarbeitet und/oder veröffentlicht werden. Dies wird als bestimmungsgemäßer Betrieb definiert. Diese Definition
         wird von Ihnen ausdrücklich akzeptiert.</string>
+
+    <string name="action_accept">Akzeptieren</string>
 
 </resources>
