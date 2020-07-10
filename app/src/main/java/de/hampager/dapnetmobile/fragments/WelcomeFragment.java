@@ -6,26 +6,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import de.hampager.dap4j.DAPNET;
 import de.hampager.dap4j.DapnetSingleton;
@@ -33,7 +25,7 @@ import de.hampager.dap4j.callbacks.DapnetListener;
 import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.Stats;
 import de.hampager.dapnetmobile.R;
-import de.hampager.dapnetmobile.activites.FragmentInteractionListener;
+import de.hampager.dapnetmobile.listeners.FragmentInteractionListener;
 import de.hampager.dapnetmobile.adapters.StatsAdapter;
 
 /**

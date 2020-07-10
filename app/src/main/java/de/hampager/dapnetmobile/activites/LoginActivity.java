@@ -14,9 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,6 +27,7 @@ import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.User;
 import de.hampager.dap4j.models.Version;
 import de.hampager.dapnetmobile.R;
+import de.hampager.dapnetmobile.listeners.CustomOnItemSelectedListener;
 
 /**
  * A login screen that offers login via username/password.

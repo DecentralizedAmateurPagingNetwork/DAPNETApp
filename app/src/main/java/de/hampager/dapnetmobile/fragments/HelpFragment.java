@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import de.hampager.dapnetmobile.R;
-import de.hampager.dapnetmobile.activites.FragmentInteractionListener;
+import de.hampager.dapnetmobile.listeners.FragmentInteractionListener;
 
 /**
  * A simple {@link Fragment} subclass

@@ -1,4 +1,4 @@
-package de.hampager.dapnetmobile.activites;
+package de.hampager.dapnetmobile.listeners;
 
 /**
  * FragmentInteractionListener : For use in MainActivity to manage its View components (action bar title

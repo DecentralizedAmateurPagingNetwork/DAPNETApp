@@ -28,7 +28,7 @@ import de.hampager.dap4j.callbacks.DapnetListener;
 import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.CallResource;
 import de.hampager.dapnetmobile.R;
-import de.hampager.dapnetmobile.activites.FragmentInteractionListener;
+import de.hampager.dapnetmobile.listeners.FragmentInteractionListener;
 import de.hampager.dapnetmobile.activites.MainActivity;
 import de.hampager.dapnetmobile.adapters.CallAdapter;
 

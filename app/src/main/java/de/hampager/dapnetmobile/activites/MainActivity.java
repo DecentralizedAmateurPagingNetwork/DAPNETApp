@@ -10,8 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -40,6 +38,7 @@ import de.hampager.dapnetmobile.fragments.HelpFragment;
 import de.hampager.dapnetmobile.fragments.PrivacyFragment;
 import de.hampager.dapnetmobile.fragments.TableFragment;
 import de.hampager.dapnetmobile.fragments.WelcomeFragment;
+import de.hampager.dapnetmobile.listeners.FragmentInteractionListener;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentInteractionListener {
     private static final String TAG = "MainActivity";
@@ -199,17 +198,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.i(TAG, "method: onNavigationItemSelected");
 
         if (isMapFull) {
+            // Reset logo/image and stats table visibility
             isMapFull = welcomeFragment.setMapFull(false);
         }
 
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        //item.setCheckable(true)
-        item.setChecked(true);
         if (mPreviousMenuItem != null && !(mPreviousMenuItem.equals(item))) {
             mPreviousMenuItem.setChecked(false);
         }
         mPreviousMenuItem = item;
+
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+        //item.setCheckable(true)
+        //item.setChecked(true);
 
         switch (id) {
             case R.id.nav_home:
