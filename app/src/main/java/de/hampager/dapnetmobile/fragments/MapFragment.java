@@ -31,9 +31,11 @@ import org.osmdroid.views.overlay.MapEventsOverlay;
 import org.osmdroid.views.overlay.Marker;
 import org.osmdroid.views.overlay.infowindow.InfoWindow;
 import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow;
+import org.osmdroid.views.overlay.simplefastpoint.LabelledGeoPoint;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import de.hampager.dap4j.DAPNET;
@@ -53,28 +55,27 @@ import de.hampager.dapnetmobile.R;
  * create an instance of this fragment.
  */
 public class MapFragment extends Fragment implements MapEventsReceiver {
-    public static final String BR = "<br/>";
-    static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
     private static final String TAG = "MapFragment";
+    static final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE = 1;
+
+    public static final String BR = "<br/>";
+
+    private static final GeoPoint START_POINT_DEFAULT = new GeoPoint(50.77623, 6.06937);
+
     Menu menu;
     private MapView map;
     private List<Transmitter> transmitterList = new ArrayList<>();
+
+    private RadiusMarkerClusterer onWClusterer, onPClusterer, ofWClusterer, ofPClusterer;
     private FolderOverlay onlineWideRangeFolder = new FolderOverlay();
-    private RadiusMarkerClusterer onWClusterer;
     private FolderOverlay onlinePersonalFolder = new FolderOverlay();
-    private RadiusMarkerClusterer onPClusterer;
     private FolderOverlay offlineWideRangeFolder = new FolderOverlay();
-    private RadiusMarkerClusterer ofWClusterer;
     private FolderOverlay offlinePersonalFolder = new FolderOverlay();
-    private RadiusMarkerClusterer ofPClusterer;
 
     /** Required public constructor */
     public MapFragment() { /* empty */ }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
      * @return A new instance of fragment MapFragment.
      */
     public static MapFragment newInstance() {
@@ -95,6 +96,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_map, container, false);
         Context ctx = Objects.requireNonNull(getActivity()).getApplicationContext();
+
         //important! set your user agent to prevent getting banned from the osm servers
         Configuration.getInstance().load(ctx, PreferenceManager.getDefaultSharedPreferences(ctx));
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
@@ -123,10 +125,21 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         map.setMultiTouchControls(true);
         map.setFlingEnabled(true);
         map.setMinZoomLevel(2.5);
-        GeoPoint startPoint = new GeoPoint(50.77623, 6.06937);
         IMapController mapController = map.getController();
-        mapController.setZoom(6.0);
+        mapController.setZoom(5.0);
+
+        // Set center start point
+        String localeString = Locale.getDefault().toString();
+        GeoPoint startPoint;
+        // TODO: check other locations (Locale/language- NZ/Aus, Chn/Jpn/Thai)
+        if (localeString.equals(Locale.US.toString())) {
+            startPoint = new LabelledGeoPoint(39.50,-98.35);
+        }
+        else {
+            startPoint = START_POINT_DEFAULT; // Europe
+        }
         mapController.setCenter(startPoint);
+
         try {
             onWClusterer = new RadiusMarkerClusterer(Objects.requireNonNull(getContext()));
             onPClusterer = new RadiusMarkerClusterer(getContext());
@@ -151,7 +164,6 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
             Drawable offlineWiderangeMarker = getResources().getDrawable(R.mipmap.ic_radiotower_red);
             Drawable onlinePersonalMarker = getResources().getDrawable(R.drawable.transmitter_personal_online);
             Drawable offlinePersonalMarker = getResources().getDrawable(R.drawable.transmitter_personal_offline);
-
             for (Transmitter t : transmitterList) {
                 Marker tempMarker = new Marker(map);
                 tempMarker.setPosition(new GeoPoint(t.getLatitude(), t.getLongitude()));
@@ -163,8 +175,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                     if (t.getUsage().equals("WIDERANGE")) {
                         tempMarker.setIcon(onlineWiderangeMarker);
                         onWClusterer.add(tempMarker);
-                    }
-                    else {
+                    } else {
                         tempMarker.setIcon(onlinePersonalMarker);
                         onPClusterer.add(tempMarker);
                     }
@@ -173,8 +184,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                     if (t.getUsage().equals("WIDERANGE")) {
                         tempMarker.setIcon(offlineWiderangeMarker);
                         ofWClusterer.add(tempMarker);
-                    }
-                    else {
+                    } else {
                         tempMarker.setIcon(offlinePersonalMarker);
                         ofPClusterer.add(tempMarker);
                     }
@@ -183,7 +193,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
             map.getOverlays().add(onlineWideRangeFolder);
             map.invalidate();
         }
-        catch (Exception e){
+        catch (Exception e) {
             Log.e(TAG,"Context missing?");
         }
     }
@@ -199,7 +209,6 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
 
     @Override
     public boolean longPressHelper(GeoPoint p) {
-        //DO NOTHING FOR NOW:
         return false;
     }
 
@@ -208,9 +217,8 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         dapnet.getAllTransmitters(new DapnetListener<List<Transmitter>>() {
             @Override
             public void onResponse(DapnetResponse<List<Transmitter>> dapnetResponse) {
-
                 if (dapnetResponse.isSuccessful()) {
-                    Log.i(TAG, "Connection was successful");
+                    Log.i(TAG, "Connection was successful.");
                     // tasks available
                     transmitterList = dapnetResponse.body();
                     config();
@@ -275,8 +283,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // permission was granted
                 Log.i(TAG, "Permission granted");
-            }
-            else {
+            } else {
                 // permission denied
                 Log.i(TAG, "Permission not granted");
             }
@@ -298,15 +305,13 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         boolean personalEnabled = menu.findItem(R.id.personal_filter).isChecked();
         if (onlineEnabled) {
             mapOnlineEnabledCheck(wideRangeEnabled, personalEnabled);
-        }
-        else {
+        } else {
             map.getOverlays().remove(onlineWideRangeFolder);
             map.getOverlays().remove(onlinePersonalFolder);
         }
         if (offlineEnabled) {
             mapOfflineEnabledCheck(wideRangeEnabled,personalEnabled);
-        }
-        else {
+        } else {
             map.getOverlays().remove(offlineWideRangeFolder);
             map.getOverlays().remove(offlinePersonalFolder);
         }
@@ -353,9 +358,7 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         }
     }
 
-    /**
-     * Refreshes the osmdroid configuration on resuming.
-     */
+    /** Refreshes the osmdroid configuration on resuming. */
     @Override
     public void onResume() {
         super.onResume();
@@ -365,8 +368,6 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
                 PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext()));
     }
 
-    public void onButtonPressed(Uri uri) {
-        // TODO: Not yet implemented
-    }
+    public void onButtonPressed(Uri uri) { /* Not yet implemented */ }
 
 }

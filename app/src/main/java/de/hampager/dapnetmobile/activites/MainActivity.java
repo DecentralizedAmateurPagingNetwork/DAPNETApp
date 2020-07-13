@@ -40,7 +40,9 @@ import de.hampager.dapnetmobile.fragments.TableFragment;
 import de.hampager.dapnetmobile.fragments.WelcomeFragment;
 import de.hampager.dapnetmobile.listeners.FragmentInteractionListener;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, FragmentInteractionListener {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, FragmentInteractionListener {
+
     private static final String TAG = "MainActivity";
     public static final String SP = "sharedPref";
 
@@ -75,8 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fab.setOnClickListener(view -> {
             if (loggedIn) {
                 this.startActivity(new Intent(MainActivity.this, PostCallActivity.class));
-            }
-            else {
+            } else {
                 genericSnackbar(getString(R.string.error_logged_in));
             }
         });
@@ -85,8 +86,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Populate container with WelcomeFragment
         if (savedInstanceState == null) {
-            // Launch new WelcomeFragment
             this.getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, WelcomeFragment.newInstance(loggedIn), "WelcomeFragment")
                     .commit();
@@ -151,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPreferences sharedPref = getSharedPreferences(SP, Context.MODE_PRIVATE);
         loggedIn = sharedPref.getBoolean("isLoggedIn", false);
 
-        setLoginMenuItems(loggedIn);
+        setLoginMenuItems(loggedIn); // "Log in"/"Log out" menu items in nav drawer and top action bar
         return true;
     }
 
@@ -197,8 +198,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Log.i(TAG, "method: onNavigationItemSelected");
 
         if (isMapFull) {
-            // Reset logo/image and stats table visibility
-            isMapFull = welcomeFragment.setMapFull(false);
+            isMapFull = welcomeFragment.setMapFull(false); // Reset logo/image and stats table visibility
         }
 
         if (mPreviousMenuItem != null && !(mPreviousMenuItem.equals(item))) {
@@ -217,26 +217,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_calls:
                 if (loggedIn) {
                     setFragment(new CallFragment(), "CALLS");
-                }
-                else {
+                } else {
                     genericSnackbar(getString(R.string.error_logged_in));
                 }
                 break;
             case R.id.nav_subscribers:
                 if (loggedIn) {
                     setFragment(TableFragment.newInstance(TableFragment.TableTypes.SUBSCRIBERS), "SUBSCRIBERS");
-                }
-                else {
+                } else {
                     genericSnackbar(getString(R.string.error_logged_in));
                 }
                 break;
+            // FIXME: fragment management here
             case R.id.nav_map:
                 if (!isWelcomeFragmentVisible()) {
-                    // Go to WelcomeFragment if it is not currently displayed
-                    goToWelcomeFragment();
+                    goToWelcomeFragment(); // Go to WelcomeFragment if it is not currently displayed
                 }
-                // Set map to fill container
-                isMapFull = welcomeFragment.setMapFull(true);
+                isMapFull = welcomeFragment.setMapFull(true); // Set map to fill container
                 break;
             case R.id.nav_transmitters:
                 setFragment(TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTERS), "TRANSMITTERS");
@@ -247,24 +244,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_rubrics:
                 if (loggedIn) {
                     setFragment(TableFragment.newInstance(TableFragment.TableTypes.RUBRICS), "RUBRICS");
-                }
-                else {
+                } else {
                     genericSnackbar(getString(R.string.error_logged_in));
                 }
                 break;
             case R.id.nav_nodes:
                 if (loggedIn) {
                     setFragment(TableFragment.newInstance(TableFragment.TableTypes.NODES), "NODES");
-                }
-                else {
+                } else {
                     genericSnackbar(getString(R.string.error_logged_in));
                 }
                 break;
             case R.id.nav_users:
                 if (loggedIn) {
                     setFragment(TableFragment.newInstance(TableFragment.TableTypes.USERS), "USERS");
-                }
-                else {
+                } else {
                     genericSnackbar(getString(R.string.error_logged_in));
                 }
                 break;
@@ -320,9 +314,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    /**
-     * Communicates with DAPNET server to set version information on the navigation head.
-     */
+    /** Communicates with DAPNET server to set version information on the navigation head. */
     private void setVersion() {
         DAPNET dapnet = DapnetSingleton.getInstance().getDapnet();
         dapnet.getVersion(new DapnetListener<Version>() {
@@ -349,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onFailure(Throwable throwable) {
                 // something went completely wrong (e.g. no internet connection)
                 Log.e(TAG, "Fatal connection error.. " + throwable.getMessage());
-                Snackbar.make(findViewById(R.id.container), "Fatal connection error.. " + throwable.getMessage(), Snackbar.LENGTH_LONG).show();
+                genericSnackbar("Fatal connection error.. " + throwable.getMessage());
             }
         });
 
@@ -402,6 +394,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private boolean isWelcomeFragmentVisible() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.container);
+        Log.i(TAG, "isWelcomeFragmentVisible=" + (currentFragment instanceof WelcomeFragment));
         return (currentFragment instanceof WelcomeFragment);
     }
 
@@ -413,6 +406,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      *              to later retrieve the fragment with FragmentManager#findFragmentByTag(String).
      */
     private void setFragment(Fragment fragment, String tag) {
+        Log.i(TAG, "setFragment=" + tag);
         this.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .addToBackStack(tag)
