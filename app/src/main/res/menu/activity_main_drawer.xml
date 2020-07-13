@@ -24,11 +24,13 @@
     </group>
 
     <group android:id="@+id/nav_group_2">
+        <!--
         <item
             android:id="@+id/nav_map"
             android:checkable="true"
             android:icon="@mipmap/ic_map_black"
             android:title="@string/map" />
+        -->
         <item
             android:id="@+id/nav_transmitters"
             android:checkable="true"

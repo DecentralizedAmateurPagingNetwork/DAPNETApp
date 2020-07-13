@@ -35,13 +35,14 @@ import de.hampager.dapnetmobile.BuildConfig;
 import de.hampager.dapnetmobile.R;
 import de.hampager.dapnetmobile.fragments.CallFragment;
 import de.hampager.dapnetmobile.fragments.HelpFragment;
+import de.hampager.dapnetmobile.fragments.MapFragment;
 import de.hampager.dapnetmobile.fragments.PrivacyFragment;
 import de.hampager.dapnetmobile.fragments.TableFragment;
 import de.hampager.dapnetmobile.fragments.WelcomeFragment;
 import de.hampager.dapnetmobile.listeners.FragmentInteractionListener;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, FragmentInteractionListener, MapFragment.OnWelcomeFragmentListener {
 
     private static final String TAG = "MainActivity";
     public static final String SP = "sharedPref";
@@ -133,12 +134,7 @@ public class MainActivity extends AppCompatActivity
         }
         else {
             loggedIn = getSharedPreferences(SP, Context.MODE_PRIVATE).getBoolean("isLoggedIn", false);
-            if (isMapFull) {
-                isMapFull = welcomeFragment.setMapFull(false);
-            }
-            else {
-                super.onBackPressed();
-            }
+            super.onBackPressed();
         }
     }
 
@@ -197,10 +193,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.i(TAG, "method: onNavigationItemSelected");
 
-        if (isMapFull) {
-            isMapFull = welcomeFragment.setMapFull(false); // Reset logo/image and stats table visibility
-        }
-
         if (mPreviousMenuItem != null && !(mPreviousMenuItem.equals(item))) {
             mPreviousMenuItem.setChecked(false);
         }
@@ -228,13 +220,14 @@ public class MainActivity extends AppCompatActivity
                     genericSnackbar(getString(R.string.error_logged_in));
                 }
                 break;
-            // FIXME: fragment management here
+            /*
             case R.id.nav_map:
                 if (!isWelcomeFragmentVisible()) {
                     goToWelcomeFragment(); // Go to WelcomeFragment if it is not currently displayed
                 }
                 isMapFull = welcomeFragment.setMapFull(true); // Set map to fill container
                 break;
+             */
             case R.id.nav_transmitters:
                 setFragment(TableFragment.newInstance(TableFragment.TableTypes.TRANSMITTERS), "TRANSMITTERS");
                 break;
@@ -429,6 +422,21 @@ public class MainActivity extends AppCompatActivity
     public void onFragmentInteraction(boolean fabVisible, int titleID) {
         Log.i(TAG, "method: onFragmentInteraction");
         setFABandTitle(fabVisible, getString(titleID));
+    }
+
+    /**
+     *  Implementation for MapFragment.OnWelcomeFragmentListener.
+     *  To communicate between MapFragment and MainActivity+WelcomeFragment;
+     *  MainActivity responds through OnWelcomeFragmentListener.setMapFull(boolean)
+     *  to call WelcomeFragment.setMapFull(boolean).
+     *
+     * @param fullscreenChecked  Flag to set WelcomeFragment map to fullscreen
+     * @return fullscreenChecked
+     */
+    @Override
+    public boolean setMapFull(boolean fullscreenChecked) {
+        welcomeFragment.setMapFull(fullscreenChecked);
+        return false;
     }
 
 }

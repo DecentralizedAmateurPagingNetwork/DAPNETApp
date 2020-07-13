@@ -126,6 +126,8 @@
     <string name="transmitter_groups">Transmitter Groups</string>
     <string name="nodes">Nodes</string>
     <string name="users">Users</string>
+    <!-- Map filter -->
+    <string name="full_filter">Fullscreen</string>
 
     <!-- Privacy (mind the formatting) -->
     <string name="privacy_title">&lt;br>&lt;b>&lt;u>Privacy&lt;/b>&lt;/u>&lt;br></string>

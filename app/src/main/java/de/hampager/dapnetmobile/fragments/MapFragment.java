@@ -72,6 +72,8 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     private FolderOverlay offlineWideRangeFolder = new FolderOverlay();
     private FolderOverlay offlinePersonalFolder = new FolderOverlay();
 
+    OnWelcomeFragmentListener mListener;
+
     /** Required public constructor */
     public MapFragment() { /* empty */ }
 
@@ -303,18 +305,26 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
         boolean offlineEnabled = menu.findItem(R.id.offline_filter).isChecked();
         boolean wideRangeEnabled = menu.findItem(R.id.widerange_filter).isChecked();
         boolean personalEnabled = menu.findItem(R.id.personal_filter).isChecked();
+
         if (onlineEnabled) {
             mapOnlineEnabledCheck(wideRangeEnabled, personalEnabled);
         } else {
             map.getOverlays().remove(onlineWideRangeFolder);
             map.getOverlays().remove(onlinePersonalFolder);
         }
+
         if (offlineEnabled) {
             mapOfflineEnabledCheck(wideRangeEnabled,personalEnabled);
         } else {
             map.getOverlays().remove(offlineWideRangeFolder);
             map.getOverlays().remove(offlinePersonalFolder);
         }
+
+        // To communicate with MainActivity and WelcomeFragment;
+        // MainActivity responds through OnWelcomeFragmentListener.setMapFull(boolean)
+        // to call WelcomeFragment.setMapFull(boolean).
+        mListener.setMapFull(menu.findItem(R.id.full_filter).isChecked());
+
         map.invalidate();
         InfoWindow.closeAllInfoWindowsOn(map);
         return true;
@@ -369,5 +379,41 @@ public class MapFragment extends Fragment implements MapEventsReceiver {
     }
 
     public void onButtonPressed(Uri uri) { /* Not yet implemented */ }
+
+    /** Listener for MapFragment.onOptionsItemSelected(MenuItem). */
+    public interface OnWelcomeFragmentListener {
+        /**
+         *  To communicate between MapFragment and MainActivity+WelcomeFragment;
+         *  MainActivity responds through OnWelcomeFragmentListener.setMapFull(boolean)
+         *  to call WelcomeFragment.setMapFull(boolean).
+         *
+         * @param fullscreenChecked  Flag to set WelcomeFragment map to fullscreen
+         * @return fullscreenChecked
+         */
+        boolean setMapFull(boolean fullscreenChecked);
+    }
+
+    // region for listener
+    @Override
+    public void onStart() {
+        super.onStart();
+        try {
+            mListener = (OnWelcomeFragmentListener) getActivity();
+        }
+        catch (ClassCastException cce) {
+            Log.e(TAG, cce.getMessage());
+            //throw new ClassCastException(getActivity().toString() + " must implement FragmentInteractionListener.");
+        }
+        catch (NullPointerException npe) {
+            Log.e(TAG, npe.getMessage());
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+    // endregion for listener
 
 }

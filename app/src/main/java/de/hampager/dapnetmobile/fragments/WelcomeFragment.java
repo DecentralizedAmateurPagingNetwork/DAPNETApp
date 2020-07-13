@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -154,6 +155,7 @@ public class WelcomeFragment extends Fragment {
         return v;
     }
 
+    // OnWelcomeFragmentListener
     /**
      * Hides image logo and stats table for the map to take up most of the screen.
      *

@@ -1,32 +1,53 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/menu_mapfilter"
+        android:title="@string/map"
+        android:icon="@android:drawable/ic_dialog_map"
+        app:showAsAction="always">
 
-    <item
-        android:id="@+id/online_filter"
-        android:title="@string/online_filter"
-        android:orderInCategory="10"
-         android:checkable="true"
-        android:checked="true"/>
-        <!--
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/filter"-->
-    <item
-        android:id="@+id/offline_filter"
-        android:title="@string/offline_filter"
-        android:orderInCategory="10"
-        android:checkable="true" />
-        <!--app:showAsAction="ifRoom" -->
-    <item
-        android:id="@+id/widerange_filter"
-        android:title="@string/widerange_filter"
-        android:orderInCategory="10"
-        android:checkable="true"
-        android:checked="true" />
-    <!--app:showAsAction="ifRoom" -->
-    <item
-        android:id="@+id/personal_filter"
-        android:title="@string/personal_filter"
-        android:orderInCategory="10"
-        android:checkable="true" />
-    <!--app:showAsAction="ifRoom" -->
+        <menu>
+
+            <item
+                android:id="@+id/online_filter"
+                android:title="@string/online_filter"
+                android:orderInCategory="10"
+                android:checkable="true"
+                android:checked="true"/>
+                <!--
+                app:showAsAction="ifRoom"
+                android:icon="@drawable/filter"-->
+            <item
+                android:id="@+id/offline_filter"
+                android:title="@string/offline_filter"
+                android:orderInCategory="10"
+                android:checkable="true" />
+                <!--app:showAsAction="ifRoom" -->
+            <item
+                android:id="@+id/widerange_filter"
+                android:title="@string/widerange_filter"
+                android:orderInCategory="10"
+                android:checkable="true"
+                android:checked="true" />
+            <!--app:showAsAction="ifRoom" -->
+            <item
+                android:id="@+id/personal_filter"
+                android:title="@string/personal_filter"
+                android:orderInCategory="10"
+                android:checkable="true" />
+            <!--app:showAsAction="ifRoom" -->
+
+            <!-- Communicates with WelcomeFragment to make its constituent MapFragment fullscreen -->
+            <item
+                android:id="@+id/full_filter"
+                android:title="@string/full_filter"
+                android:orderInCategory="11"
+                android:checkable="true" />
+
+        </menu>
+
+    </item>
+
 </menu>
