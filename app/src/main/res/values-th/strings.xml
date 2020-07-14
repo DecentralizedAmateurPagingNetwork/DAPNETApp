@@ -106,6 +106,8 @@
     <string name="transmitter_groups">กลุ่มเครื่องส่งสัญญาณ</string>
     <string name="nodes">โหนดเครือข่าย</string>
     <string name="users">ผู้ใช้</string>
+    <!-- Map filter -->
+    <string name="full_filter">เต็มจอ</string>
 
     <!-- Privacy (mind the formatting) -->
     <string name="privacy_title">&lt;br>&lt;b>&lt;u>Privacy&lt;/b>&lt;/u>&lt;br></string>

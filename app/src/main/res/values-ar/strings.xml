@@ -101,6 +101,8 @@
     <string name="transmitter_groups">مجموعات الإرسال</string>
     <string name="nodes">العقد</string>
     <string name="users">المستخدمون</string>
+    <!-- Map filter -->
+    <string name="full_filter">تكبير الشاشة</string>
 
     <!-- Privacy (mind the formatting) -->
     <string name="privacy_title">&lt;br>&lt;b>&lt;u>Privacy&lt;/b>&lt;/u>&lt;br></string>

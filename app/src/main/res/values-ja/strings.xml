@@ -106,6 +106,8 @@
     <string name="transmitter_groups">送信機グループ</string>
     <string name="nodes">ノード</string>
     <string name="users">ユーザー</string>
+    <!-- Map filter -->
+    <string name="full_filter">全画面表示</string>
 
     <!-- Privacy (mind the formatting) -->
     <string name="privacy_title">&lt;br>&lt;b>&lt;u>Privacy&lt;/b>&lt;/u>&lt;br></string>

@@ -106,6 +106,8 @@
     <string name="transmitter_groups">Sendergruppen</string>
     <string name="nodes">Netzknoten</string>
     <string name="users">Benutzer</string>
+    <!-- Map filter -->
+    <string name="full_filter">Ganzer Bildschirm</string>
     <!-- Privacy -->
     <string name="privacy_title"><b>Datenschutz</b></string>
     <string name="privacy_content">Die Betreiber dieser Seiten nehmen den Schutz Ihrer persönlichen Daten sehr ernst.

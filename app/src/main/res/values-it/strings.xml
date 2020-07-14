@@ -172,6 +172,8 @@
     <string name="transmitter_groups">Gruppi di trasmettitori</string>
     <string name="nodes">Nodi</string>
     <string name="users">Utenti</string>
+    <!-- Map filter -->
+    <string name="full_filter">Espandere</string>
 
     <!-- Privacy (mind the formatting) -->
     <string name="privacy_title">&lt;br>&lt;b>&lt;u>Privacy&lt;/b>&lt;/u>&lt;br></string>
