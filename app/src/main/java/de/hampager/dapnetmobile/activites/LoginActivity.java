@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
                 break;
-            case "http://db0sda.ampr.org/api/":
+            case "http://dapnet.db0sda.ampr.org/api/":
                 dapnet.getVersion(new DapnetListener<Version>() {
                     @Override
                     public void onResponse(DapnetResponse<Version> dapnetResponse) {
