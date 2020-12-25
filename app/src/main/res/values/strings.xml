@@ -91,18 +91,77 @@
     <string name="name">NAME</string>
     <string name="miniature_logo">Miniature Logo</string>
     <string name="DAPscription" translatable="false">&lt;p style="text-align:center">DAPNET is an international amateur radio paging network developed by the Amateur Radio Group at the RWTH Aachen University. In order to participate and use this app, you need to be a valid amateur radio operator and have an account at &lt;a href="http://www.hampager.de">hampager.de&lt;/a>. If you do not have a an account yet, visit our Website now and follow the instructions for subscription. You should also check out our Help/FAQ.&lt;br> This App has been created by &lt;a href=https://github.com/IHFSchwarz>IHFSchwarz&lt;/a> under supervision of &lt;a href=https://github.com/dh3wr>DH3WR&lt;/a>&lt;/p></string>
-
     <string name="compose_shortcut_short_label1" translatable="false">Compose</string>
     <string name="compose_shortcut_long_label1" translatable="false">Compose Call</string>
     <string name="compose_disabled_message1" translatable="false">Compose disabled</string>
-    <string name="subscribers" translatable="false">Subscribers</string>
-    <string name="rubrics" translatable="false">Rubrics</string>
-    <string name="transmitters" translatable="false">Transmitters</string>
-    <string name="transmitter_groups" translatable="false">Transmitter Groups</string>
-    <string name="nodes" translatable="false">Nodes</string>
-    <string name="users" translatable="false">Users</string>
     <string name="bubble" translatable="false">Bubble</string>
     <string name="title" translatable="false">Title</string>
     <string name="description">Description</string>
     <string name="address" translatable="false">Address</string>
+
+    <!-- activity_post_call -->
+    <string name="callsigns">Call Signs</string>
+    <!-- activity_login -->
+    <string name="DAPscription2">DAPNET is an international amateur radio paging network developed by the Amateur
+        Radio Group at the RWTH Aachen University. In order to participate and use this app, you need to be a
+        valid amateur radio operator and have an account at hampager.de. If you do not have a an account yet, sign
+        up below for a new ticket with \"New DAPNET Account\" as the help topic.</string>
+    <string name="continue_without_signing_in">Continue without signing in</string>
+    <string name="action_sign_up">Sign up</string>
+    <string name="action_sign_up_short">Sign up</string>
+    <string name="dapnet_support" translatable="false">https://support.hampager.de</string>
+    <!-- MainActivity -->
+    <string name="github_dapnet" translatable="false">https://github.com/DecentralizedAmateurPagingNetwork</string>
+    <string name="github_feedback" translatable="false">https://github.com/DecentralizedAmateurPagingNetwork/DAPNETApp/issues</string>
+    <string name="app_v_core_v_api_v" formatted="true" translatable="false">App %1$s, Core v%2$s, API v%3$s,</string>
+    <string name="app_v" formatted="true" translatable="false">App v%1$s</string>
+    <!-- "FloatingActionButton" -->
+    <string name="send_paging_message">\t\tSend paging message</string>
+    <!-- Navigation drawer -->
+    <string name="privacy">Privacy</string>
+    <string name="home">Home</string>
+    <string name="subscribers">Subscribers</string>
+    <string name="rubrics">Rubrics</string>
+    <string name="transmitters">Transmitters</string>
+    <string name="transmitter_groups">Transmitter Groups</string>
+    <string name="nodes">Nodes</string>
+    <string name="users">Users</string>
+    <!-- Map filter -->
+    <string name="full_filter">Fullscreen</string>
+
+    <!-- Privacy (mind the formatting) -->
+    <string name="privacy_title">&lt;br>&lt;b>&lt;u>Privacy&lt;/b>&lt;/u>&lt;br></string>
+    <string name="privacy_content">The operators of these pages take the protection of your personal data very seriously.
+        We treat your personal data confidentiality and in accordance with the statutory data protection regulations and
+        this data protection declaration.&lt;br>&lt;br>
+
+        The use of our website is usually possible without providing personal data. Insofar as personal data (e.g. name,
+        address, ham radio call sign or email address) is collected on our website, this is always done on a voluntary
+        basis as far as possible. This data will not be passed on to third parties without your express consent. This does
+        not include the distribution of data within the network for its intended operation.&lt;br>&lt;br>
+
+        We would like to point out that data transmission over the Internet (e.g. when communicating by email) can have
+        security gaps. In HAMNET in particular, your personal data is also transmitted by law in open language, i.e. without
+        encryption. It is not possible to completely protect data from access by third parties. You expressly agree to
+        this.&lt;br>&lt;br> </string>
+
+    <string name="data_protection_regulation_title">&lt;b>&lt;u>Special declaration under Regulation (EU) 2016/679 (General Data
+        Protection Regulation)&lt;/b>&lt;/u>&lt;br></string>
+    <string name="data_protection_regulation_content">By participating in the paging network provided by this page, you
+        give a voluntary consent that your personal data and in particular also the paging that you send will be saved,
+        processed for the intended operation and shared within the DAPNET network. You can request information about the
+        data you have stored, its correction or deletion at any time. Please request this via the
+        &lt;a href="https://support.hampager.de/">support ticket system&lt;/a>.&lt;br>&lt;br>
+
+        Esp. Give the above voluntary consent by submitting a request in the ticket system to grant user access or access
+        from a broadcaster.&lt;br>&lt;br></string>
+
+    <string name="special_use_title">&lt;b>&lt;u>Special use of the data of a participating broadcaster&lt;/b>&lt;/u>&lt;br></string>
+    <string name="special_use_content">If you have a transmitter entered in DAPNET, you voluntarily agree that the transmitter
+        data you provide (in particular the position, height and output power) on this website or in other networks or
+        platforms (e.g. the APRS network in the Amateur radio) are processed and / or published. This is defined as an
+        intended operation. You expressly accept this definition.&lt;br>&lt;br></string>
+
+    <string name="action_accept">Accept</string>
+
 </resources>

@@ -24,13 +24,23 @@
         android:id="@+id/include"
         layout="@layout/content_main" />
 
+    <!-- "New" fab- remains anchored to the bottom of the screen (Snackbar overlaps) -->
+    <Button
+        android:id="@+id/fab"
+        style="@style/FloatingActionButton"
+        android:contentDescription="@string/title_activity_postcall" />
+
+    <!--
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
+        android:layout_gravity="bottom|center"
+        app:backgroundTint="@color/colorPrimary"
+        app:tint="@android:color/white"
         android:contentDescription="@string/title_activity_postcall"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:srcCompat="@mipmap/ic_radiotower_green" />
+        -->
 
 </android.support.design.widget.CoordinatorLayout>

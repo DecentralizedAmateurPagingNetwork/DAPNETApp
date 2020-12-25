@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string-array name="privacy">
+
+        <item name="privacy_title">@string/privacy_title</item>
+        <item name="privacy_content">@string/privacy_content</item>
+        <item name="data_protection_regulation_title">@string/data_protection_regulation_title</item>
+        <item name="data_protection_regulation_content">@string/data_protection_regulation_content</item>
+        <item name="special_use_title">@string/special_use_title</item>
+        <item name="special_use_content">@string/special_use_content</item>
+
+    </string-array>
+</resources>

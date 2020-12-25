@@ -14,5 +14,4 @@ public class TokenTextView extends AppCompatTextView {
         super(context, attrs);
     }
 
-
 }

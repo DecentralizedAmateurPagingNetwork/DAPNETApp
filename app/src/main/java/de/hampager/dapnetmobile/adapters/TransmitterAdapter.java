@@ -34,9 +34,10 @@ public class TransmitterAdapter extends RecyclerView.Adapter<TransmitterAdapter.
     //Write Content of Call Items for the RecyclerView
     @Override
     public void onBindViewHolder(@NonNull TableViewHolder viewHolder, int i) {
-        //TODO: ADAPT
+        // TODO: ADAPT ?
         Transmitter hamnetTransmitter = mValues.get(i);
-        viewHolder.mCenter.setText(hamnetTransmitter.getDeviceType() + " " + hamnetTransmitter.getDeviceVersion());
+        String s = hamnetTransmitter.getDeviceType() + " " + hamnetTransmitter.getDeviceVersion();
+        viewHolder.mCenter.setText(s);
         viewHolder.mUpperLeft.setText(hamnetTransmitter.getOwnerNames().toString());
         if (hamnetTransmitter.getAddress() != null && hamnetTransmitter.getAddress().getIpAddr() != null)
             viewHolder.mUpperRight.setText(hamnetTransmitter.getAddress().getIpAddr());

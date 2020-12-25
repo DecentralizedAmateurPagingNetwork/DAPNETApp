@@ -1,66 +1,61 @@
-<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="de.hampager.dapnetmobile.fragments.WelcomeFragment">
--->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_margin="16dp">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/logo_imageview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="4dp"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
-        android:paddingBottom="64dp">
+        android:layout_marginBottom="16dp"
+        android:contentDescription="@string/rwth_afu_dapnet_logo_desc"
+        app:layout_constraintBottom_toTopOf="@+id/map_container"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_afu_dapnet_logo" />
 
-        <ImageView
-            android:id="@+id/imageView2"
-            app:srcCompat="@mipmap/ic_afu_dapnet_logo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/rwth_afu_dapnet_logo_desc"
-            android:padding="8dp" />
+    <!-- not used
 
         <TextView
             android:id="@+id/loggedinmessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/in_order_to_use_this_service_please_login"
-            android:visibility="gone" />
+            android:text="@string/in_order_to_use_this_service_please_login" />
+            -->
 
-        <TextView
-            android:padding="4dp"
-            android:id="@+id/DAPscription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="" />
+    <!-- using FrameLayout container below to dynamically load MapFragment
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/welcome_statslist"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+    <fragment
+        android:id="@+id/map_fragment"
+        android:name="de.hampager.dapnetmobile.fragments.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/welcome_statslist"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/welcome_statslist"
+        app:layout_constraintTop_toBottomOf="@+id/logo_imageview" />
+        -->
 
-        </android.support.v7.widget.RecyclerView>
+    <FrameLayout
+        android:id="@+id/map_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/welcome_statslist"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/welcome_statslist"
+        app:layout_constraintTop_toBottomOf="@+id/logo_imageview" />
 
-        <ImageView
-            android:id="@+id/statsImage"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:cropToPadding="true"
-            android:padding="4dp"
-            app:srcCompat="@mipmap/ic_afu_dapnet_logo"
-            android:contentDescription="@string/statistics_for_dapnet" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/welcome_statslist"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/map_container" />
 
-    </LinearLayout>
-</ScrollView>
-<!--
-</FrameLayout>
-
--->
+</android.support.constraint.ConstraintLayout>

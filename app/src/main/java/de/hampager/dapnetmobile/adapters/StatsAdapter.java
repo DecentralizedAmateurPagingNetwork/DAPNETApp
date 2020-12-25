@@ -29,18 +29,28 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsAdapter.StatsViewHol
     @Override
     public void onBindViewHolder(@NonNull StatsViewHolder holder, int position) {
         if (position == 7) {
-            holder.nameTextView.setText(getNameByIndex(map, position) + "/Up");
-            holder.numberTextView.setText(getNumberByIndex(map, position) + "/" + getNumberByIndex(map, position + 1));
-        } else if (position == 8) {
-            holder.nameTextView.setText(getNameByIndex(map, position + 1) + "/Up");
-            holder.numberTextView.setText(getNumberByIndex(map, position + 1)+ "/" + getNumberByIndex(map, position + 2));
-        } else {
+            // "Nodes/Up"
+            String label = getNameByIndex(map, position) + "/Up";
+            String value = getNumberByIndex(map, position) + "/" + getNumberByIndex(map, position + 1);
+
+            holder.nameTextView.setText(label);
+            holder.numberTextView.setText(value);
+        }
+        else if (position == 8) {
+            // "Transmitters/Up"
+            // String label = getNameByIndex(map, position + 1) + "/Up"; TODO: find variable to value "Transmitters" and replace with Tx
+            String label = "TX/Up";
+            String value = getNumberByIndex(map, position + 1)+ "/" + getNumberByIndex(map, position + 2);
+
+            holder.nameTextView.setText(label);
+            holder.numberTextView.setText(value);
+        }
+        else {
             holder.nameTextView.setText(getNameByIndex(map, position));
             holder.numberTextView.setText(String.valueOf(getNumberByIndex(map, position)));
         }
 
     }
-
 
     @Override
     public int getItemCount() {

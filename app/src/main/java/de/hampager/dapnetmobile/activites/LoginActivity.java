@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
@@ -13,9 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,7 +27,7 @@ import de.hampager.dap4j.callbacks.DapnetResponse;
 import de.hampager.dap4j.models.User;
 import de.hampager.dap4j.models.Version;
 import de.hampager.dapnetmobile.R;
-
+import de.hampager.dapnetmobile.listeners.CustomOnItemSelectedListener;
 
 /**
  * A login screen that offers login via username/password.
@@ -46,7 +45,8 @@ public class LoginActivity extends AppCompatActivity {
     private View mLoginFormView;
     private Spinner spinner;
     private Button mSignInButton;
-
+    private Button mSignUpButton;
+    private TextView mContinueView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,34 +58,28 @@ public class LoginActivity extends AppCompatActivity {
         mUsernameView = findViewById(R.id.user);
         mPasswordView = findViewById(R.id.password);
         mSignInButton = findViewById(R.id.user_sign_in_button);
+        mSignUpButton = findViewById(R.id.user_sign_up_button);
+        mContinueView = findViewById(R.id.continue_textview);
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        spinner = findViewById(R.id.spinner);
         addListeners();
         checkServers();
         mUsernameView.requestFocus();
     }
 
     public void addListeners() {
-        spinner = findViewById(R.id.spinner);
         spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener(findViewById(R.id.loginactivityid)));
 
-
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                attemptLogin();
-                return false;
-            }
+        mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
+            attemptLogin();
+            return false;
         });
 
-        mSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+        mSignInButton.setOnClickListener(view -> attemptLogin());
+        mSignUpButton.setOnClickListener(view -> goToSignUp());
+        mContinueView.setOnClickListener(view -> continueToMain());
     }
-
 
     private void checkServers() {
         Resources resources = getResources();
@@ -152,7 +146,8 @@ public class LoginActivity extends AppCompatActivity {
                 break;
         }
     }
-    //TODO: Check wether Method is needed
+
+    // TODO: Check whether Method is needed
     private boolean checkIndividualServer(String server) {
         final Boolean[] success = {false};
         DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
@@ -166,7 +161,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable throwable) {
-                //Inform user of error
+                // Inform user of error
             }
         });
         return success[0];
@@ -190,7 +185,6 @@ public class LoginActivity extends AppCompatActivity {
         edit.apply();
     }
 
-
     public User getUser(final String user, final String password, final String server) {
         DapnetSingleton dapnetSingleton = DapnetSingleton.getInstance();
         dapnetSingleton.init(server, user, password);
@@ -199,7 +193,6 @@ public class LoginActivity extends AppCompatActivity {
         dapnet.getUser(user, new DapnetListener<User>() {
             @Override
             public void onResponse(DapnetResponse<User> dapnetResponse) {
-
                 if (dapnetResponse.isSuccessful()) {
                     User returnValue = dapnetResponse.body();
                     saveData(server, user, password, returnValue.getAdmin());
@@ -207,12 +200,10 @@ public class LoginActivity extends AppCompatActivity {
                     showProgress(false);
                     Log.i(TAG, "Login was successful!");
                     Toast.makeText(LoginActivity.this, getString(R.string.success_welcome) + user, Toast.LENGTH_SHORT).show();
-                    Intent myIntent = new Intent(LoginActivity.this, MainActivity.class);
-                    LoginActivity.this.startActivity(myIntent);
+                    LoginActivity.this.startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
-
-                } else {
-
+                }
+                else {
                     Log.e(TAG, "Error: ");
                     //TODO: implement .code, .error
                     showProgress(false);
@@ -234,8 +225,21 @@ public class LoginActivity extends AppCompatActivity {
         return null;
     }
 
-    private void attemptLogin() {
+    /**
+     * Sends user to DAPNET support page when the "Sign up" Button is selected.
+     */
+    private void goToSignUp() {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.dapnet_support))));
+    }
 
+    /**
+     * Returns user to "Welcome" activity when the "Continue without signing in" TextView is selected.
+     */
+    private void continueToMain() {
+        finish();
+    }
+
+    private void attemptLogin() {
         // Reset errors.
         mUsernameView.setError(null);
         mPasswordView.setError(null);
@@ -254,14 +258,15 @@ public class LoginActivity extends AppCompatActivity {
                 focusView = mServerView;
                 cancel = true;
             }
-        } else if (spinner.getSelectedItemPosition() == 1) {
+        }
+        else if (spinner.getSelectedItemPosition() == 1) {
             server = getResources().getString(R.string.DapNetURL);
-        } else {
+        }
+        else {
             server = getResources().getString(R.string.ClearNetURL);
         }
         String user = mUsernameView.getText().toString().trim();
         String password = mPasswordView.getText().toString();
-
 
         // Check for a valid password, if the user entered one. Maybe check validity?
         if (TextUtils.isEmpty(password)) {
@@ -280,7 +285,8 @@ public class LoginActivity extends AppCompatActivity {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
-        } else {
+        }
+        else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
@@ -292,7 +298,6 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isServerValid(String server) {
         return Patterns.WEB_URL.matcher(server).matches();
     }
-
 
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
@@ -332,6 +337,5 @@ public class LoginActivity extends AppCompatActivity {
         editor.apply();
         Log.i(TAG, "Saved credentials.");
     }
+
 }
-
-
