@@ -1,142 +1,70 @@
 <resources>
-
     <string name="app_name">DAPNET</string>
-
     <string name="title_activity_login">Log in</string>
-
     <string name="title_activity_postcall">Mandare messaggio radio</string>
-
     <string name="welcome_loggedInText">"Entrato correttamente"</string>
-
     <!--Strings related to Navigation-->
-
     <string name="navigation_drawer_open">Aprire navigation drawer</string>
-
     <string name="navigation_drawer_close">Chiudere navigation drawer</string>
-
     <string name="action_settings">Impostazioni</string>
-
     <string name="calls">Chiamate</string>
-
     <string name="miscellaneous">Altri</string>
-
     <string name="login">Login_Logout</string>
-
     <string name="please_login">Per favore, loggati nel tuo account</string>
-
     <string name="nav_login">Log in</string>
-
     <string name="nav_logout">Log out</string>
-
-
     <!-- Strings related to login -->
-
     <string name="prompt_email">Email</string>
-
-
     <string name="prompt_user">User</string>
-
     <string name="prompt_password">Password</string>
-
     <string name="action_sign_in">Log in</string>
-
     <string name="action_sign_in_short">Log in</string>
-
     <string name="error_invalid_server">Nome del server non valido</string>
-
     <string name="error_invalid_user">Username non valido</string>
-
     <string name="error_invalid_email">Indirizzo mail non valido</string>
-
     <string name="error_invalid_password">La password è troppo corta</string>
-
     <string name="error_incorrect_password">Password errata</string>
-
     <string name="error_field_required">Questo campo è necessario</string>
-
     <string name="server">Server</string>
-
     <string name="message">Messaggio</string>
-
     <string name="callsignnames">Callsign</string>
-
     <string name="transmittergroupnames">Transmitter group</string>
-
     <string name="emergency">Emergenza?</string>
-
     <string name="successfully_sent_message">Messaggio inviato con successo</string>
-
     <string name="error_no_internet">Errore. Internet disponibile?</string>
-
     <string name="error_empty_msg">Errore. Messaggio vuoto!</string>
-
     <string name="error_msg_too_long">Errore: il messaggio supera gli 80 caratteri</string>
-
     <string name="error_empty_callsignlist">Errore. Callsign vuoto"</string>
-
-
     <string name="help">Aiuto</string>
-
     <string name="success_welcome">"Successo! Benvenut@ "</string>
-
     <string name="error_credentials">Errore. Sono corrette le tue credenziali?</string>
-
     <string name="error_logged_in">Errore. Sei loggato nel tuo conto?</string>
-
     <string name="error_get_versions">Error ricevendo versioni!</string>
-
     <string name="github_dh3wr"><a href="https://github.com/dh3wr">DH3WR</a></string>
-
     <string name="github_ihfschwarz"><a href="https://github.com/IHFSchwarz">IHFSchwarz</a></string>
-
     <string name="hello_welcome_fragment">Benvenuto!</string>
-
     <string name="github">DAPNET su GitHub</string>
-
     <string name="feedback_and_more">Feedback e problemi</string>
-
     <string name="www_hampager_de">www.hampager.de</string>
-
     <string name="send">Invio</string>
-
     <string name="dapnet">DAPNET</string>
-
     <string name="plchldr">PLCHLDR</string>
-
     <string name="all">All</string>
-
     <string name="msg_placeceholder">MSG placeceholder</string>
-
     <string name="http_hampager_de_8080">http://www.hampager.de:8080</string>
-
     <string name="in_order_to_use_this_service_please_login">Per usare questo servizio, logga nel tuo account, per favore</string>
-
     <string name="and">" e "</string>
-
     <string name="rwth_afu_dapnet_logo_desc">RWTH AFU DAPNET logo</string>
-
     <string name="default_url_prefix">http://"</string>
-
     <string name="server_prompt">Scegli un server</string>
-
     <string name="callsign_prompt">Inserisci i callsigns desiderati</string>
-
     <string name="transmittergroup_prompt">Inserisci i transmitter groups desiderati</string>
-
     <string-array name="server_array">
-
         <item>hampager.de (Internet, default)</item>
-
         <item>dapnet.db0sda.ampr.org (Hamnet)</item>
-
         <item>Custom</item>
-
     </string-array>
-
-
     <string name="email_prompt">Inserisci un nome o un indirizzo mail</string>
-
-
     <string name="hello_blank_fragment">L\'aiuto sta arrivando!\n La pagina sarà riempita al più presto.</string>
     <string name="generic_error">Generic error</string>
     <string name="map">Mappa</string>
@@ -150,7 +78,6 @@
     <string name="name">NAME</string>
     <string name="description">Description</string>
     <string name="miniature_logo">Miniature Logo</string>
-
     <!-- activity_post_call -->
     <string name="callsigns">Segnali di chiamata</string>
     <!-- activity_login -->
@@ -174,7 +101,6 @@
     <string name="users">Utenti</string>
     <!-- Map filter -->
     <string name="full_filter">Espandere</string>
-
     <!-- Privacy (mind the formatting) -->
     <string name="privacy_title">&lt;br>&lt;b>&lt;u>Privacy&lt;/b>&lt;/u>&lt;br></string>
     <string name="privacy_content">The operators of these pages take the protection of your personal data very seriously.
@@ -190,7 +116,6 @@
         security gaps. In HAMNET in particular, your personal data is also transmitted by law in open language, i.e. without
         encryption. It is not possible to completely protect data from access by third parties. You expressly agree to
         this.&lt;br>&lt;br> </string>
-
     <string name="data_protection_regulation_title">&lt;b>&lt;u>Special declaration under Regulation (EU) 2016/679 (General Data
         Protection Regulation)&lt;/b>&lt;/u>&lt;br></string>
     <string name="data_protection_regulation_content">By participating in the paging network provided by this page, you
@@ -201,13 +126,10 @@
 
         Esp. Give the above voluntary consent by submitting a request in the ticket system to grant user access or access
         from a broadcaster.&lt;br>&lt;br></string>
-
     <string name="special_use_title">&lt;b>&lt;u>Special use of the data of a participating broadcaster&lt;/b>&lt;/u>&lt;br></string>
     <string name="special_use_content">If you have a transmitter entered in DAPNET, you voluntarily agree that the transmitter
         data you provide (in particular the position, height and output power) on this website or in other networks or
         platforms (e.g. the APRS network in the Amateur radio) are processed and / or published. This is defined as an
         intended operation. You expressly accept this definition.&lt;br>&lt;br></string>
-
     <string name="action_accept">Accettare</string>
-
 </resources>

@@ -13,10 +13,8 @@
     <string name="please_login">ログインしてください</string>
     <string name="nav_login">ログイン</string>
     <string name="nav_logout">ログアウト</string>
-
     <!-- Strings related to login -->
     <string name="prompt_email">メール</string>
-
     <string name="prompt_user">ユーザー</string>
     <string name="prompt_password">パスワード</string>
     <string name="action_sign_in">サインイン</string>
@@ -37,8 +35,6 @@
     <string name="error_empty_msg">エラー。メッセージが空です!</string>
     <string name="error_msg_too_long">エラー: メッセージが 80 文字を超えています</string>
     <string name="error_empty_callsignlist">エラー。コールサインが空です"</string>
-
-
     <string name="help">ヘルプ</string>
     <string name="success_welcome">"成功しました! ようこそ "</string>
     <string name="error_credentials">エラー。資格情報は正しいですか?</string>
@@ -124,7 +120,6 @@
         security gaps. In HAMNET in particular, your personal data is also transmitted by law in open language, i.e. without
         encryption. It is not possible to completely protect data from access by third parties. You expressly agree to
         this.&lt;br>&lt;br> </string>
-
     <string name="data_protection_regulation_title">&lt;b>&lt;u>Special declaration under Regulation (EU) 2016/679 (General Data
         Protection Regulation)&lt;/b>&lt;/u>&lt;br></string>
     <string name="data_protection_regulation_content">By participating in the paging network provided by this page, you
@@ -135,14 +130,11 @@
 
         Esp. Give the above voluntary consent by submitting a request in the ticket system to grant user access or access
         from a broadcaster.&lt;br>&lt;br></string>
-
     <string name="special_use_title">&lt;b>&lt;u>Special use of the data of a participating broadcaster&lt;/b>&lt;/u>&lt;br></string>
     <string name="special_use_content">If you have a transmitter entered in DAPNET, you voluntarily agree that the transmitter
         data you provide (in particular the position, height and output power) on this website or in other networks or
         platforms (e.g. the APRS network in the Amateur radio) are processed and / or published. This is defined as an
         intended operation. You expressly accept this definition.&lt;br>&lt;br></string>
-
     <string name="action_accept">受け入れる</string>
-
 </resources>
 
