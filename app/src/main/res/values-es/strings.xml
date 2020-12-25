@@ -54,7 +54,7 @@
     <string name="dapnet">DAPNET</string>
     <string name="plchldr">PLCHLDR</string>
     <string name="all">All</string>
-    <string name="msg_placeceholder">MSG Platzhalter</string>
+    <string name="msg_placeceholder">Marcador de posición por mensaje</string>
     <string name="http_hampager_de_8080">http://www.hampager.de:8080</string>
     <string name="in_order_to_use_this_service_please_login">Para usar esta función, registrase.</string>
     <string name="and">" y "</string>
@@ -64,7 +64,7 @@
     <string name="callsign_prompt">Ingresa los señales de llamada</string>
     <string name="transmittergroup_prompt">Selecciona el grupo de emisoras</string>
     <string-array name="server_array">
-        <item>hampager.de (Internet, default)</item>
+        <item>hampager.de (Internet, defecto)</item>
         <item>dapnet.db0sda.ampr.org (Hamnet)</item>
         <item>Custom</item>
     </string-array>
@@ -80,10 +80,10 @@
     <string name="timeslots">Timeslots</string>
     <string name="transmission_power">Potencia de transmisión (W)</string>
     <string name="type">Tipo</string>
-    <string name="statistics_for_dapnet">Statistics for DAPNET</string>
+    <string name="statistics_for_dapnet">Estadísticas de DAPNET</string>
     <string name="name">NAME</string>
     <string name="description">Description</string>
-    <string name="miniature_logo">Miniature Logo</string>
+    <string name="miniature_logo">Logo minatura</string>
 
     <!-- activity_post_call -->
     <string name="callsigns">Señales de llamada</string>
@@ -92,7 +92,7 @@
         Radio Group at the RWTH Aachen University. In order to participate and use this app, you need to be a
         valid amateur radio operator and have an account at hampager.de. If you do not have a an account yet, sign
         up below for a new ticket with \"New DAPNET Account\" as the help topic.</string>
-    <string name="continue_without_signing_in">Continue without signing in</string>
+    <string name="continue_without_signing_in">Continuar sin iniciar sesión</string>
     <string name="action_sign_up">Regístrate</string>
     <string name="action_sign_up_short">Regístrate</string>
     <!-- "FloatingActionButton" -->
@@ -107,7 +107,7 @@
     <string name="nodes">Nodos</string>
     <string name="users">Usuarios</string>
     <!-- Map filter -->
-    <string name="full_filter">Expandido</string>
+    <string name="full_filter">Pantalla completa</string>
 
     <!-- Privacy (mind the formatting) -->
     <string name="privacy_title">&lt;br>&lt;b>&lt;u>Privacy&lt;/b>&lt;/u>&lt;br></string>
@@ -141,8 +141,5 @@
         data you provide (in particular the position, height and output power) on this website or in other networks or
         platforms (e.g. the APRS network in the Amateur radio) are processed and / or published. This is defined as an
         intended operation. You expressly accept this definition.&lt;br>&lt;br></string>
-
     <string name="action_accept">Aceptar</string>
-
-
 </resources>
