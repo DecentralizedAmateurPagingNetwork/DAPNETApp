@@ -3,15 +3,13 @@ package de.hampager.dapnetmobile.activites;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import de.hampager.dapnetmobile.R;
-import de.hampager.dapnetmobile.fragments.PrivacyFragment;
-import de.hampager.dapnetmobile.fragments.WelcomeFragment;
 
 /**
  * SplashActivity : displays app logo upon startup.
