@@ -4,7 +4,7 @@ android {
     compileSdkVersion 30
     defaultConfig {
         applicationId "de.hampager.dapnetmobile"
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode 25
         versionName "1.2.1"
